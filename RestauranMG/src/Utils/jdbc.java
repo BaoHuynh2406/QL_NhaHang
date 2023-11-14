@@ -7,9 +7,9 @@ import java.sql.*;
 public class jdbc {
         //Giao thức kết nối
         private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-        private static String dbUrl = "jdbc:sqlserver://localhost;database=EduSysData;encrypt=false";
+        private static String dbUrl = "jdbc:sqlserver://localhost;database=restaurantData;encrypt=false";
         private static String user = "sa";
-        private static String pass = "123";
+        private static String pass = "123123";
         private static Connection cnn = null;
         
         static {
