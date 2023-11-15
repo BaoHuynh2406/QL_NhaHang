@@ -103,13 +103,12 @@
             <Property name="text" type="java.lang.String" value="Restaurant Magament"/>
           </Properties>
         </Component>
-        <Component class="UI.Custom.ProgressBar" name="prLoding">
+        <Component class="UI.SplashScreen.ProgressBar" name="prLoding">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="value" type="int" value="40"/>
-            <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="colorString" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="99" red="ff" type="rgb"/>
             </Property>

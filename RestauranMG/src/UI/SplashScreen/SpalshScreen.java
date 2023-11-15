@@ -27,7 +27,9 @@ public class SpalshScreen extends javax.swing.JDialog {
             public void actionPerformed(ActionEvent e) {
                 prLoding.setValue(value);
                 value++;
-                if(value==100) value = 0;
+                if(value==100){
+                    dispose();
+                };
             }
         }).start();
     }
@@ -39,7 +41,7 @@ public class SpalshScreen extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        prLoding = new UI.Custom.ProgressBar();
+        prLoding = new UI.SplashScreen.ProgressBar();
         lblTxt = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -156,6 +158,6 @@ public class SpalshScreen extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblTxt;
-    private UI.Custom.ProgressBar prLoding;
+    private UI.SplashScreen.ProgressBar prLoding;
     // End of variables declaration//GEN-END:variables
 }

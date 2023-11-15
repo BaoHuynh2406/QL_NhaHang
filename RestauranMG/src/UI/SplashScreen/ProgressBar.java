@@ -1,5 +1,5 @@
 
-package UI.Custom;
+package UI.SplashScreen;
 
 import java.awt.Color;
 import java.awt.Dimension;
