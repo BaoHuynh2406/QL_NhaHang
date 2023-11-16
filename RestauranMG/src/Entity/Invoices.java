@@ -12,7 +12,7 @@ public class Invoices {
     private Date InvoiceDate;
     private double TaxAmount;
     private double TotalAmount;
-    private boolean IsPaid;
+    private boolean paid;
 
     public Invoices(int ID_Invoice, int ID_Order, int ID_Method, int ID_Employee, int ID_Tax, Date InvoiceDate, double TaxAmount, double TotalAmount, boolean IsPaid) {
         this.ID_Invoice = ID_Invoice;
@@ -23,7 +23,7 @@ public class Invoices {
         this.InvoiceDate = InvoiceDate;
         this.TaxAmount = TaxAmount;
         this.TotalAmount = TotalAmount;
-        this.IsPaid = IsPaid;
+        this.paid = IsPaid;
     }
 
     public Invoices() {
@@ -94,12 +94,12 @@ public class Invoices {
         this.TotalAmount = TotalAmount;
     }
 
-    public boolean isIsPaid() {
-        return IsPaid;
+    public boolean isPaid() {
+        return paid;
     }
 
-    public void setIsPaid(boolean IsPaid) {
-        this.IsPaid = IsPaid;
+    public void setPaid(boolean IsPaid) {
+        this.paid = IsPaid;
     }
     @Override
     public String toString() {
@@ -112,7 +112,8 @@ public class Invoices {
                 ", invoiceDate=" + InvoiceDate +
                 ", taxAmount=" + TaxAmount +
                 ", totalAmount=" + TotalAmount +
-                ", isPaid=" + IsPaid +
+                ", isPaid=" + paid +
                 '}';
     }
 }
+
