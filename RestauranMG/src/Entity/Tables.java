@@ -13,6 +13,9 @@ public class Tables {
         this.IsOccupied = IsOccupied;
     }
 
+    public Tables() {
+    }
+
     public int getID_Area() {
         return ID_Area;
     }

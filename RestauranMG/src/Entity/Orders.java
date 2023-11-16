@@ -20,6 +20,9 @@ public class Orders {
         this.IsPaid = IsPaid;
     }
 
+    public Orders() {
+    }
+
     public int getID_Table() {
         return ID_Table;
     }

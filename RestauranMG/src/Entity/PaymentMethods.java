@@ -9,6 +9,9 @@ public class PaymentMethods {
         this.MethodName = MethodName;
     }
 
+    public PaymentMethods() {
+    }
+
     public int getID_Method() {
         return ID_Method;
     }

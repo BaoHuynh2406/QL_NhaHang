@@ -9,6 +9,9 @@ public class MenuCategories {
         this.CategoryName = CategoryName;
     }
 
+    public MenuCategories() {
+    }
+    
     public int getID_Category() {
         return ID_Category;
     }

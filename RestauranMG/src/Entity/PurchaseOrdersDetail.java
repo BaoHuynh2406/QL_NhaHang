@@ -15,10 +15,17 @@ public class PurchaseOrdersDetail {
         this.Price = Price;
     }
 
+    public PurchaseOrdersDetail() {
+    }
+    
     public void setID_PurchaseOrder(int ID_PurchaseOrder) {
         this.ID_PurchaseOrder = ID_PurchaseOrder;
     }
 
+    public int getID_PurchaseOrder() {
+        return ID_PurchaseOrder;
+    }
+    
     public String getID_Product() {
         return ID_Product;
     }

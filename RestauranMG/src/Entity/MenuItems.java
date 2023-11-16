@@ -15,6 +15,9 @@ public class MenuItems {
         this.Photo = Photo;
     }
 
+    public MenuItems() {
+    }
+    
     public int getID_Category() {
         return ID_Category;
     }

@@ -16,6 +16,9 @@ public class Products {
         this.Price = Price;
     }
 
+    public Products() {
+    }
+    
     public String getID_product() {
         return ID_product;
     }

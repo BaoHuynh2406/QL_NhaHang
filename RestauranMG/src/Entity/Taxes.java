@@ -11,6 +11,9 @@ public class Taxes {
         this.TaxRate = TaxRate;
     }
 
+    public Taxes() {
+    }
+
     public int getID_Tax() {
         return ID_Tax;
     }

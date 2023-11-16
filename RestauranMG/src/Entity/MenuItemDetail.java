@@ -13,6 +13,9 @@ public class MenuItemDetail {
         this.Quantity = Quantity;
     }
 
+    public MenuItemDetail() {
+    }
+
     public int getID_Item() {
         return ID_Item;
     }

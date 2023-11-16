@@ -14,6 +14,9 @@ public class PurchaseOrders {
         this.ID_Employee = ID_Emplyee;
     }
 
+    public PurchaseOrders() {
+    }
+    
     public int getID_PurchaseOrder() {
         return ID_PurchaseOrder;
     }

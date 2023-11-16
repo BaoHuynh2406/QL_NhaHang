@@ -10,6 +10,9 @@ public class Areas {
         this.AreaName = AreaName;
     }
 
+    public Areas() {
+    }
+
     public int getID_Area() {
         return ID_Area;
     }

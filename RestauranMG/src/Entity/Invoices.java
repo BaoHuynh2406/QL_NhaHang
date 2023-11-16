@@ -26,6 +26,9 @@ public class Invoices {
         this.IsPaid = IsPaid;
     }
 
+    public Invoices() {
+    }
+
     public int getID_Order() {
         return ID_Order;
     }

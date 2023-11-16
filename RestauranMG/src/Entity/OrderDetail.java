@@ -17,6 +17,9 @@ public class OrderDetail {
         this.TotalPrice = TotalPrice;
     }
 
+    public OrderDetail() {
+    }
+
     public int getID_Order() {
         return ID_Order;
     }

@@ -1,8 +1,10 @@
 
 package Entity;
 
+import java.io.Serializable;
 
-public class Role {
+
+public class Role implements Serializable{
     private String ID_role;
     private String RoleNam;
 
@@ -11,6 +13,9 @@ public class Role {
         this.RoleNam = RoleNam;
     }
 
+    public Role() {
+    }
+    
     public String getID_role() {
         return ID_role;
     }
