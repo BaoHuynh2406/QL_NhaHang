@@ -181,7 +181,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="lblClock" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblDate" pref="20" max="32767" attributes="0"/>
+                          <Component id="lblDate" max="32767" attributes="0"/>
                       </Group>
                       <Component id="btnOut" alignment="0" max="32767" attributes="0"/>
                   </Group>

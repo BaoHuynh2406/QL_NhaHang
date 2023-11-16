@@ -75,13 +75,14 @@ public class Main extends javax.swing.JFrame {
  
     //Đồng hồ
     public void runClock() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat f = new SimpleDateFormat("hh:mm a");
         new Timer(1000, new ActionListener() {
-            SimpleDateFormat f = new SimpleDateFormat("hh:mm a");
-            LocalDate ngayHienTai = LocalDate.now();
+            String ngayHienTai = dateFormat.format(new Date());
             @Override
             public void actionPerformed(ActionEvent e) {
                 lblClock.setText(f.format(new Date()));
-                lblDate.setText(ngayHienTai+"");
+                lblDate.setText(ngayHienTai);
             }
         }).start();
     }
@@ -236,7 +237,7 @@ public class Main extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(lblClock)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE))
+                        .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(btnOut, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
