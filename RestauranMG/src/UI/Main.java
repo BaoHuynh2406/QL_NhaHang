@@ -1,6 +1,7 @@
 
 package UI;
 
+import UI.Login.Login;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -40,7 +41,10 @@ public class Main extends javax.swing.JFrame {
         runClock();
         init();
         //Chạy màn hình chào
-//        RunSpalshScreen();
+        RunSpalshScreen();
+        //Chạy màn hình đăng nhập
+        RunLogin();
+        
        
         
         
@@ -76,6 +80,11 @@ public class Main extends javax.swing.JFrame {
     private void RunSpalshScreen (){
         SpalshScreen sps = new SpalshScreen(this, true);
         sps.setVisible(true);
+    }
+    
+    private void RunLogin(){
+        Login lg = new Login(this, true);
+        lg.setVisible(true);
     }
  
     //Đồng hồ
