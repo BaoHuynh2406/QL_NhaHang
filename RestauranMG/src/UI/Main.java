@@ -40,10 +40,10 @@ public class Main extends javax.swing.JFrame {
         //Run clock
         runClock();
         
-//        //Chạy màn hình chào
-//        RunSpalshScreen();
-//        //Chạy màn hình đăng nhập
-//        RunLogin();
+        //Chạy màn hình chào
+        RunSpalshScreen();
+        //Chạy màn hình đăng nhập
+        RunLogin();
         
         
         init();
