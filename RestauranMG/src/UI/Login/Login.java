@@ -2,7 +2,13 @@ package UI.Login;
 
 import Entity.Employees;
 import Dao.EmployeesDao;
+import Utils.Encryption;
+import Utils.FileControl;
+import Utils.Validate;
 import Utils.msg;
+import java.awt.Color;
+import java.security.NoSuchAlgorithmException;
+import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JDialog {
 
@@ -11,16 +17,64 @@ public class Login extends javax.swing.JDialog {
     public Login(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        
+        //Kiễm tra nếu có lưu mật khẩu
+        Employees el = new Employees();
+        try {
+            el =(Employees) FileControl.readFile("src/Auth.dat");
+            if(el != null){
+                txtUserName.setText(el.getID_Employee()+"");
+                txtPassword.setText(el.getPassword());
+            }
+        } catch (Exception e) {
+        }
+        
+        
     }
 
+    public boolean Validate(){
+        boolean check = true;
+        String UserName = txtUserName.getText();
+        String Password = new String(txtPassword.getPassword());
+       
+        try{
+            int UsernameINT = Integer.valueOf(UserName);
+            if(!Validate.isLength(txtUserName, UserName, 6, "User name")){
+                txtUserName.setBackground(Color.YELLOW);
+                check = false;
+            }
+        }catch(Exception e){
+            msg.Warning("Vui lòng nhập user name là các số.");
+            txtUserName.setBackground(Color.YELLOW);
+            check = false;
+        }
+        
+        if(!Validate.isLength(txtPassword, Password, 6, "mật khẩu")) check = false;
+        return check;
+    }
     
     public void submitLogin() {
         String UserName = txtUserName.getText();
         String Password = new String(txtPassword.getPassword());
+        
+        String HashPassword = null;
+        try {
+            HashPassword = Encryption.hashPassword(Password);
+        } catch (NoSuchAlgorithmException ex) {
+           msg.Error("Có lỗi bất định "+ ex.getMessage());
+        }
+        
         Employees nv = EmDao.selectById(UserName);
+        System.out.println(nv);
         if (nv != null) {
-            if (nv.getPassword().equals(Password)) {
+            if (nv.getPassword().equals(HashPassword)) {
                 msg.Info("Đăng nhập thanh công");
+                if (rdSavePass.isSelected()) {
+                    nv.setPassword(Password);
+                    FileControl.writeFile(nv, "src/Auth.dat");
+                } else {
+                    FileControl.deleteFile("src/Auth.dat");
+                }
                 this.dispose();
                 return;
             }
@@ -38,6 +92,7 @@ public class Login extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         btnSubmit = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         txtUserName = new javax.swing.JTextField();
@@ -59,9 +114,13 @@ public class Login extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Đăng Nhập");
+        setUndecorated(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -77,20 +136,33 @@ public class Login extends javax.swing.JDialog {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/1.png"))); // NOI18N
 
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/redDot.png"))); // NOI18N
+        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel3MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         btnSubmit.setBackground(new java.awt.Color(27, 219, 115));
@@ -108,6 +180,11 @@ public class Login extends javax.swing.JDialog {
 
         txtUserName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtUserName.setPreferredSize(new java.awt.Dimension(230, 30));
+        txtUserName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtUserNameMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -131,6 +208,11 @@ public class Login extends javax.swing.JDialog {
 
         txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtPassword.setPreferredSize(new java.awt.Dimension(230, 30));
+        txtPassword.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtPasswordMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -157,6 +239,7 @@ public class Login extends javax.swing.JDialog {
         rdSavePass.setBackground(new java.awt.Color(0, 102, 102));
         rdSavePass.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         rdSavePass.setForeground(new java.awt.Color(204, 204, 204));
+        rdSavePass.setSelected(true);
         rdSavePass.setText("Lưu mật khẩu");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -180,7 +263,7 @@ public class Login extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(100, 100, 100)
                         .addComponent(jLabel1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -220,12 +303,32 @@ public class Login extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        submitLogin();
+        if(Validate()){
+            submitLogin();
+        }
+        
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-       System.exit(0);
+      
     }//GEN-LAST:event_formWindowClosed
+
+    private void txtUserNameMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUserNameMousePressed
+       txtUserName.setBackground(Color.white);
+    }//GEN-LAST:event_txtUserNameMousePressed
+
+    private void txtPasswordMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPasswordMousePressed
+        txtPassword.setBackground(Color.white);
+
+    }//GEN-LAST:event_txtPasswordMousePressed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       
+    }//GEN-LAST:event_formWindowClosing
+
+    private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
+        System.exit(0);
+    }//GEN-LAST:event_jLabel3MousePressed
 
     /**
      * @param args the command line arguments
@@ -274,6 +377,7 @@ public class Login extends javax.swing.JDialog {
     javax.swing.JButton btnSubmit;
     javax.swing.JLabel jLabel1;
     javax.swing.JLabel jLabel2;
+    javax.swing.JLabel jLabel3;
     javax.swing.JPanel jPanel1;
     javax.swing.JPanel jPanel2;
     javax.swing.JPanel jPanel3;

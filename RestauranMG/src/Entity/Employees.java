@@ -1,7 +1,9 @@
 
 package Entity;
 
-public class Employees {
+import java.io.Serializable;
+
+public class Employees implements Serializable{
     private int ID_Employee;
     private String FullName;
     private String Password;
