@@ -40,10 +40,10 @@ public class Main extends javax.swing.JFrame {
         //Run clock
         runClock();
         
-        //Chạy màn hình chào
-        RunSpalshScreen();
-        //Chạy màn hình đăng nhập
-        RunLogin();
+//        //Chạy màn hình chào
+//        RunSpalshScreen();
+//        //Chạy màn hình đăng nhập
+//        RunLogin();
         
         
         init();
@@ -121,13 +121,12 @@ public class Main extends javax.swing.JFrame {
         lblDate = new javax.swing.JLabel();
         lblClock = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        menu1 = new UI.Menu();
+        menu1 = new UI.menu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1920, 1080));
         setUndecorated(true);
-        setPreferredSize(new Dimension(screenWidth, screenHight));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(22, 72, 99));
@@ -271,16 +270,12 @@ public class Main extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 730, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(231, Short.MAX_VALUE))
+                .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 776, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(menu1, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(210, Short.MAX_VALUE))
+            .addComponent(menu1, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.CENTER);
@@ -354,6 +349,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lblClock;
     private javax.swing.JLabel lblDate;
-    private UI.Menu menu1;
+    private UI.menu menu1;
     // End of variables declaration//GEN-END:variables
 }
