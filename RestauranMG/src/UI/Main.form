@@ -292,7 +292,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="UI.menu" name="menu2">
+        <Component class="UI.Compoment.menu" name="menu2">
         </Component>
       </SubComponents>
     </Container>

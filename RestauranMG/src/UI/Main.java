@@ -121,7 +121,7 @@ public class Main extends javax.swing.JFrame {
         lblDate = new javax.swing.JLabel();
         lblClock = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        menu2 = new UI.menu();
+        menu2 = new UI.Compoment.menu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -351,6 +351,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lblClock;
     private javax.swing.JLabel lblDate;
-    private UI.menu menu2;
+    private UI.Compoment.menu menu2;
     // End of variables declaration//GEN-END:variables
 }

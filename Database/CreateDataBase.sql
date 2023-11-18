@@ -13,10 +13,12 @@ Create table Role(
 
 Create table Employees(
 	ID_Employee INT IDENTITY(100000, 1) primary key,
-	FullName nvarchar(50),
-	Password varchar(500),
-	PhoneNumber varchar(11),
-	Email varchar(50),
+	FullName nvarchar(50) not null,
+	Password varchar(500) not null,
+	Sex nvarchar(3) not null,
+	birthday date not null,
+	PhoneNumber varchar(11) not null,
+	Email varchar(50) not null,
 	Address nvarchar(50),
 	ID_role varchar(5),
 	Photo nvarchar(50),
@@ -27,17 +29,17 @@ Create table Employees(
 
 create table Products(
 	ID_product varchar(6) primary key,
-	Name nvarchar(32),
-	Quantity int, --Số lượng
-	Unit nvarchar(10),
-	Price decimal(10,3)
+	Name nvarchar(32) not null,
+	Quantity int default 0, --Số lượng
+	Unit nvarchar(10) not null,
+	Price decimal(10,3) default 0
 );
 
 -- Nhóm nhập hàng
 
 create table PurchaseOrders(
 	ID_PurchaseOrder INT Primary key,
-	OrderDate date,
+	OrderDate date not null,
 	ID_Employee INT,
 	Foreign key (ID_Employee) REFERENCES Employees(ID_Employee)
 );
@@ -47,8 +49,8 @@ Create table PurchaseOrdersDetail(
 	ID_POD INT identity(1,1) primary key,
 	ID_PurchaseOrder INT,
 	ID_product varchar(6),
-	Quantity int,
-	Price decimal(10,3),
+	Quantity int default 0,
+	Price decimal(10,3) default 0,
 	Foreign key (ID_PurchaseOrder) References PurchaseOrders(ID_PurchaseOrder),
 	Foreign Key (ID_Product) References Products (ID_product)
 );
@@ -58,14 +60,14 @@ Create table PurchaseOrdersDetail(
 
 Create table MenuCategories(
 	ID_Category INT identity(1,1) primary key,
-	CategoryName nvarchar(20)
+	CategoryName nvarchar(20) not null
 );
 
 CREATE TABLE MenuItems (
     ID_Item INT identity(1,1) PRIMARY KEY,
-    ItemName NVARCHAR(100),
-    ID_Category INT,
-    Price DECIMAL(10, 3),
+    ItemName NVARCHAR(100) not null,
+    ID_Category INT ,
+    Price DECIMAL(10, 3) not null,
     Photo nvarchar(50),
 	Foreign key (ID_Category) References MenuCategories(ID_Category)
 );
