@@ -10,13 +10,13 @@ import java.util.List;
 
 public class InvoicesDao extends RestauranDao<Invoices, String>{
     final String INSERT_SQL = "INSERT INTO Invoices (ID_Order, ID_Method, ID_Employee, ID_Tax, InvoiceDate, TaxAmount, TotalAmount, IsPaid)"
-            + " VALUES ('?', '?', '?', '?', '?', '?', '?', '?')";
-    final String UPDATE_ALL = "UPDATE Invoices SET ID_Order = '?', ID_Method = '?', "
-            + "ID_Employee = '?', ID_Tax = '?', InvoiceDate = '?', TaxAmount = '?', "
-            + "TotalAmount = '?', IsPaid = '?' WHERE ID_Invoice = '?'";
-    final String DELETE_SQL = "DELETE FROM Invoices WHERE ID_Invoice = '?'";
+            + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    final String UPDATE_ALL = "UPDATE Invoices SET ID_Order = ?, ID_Method = ?, "
+            + "ID_Employee = ?, ID_Tax = ?, InvoiceDate = ?, TaxAmount = ?, "
+            + "TotalAmount = ?, IsPaid = ? WHERE ID_Invoice = ?";
+    final String DELETE_SQL = "DELETE FROM Invoices WHERE ID_Invoice = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Invoices";
-    final String SELECT_BY_ID_SQL = "SELECT * FROM Invoices WHERE ID_Invoice = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT * FROM Invoices WHERE ID_Invoice = ?";
     @Override
     public void insert(Invoices entity) {
         jdbc.update(INSERT_SQL,

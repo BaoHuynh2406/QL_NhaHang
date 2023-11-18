@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuItemDetailDao extends RestauranDao<MenuItemDetail, String>{
-    final String INSERT_SQL = "INSERT INTO MenuItemDetail (ID_Item, ID_Product, Quantity) VALUES ('?', '?', '?')";
-    final String UPDATE_ALL = "UPDATE MenuItemDetail SET ID_Item = '?', ID_Product = '?', Quantity = '?' WHERE ID_MIT= '?'";
-    final String DELETE_SQL = "DELETE FROM MenuItemDetail WHERE ID_MIT = '?'";
+    final String INSERT_SQL = "INSERT INTO MenuItemDetail (ID_Item, ID_Product, Quantity) VALUES (?, ?, ?)";
+    final String UPDATE_ALL = "UPDATE MenuItemDetail SET ID_Item = ?, ID_Product = ?, Quantity = ? WHERE ID_MIT= ?";
+    final String DELETE_SQL = "DELETE FROM MenuItemDetail WHERE ID_MIT = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM MenuItemDetail";
-    final String SELECT_BY_ID_SQL = "SELECT * FROM MenuItemDetail WHERE ID_MIT = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT * FROM MenuItemDetail WHERE ID_MIT = ?";
     @Override
     public void insert(MenuItemDetail entity) {
         jdbc.update(INSERT_SQL,

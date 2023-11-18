@@ -1,7 +1,6 @@
 
 package Dao;
 
-import Entity.Role;
 import Entity.Tables;
 import Utils.jdbc;
 import java.sql.ResultSet;
@@ -9,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TablesdDao extends RestauranDao<Tables, String>{
-    final String INSERT_SQL = "INSERT INTO Tables (TableName, ID_Area, IsOccupied) VALUES (N'?', '?', '?')";
-    final String UPDATE_ALL = "UPDATE Tables SET TableName = '?', ID_Area = '?', IsOccupied = '?' WHERE ID_Table = '?'";
-    final String DELETE_SQL = "DELETE FROM Tables WHERE ID_Table = '?'";
+    final String INSERT_SQL = "INSERT INTO Tables (TableName, ID_Area, IsOccupied) VALUES (?, ?, ?)";
+    final String UPDATE_ALL = "UPDATE Tables SET TableName = ?, ID_Area = ?, IsOccupied = ? WHERE ID_Table = ?";
+    final String DELETE_SQL = "DELETE FROM Tables WHERE ID_Table = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Tables";
-    final String SELECT_BY_ID_SQL = "SELECT * FROM Tables WHERE ID_Table = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT * FROM Tables WHERE ID_Table = ?";
     @Override
     public void insert(Tables entity) {
         jdbc.update(INSERT_SQL,

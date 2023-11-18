@@ -8,13 +8,13 @@ import java.util.List;
 
 public class OrdersDao extends RestauranDao<Orders, String>{
     final String INSERT_SQL = "INSERT INTO Orders (ID_Table, ID_Employee, OrderDate, NumberOfGuests, IsPaid)" +
-                "	VALUES ('?', '?', '?', '?', '?')";
+                "	VALUES (?, ?, ?, ?, ?)";
     final String UPDATE_ALL = "UPDATE Orders SET "
-            + "ID_Table = '?', ID_Employee = '?', OrderDate = '?', "
-            + "NumberOfGuests = '?', IsPaid = '?' WHERE ID_Order = '?'";
-    final String DELETE_SQL = "DELETE FROM Orders WHERE ID_Order = '?'";
+            + "ID_Table = ?, ID_Employee = ?, OrderDate = ?, "
+            + "NumberOfGuests = ?, IsPaid = ? WHERE ID_Order = ?";
+    final String DELETE_SQL = "DELETE FROM Orders WHERE ID_Order = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Orders";
-    final String SELECT_BY_ID_SQL = "SELECT * FROM Orders WHERE ID_Order = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT * FROM Orders WHERE ID_Order = ?";
     @Override
     public void insert(Orders entity) {
         jdbc.update(INSERT_SQL,

@@ -2,18 +2,17 @@
 package Dao;
 
 import Entity.PaymentMethods;
-import Entity.Role;
 import Utils.jdbc;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentMethodsDao extends RestauranDao<PaymentMethods, String>{
-    final String INSERT_SQL = "INSERT INTO PaymentMethods (MethodName) VALUES (N'?')";
-    final String UPDATE_ALL = "UPDATE PaymentMethods SET MethodName = '?' WHERE ID_Method = '?'";
-    final String DELETE_SQL = "DELETE FROM PaymentMethods WHERE ID_Method = '?'";
+    final String INSERT_SQL = "INSERT INTO PaymentMethods (MethodName) VALUES (?)";
+    final String UPDATE_ALL = "UPDATE PaymentMethods SET MethodName = ? WHERE ID_Method = ?";
+    final String DELETE_SQL = "DELETE FROM PaymentMethods WHERE ID_Method = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM PaymentMethods";
-    final String SELECT_BY_ID_SQL = "SELECT * FROM PaymentMethods WHERE ID_Method = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT * FROM PaymentMethods WHERE ID_Method = ?";
     @Override
     public void insert(PaymentMethods entity) {
         jdbc.update(INSERT_SQL, 

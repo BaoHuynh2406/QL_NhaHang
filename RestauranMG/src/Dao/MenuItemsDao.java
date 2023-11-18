@@ -2,7 +2,7 @@
 package Dao;
 
 import Entity.MenuItems;
-import Entity.Role;
+
 import Utils.jdbc;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -10,11 +10,11 @@ import java.util.List;
 
 public class MenuItemsDao extends RestauranDao<MenuItems, String>{
     final String INSERT_SQL = "INSERT INTO MenuItems (ItemName, ID_Category, Price, Photo) "
-            + "VALUES (N'?', '?', '?', '?')";
-    final String UPDATE_ALL = "UPDATE MenuItems SET ItemName = '?', ID_Category = '?', Price = '?', Photo = '?' WHERE ID_Item = '?'";
-    final String DELETE_SQL = "DELETE FROM MenuItems WHERE ID_Item = '?'";
+            + "VALUES (?, ?, ?, ?)";
+    final String UPDATE_ALL = "UPDATE MenuItems SET ItemName = ?, ID_Category = ?, Price = ?, Photo = ? WHERE ID_Item = ?";
+    final String DELETE_SQL = "DELETE FROM MenuItems WHERE ID_Item = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM MenuItems";
-    final String SELECT_BY_ID_SQL = "SELECT * FROM MenuItems WHERE ID_Item = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT * FROM MenuItems WHERE ID_Item = ?";
     @Override
     public void insert(MenuItems entity) {
         jdbc.update(INSERT_SQL,

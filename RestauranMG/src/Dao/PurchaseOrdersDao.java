@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String>{
-    final String INSERT_SQL = "INSERT INTO Purchase (ID_PurchaseOrder, OrderDate, ID_Employee) VALUES ('?', '?', '?')";
-    final String UPDATE_ALL = "UPDATE PurchaseOrders SET OrderDate = '?', ID_Employee = '?' WHERE ID_PurchaseOrder = '?'";
-    final String DELETE_SQL = "DELETE FROM PurchaseOrders WHERE ID_PurchaseOrder = '?'";
+    final String INSERT_SQL = "INSERT INTO Purchase (ID_PurchaseOrder, OrderDate, ID_Employee) VALUES (?, ?, ?)";
+    final String UPDATE_ALL = "UPDATE PurchaseOrders SET OrderDate = ?, ID_Employee = ? WHERE ID_PurchaseOrder = ?";
+    final String DELETE_SQL = "DELETE FROM PurchaseOrders WHERE ID_PurchaseOrder = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM PurchaseOrders";
-    final String SELECT_BY_ID_SQL = "SELECT * FROM PurchaseOrders WHERE ID_PurchaseOrder = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT * FROM PurchaseOrders WHERE ID_PurchaseOrder = ?";
     @Override
     public void insert(PurchaseOrders entity) {
         jdbc.update(INSERT_SQL,

@@ -9,10 +9,10 @@ import java.util.List;
 
 public class EmployeesDao extends RestauranDao<Employees, String>{
     final String INSERT_SQL = "INSERT INTO Employees (FullName, Password, PhoneNumber, Email, Address, ID_role, Photo)"
-            + "VALUES (N'?', '?', '?', '?', N'?', '?', '?')";
+            + "VALUES (?, ?, ?, ?, ?, ?, ?)";
     final String UPDATE_ALL = "UPDATE Employees SET "
-            + "FullName = N'?', Password = '?', PhoneNumber = '?', Email = ?, Address = N'?', ID_role = '?', Photo = '?' WHERE ID_Employee = '?'";
-    final String DELETE_SQL = "DELETE FROM Employees WHERE ID_Employee = '?'";
+            + "FullName = ?, Password = ?, PhoneNumber = ?, Email = ?, Address = ?, ID_role = ?, Photo = ? WHERE ID_Employee = ?";
+    final String DELETE_SQL = "DELETE FROM Employees WHERE ID_Employee = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Employees";
     final String SELECT_BY_ID_SQL = "SELECT * FROM Employees WHERE ID_Employee = ?";
     @Override

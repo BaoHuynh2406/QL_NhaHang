@@ -9,12 +9,12 @@ import java.util.List;
 
 public class ProductsDao extends RestauranDao<Products, String>{
     final String INSERT_SQL = "INSERT INTO Products (ID_product, Name, Quantity, Unit, Price) "
-            + "VALUES ('?', N'? 1', '?', N'?', '?')";
+            + "VALUES (?, ?, ?, ?, ?)";
     final String UPDATE_ALL = "UPDATE Products SET "
-            + "Name = N'?', Quantity = '?', Unit = N'?', Price = '?' Where ID_product = '?'";
-    final String DELETE_SQL = "DELETE FROM Products WHERE ID_product = '?'";
+            + "Name = ?, Quantity = ?, Unit = ?, Price = ? Where ID_product = ?";
+    final String DELETE_SQL = "DELETE FROM Products WHERE ID_product = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Products";
-    final String SELECT_BY_ID_SQL = "SELECT *  FROM Products WHERE ID_product = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT *  FROM Products WHERE ID_product = ?";
     @Override
     public void insert(Products entity) {
         jdbc.update(INSERT_SQL,

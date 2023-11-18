@@ -2,7 +2,7 @@
 package Dao;
 
 import Entity.PurchaseOrdersDetail;
-import Entity.Role;
+
 import Utils.jdbc;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -10,12 +10,12 @@ import java.util.List;
 
 public class PurchaseOrdersDetailDao extends RestauranDao<PurchaseOrdersDetail, String>{
     final String INSERT_SQL = "INSERT INTO PurchaseOrdersDetail (ID_PurchaseOrder, ID_product, Quantity, Price) "
-            + "VALUES ('?', '?', '?', '?')";
+            + "VALUES (?, ?, ?, ?)";
     final String UPDATE_ALL = "UPDATE PurchaseOrdersDetail SET"
-            + " ID_PurchaseOrder = '?', ID_product = '?', Quantity = '?', Price = '?' WHERE ID_POD = '?'";
-    final String DELETE_SQL = "DELETE FROM PurchaseOrdersDetail WHERE ID_POD = '?'";
+            + " ID_PurchaseOrder = ?, ID_product = ?, Quantity = ?, Price = ? WHERE ID_POD = ?";
+    final String DELETE_SQL = "DELETE FROM PurchaseOrdersDetail WHERE ID_POD = ?";
     final String SELECT_ALL_SQL = "SELECT *  FROM PurchaseOrdersDetail";
-    final String SELECT_BY_ID_SQL = "SELECT *  FROM PurchaseOrdersDetail WHERE ID_POD = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT *  FROM PurchaseOrdersDetail WHERE ID_POD = ?";
     @Override
     public void insert(PurchaseOrdersDetail entity) {
         jdbc.update(INSERT_SQL,

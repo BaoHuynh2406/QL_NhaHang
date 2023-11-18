@@ -2,18 +2,17 @@
 package Dao;
 
 import Entity.Areas;
-import Entity.Role;
 import Utils.jdbc;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AreasDao extends RestauranDao<Areas, String>{
-    final String INSERT_SQL = "INSERT INTO Areas (AreaName) VALUES (N'?')";
-    final String UPDATE_ALL = "UPDATE Areas SET AreaName = '?' WHERE ID_Area = '?'";
-    final String DELETE_SQL = "DELETE FROM Areas WHERE ID_Area = '?'";
+    final String INSERT_SQL = "INSERT INTO Areas (AreaName) VALUES (?)";
+    final String UPDATE_ALL = "UPDATE Areas SET AreaName = ? WHERE ID_Area = ?";
+    final String DELETE_SQL = "DELETE FROM Areas WHERE ID_Area = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Areas";
-    final String SELECT_BY_ID_SQL = "SELECT * FROM Areas WHERE ID_Area = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT * FROM Areas WHERE ID_Area = ?";
     @Override
     public void insert(Areas entity) {
         jdbc.update(INSERT_SQL,

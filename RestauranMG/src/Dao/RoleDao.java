@@ -10,9 +10,9 @@ import java.util.List;
 public class RoleDao extends RestauranDao<Role, String>{
     final String INSERT_SQL = "INSERT INTO Role (ID_role, RoleName) VALUES (?, ?)";
     final String UPDATE_ALL = "UPDATE Role SET RoleName = ? WHERE ID_role = ?";
-    final String DELETE_SQL = "DELETE FROM Role WHERE ID_role = '?'";
+    final String DELETE_SQL = "DELETE FROM Role WHERE ID_role = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Role";
-    final String SELECT_BY_ID_SQL = "SELECT * FROM Role WHERE ID_role = '?'";
+    final String SELECT_BY_ID_SQL = "SELECT * FROM Role WHERE ID_role = ?";
     @Override
     public void insert(Role entity) {
         jdbc.update(INSERT_SQL,
