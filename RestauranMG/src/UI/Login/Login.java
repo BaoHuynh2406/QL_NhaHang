@@ -1,31 +1,33 @@
-
 package UI.Login;
+
 import Entity.Employees;
 import Dao.EmployeesDao;
 import Utils.msg;
 
 public class Login extends javax.swing.JDialog {
-EmployeesDao EmDao = new EmployeesDao();
+
+    EmployeesDao EmDao = new EmployeesDao();
+
     public Login(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
-    public void submitLogin(){
+    public void submitLogin() {
         String UserName = txtUserName.getText();
-        String Password = new String( txtPassword.getPassword());
+        String Password = new String(txtPassword.getPassword());
         Employees nv = EmDao.selectById(UserName);
-        if(nv!= null){
-            if(nv.getPassword().equals(Password)){
+        if (nv != null) {
+            if (nv.getPassword().equals(Password)) {
                 msg.Info("Đăng nhập thanh công");
                 this.dispose();
                 return;
             }
         }
         msg.Error("Sai tên đăng nhập hoặc mật khẩu");
-        
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -197,7 +199,7 @@ EmployeesDao EmDao = new EmployeesDao();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-       submitLogin();
+        submitLogin();
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     /**

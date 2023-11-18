@@ -39,12 +39,14 @@ public class Main extends javax.swing.JFrame {
         initComponents();
         //Run clock
         runClock();
-        init();
+        
         //Chạy màn hình chào
         RunSpalshScreen();
         //Chạy màn hình đăng nhập
         RunLogin();
         
+        
+        init();
        
         
         
@@ -314,7 +316,7 @@ public class Main extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
