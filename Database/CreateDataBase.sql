@@ -16,7 +16,7 @@ Create table Employees(
 	FullName nvarchar(50),
 	Password varchar(500),
 	PhoneNumber varchar(11),
-	Email varchar(20),
+	Email varchar(50),
 	Address nvarchar(50),
 	ID_role varchar(5),
 	Photo nvarchar(50),
