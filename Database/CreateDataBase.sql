@@ -15,8 +15,8 @@ Create table Employees(
 	ID_Employee INT IDENTITY(100000, 1) primary key,
 	FullName nvarchar(50) not null,
 	Password varchar(500) not null,
-	Sex nvarchar(3) not null,
-	birthday date not null,
+	Sex bit not null, --thêm cột giới tính
+	birthday date not null, -- thêm ngày tháng năm sinh
 	PhoneNumber varchar(11) not null,
 	Email varchar(50) not null,
 	Address nvarchar(50),
