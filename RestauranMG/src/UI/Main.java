@@ -1,13 +1,13 @@
 
 package UI;
 
-import UI.Login.Login;
+import UI.Form.Login;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
-import UI.SplashScreen.SpalshScreen;
+import UI.Form.SpalshScreen;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -122,6 +122,7 @@ public class Main extends javax.swing.JFrame {
         lblClock = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         menu2 = new UI.Compoment.menu();
+        order1 = new UI.Form.Order();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -271,11 +272,17 @@ public class Main extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(menu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 777, Short.MAX_VALUE))
+                .addGap(63, 63, 63)
+                .addComponent(order1, javax.swing.GroupLayout.DEFAULT_SIZE, 708, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(menu2, javax.swing.GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(order1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel4, java.awt.BorderLayout.CENTER);
@@ -350,5 +357,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel lblClock;
     private javax.swing.JLabel lblDate;
     private UI.Compoment.menu menu2;
+    private UI.Form.Order order1;
     // End of variables declaration//GEN-END:variables
 }

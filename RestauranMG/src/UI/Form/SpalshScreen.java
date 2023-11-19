@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
-package UI.SplashScreen;
+package UI.Form;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,7 +41,7 @@ public class SpalshScreen extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        prLoding = new UI.SplashScreen.ProgressBar();
+        prLoding = new UI.Compoment.ProgressBar();
         lblTxt = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -158,6 +158,6 @@ public class SpalshScreen extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblTxt;
-    private UI.SplashScreen.ProgressBar prLoding;
+    private UI.Compoment.ProgressBar prLoding;
     // End of variables declaration//GEN-END:variables
 }
