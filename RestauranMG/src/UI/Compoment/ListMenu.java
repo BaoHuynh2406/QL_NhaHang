@@ -25,6 +25,7 @@ public class ListMenu<E extends Object> extends JList<E> {
     public ListMenu() {
         model = new DefaultListModel();
         setModel(model);
+        selectedIndex = 0;
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {

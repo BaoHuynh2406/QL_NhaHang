@@ -1,22 +1,28 @@
 package UI.Model;
 
-public class Model_Card_for_Table {
+public class Model_Table {
 
     private String name;
-    private double total;
+    private int total;
     private int guestNum;
     private TableType type;
 
-    public Model_Card_for_Table() {
+    public Model_Table() {
     }
 
-    public Model_Card_for_Table(String name, double total, int guestNum, TableType type) {
+    public Model_Table(String name, int total, int guestNum, TableType type) {
         this.name = name;
         this.total = total;
         this.guestNum = guestNum;
         this.type = type;
     }
 
+    public Model_Table(String name) {
+        this.name = name;
+        this.type = Model_Table.TableType.NULL;
+    }
+
+    
     
 
     public String getName() {
@@ -31,7 +37,7 @@ public class Model_Card_for_Table {
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 

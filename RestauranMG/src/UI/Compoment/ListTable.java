@@ -1,10 +1,11 @@
 package UI.Compoment;
 
-import UI.Model.Model_Card_for_Table;
+import UI.Model.Model_Table;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
@@ -31,13 +32,12 @@ public class ListTable<E extends Object> extends JList<E> {
                 if (SwingUtilities.isLeftMouseButton(me)) {
                     int index = locationToIndex(me.getPoint());
                     Object o = model.getElementAt(index);
-                    if (o instanceof Model_Card_for_Table) {
-                        Model_Card_for_Table table = (Model_Card_for_Table) o;
+                    if (o instanceof Model_Table) {
+                        Model_Table table = (Model_Table) o;
                         selectedIndex = index;
                         if (event != null) {
                             event.selected(index);
                         }
-
                     } else {
                         selectedIndex = index;
                     }
@@ -57,7 +57,8 @@ public class ListTable<E extends Object> extends JList<E> {
                 int index = locationToIndex(me.getPoint());
                 if (index != overIndex) {
                     Object o = model.getElementAt(index);
-                    if (o instanceof Model_Card_for_Table) {
+                    if (o instanceof Model_Table) {
+                        Model_Table table = (Model_Table) o;
                         overIndex = index;
                     }
                     repaint();
@@ -70,22 +71,29 @@ public class ListTable<E extends Object> extends JList<E> {
     @Override
     public ListCellRenderer<? super E> getCellRenderer() {
         return new DefaultListCellRenderer() {
+            
             @Override
             public Component getListCellRendererComponent(JList<?> jlist, Object o, int index, boolean selected, boolean focus) {
-                Model_Card_for_Table data;
-       
-                data = (Model_Card_for_Table) o;
-
-                Card_for_Table item = new Card_for_Table(data);
+                Model_Table data;
+                if (o instanceof Model_Table) {
+                    data = (Model_Table) o;
+                } else {
+                    data = new Model_Table("", 0,0, Model_Table.TableType.NULL);
+                }
+                tableItem item = new tableItem(data);
                 item.setSelected(selectedIndex == index);
                 item.setOver(overIndex == index);
+                
+               
+                
                 return item;
             }
 
         };
     }
+    
 
-    public void addItem(Model_Card_for_Table data) {
+    public void addItem(Model_Table data) {
         model.addElement(data);
     }
 }

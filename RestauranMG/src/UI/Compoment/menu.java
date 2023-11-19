@@ -10,6 +10,7 @@ public class menu extends javax.swing.JPanel {
     public menu() {
         initComponents();
         listMenu1.setOpaque(false);
+       
         init();
     }
     

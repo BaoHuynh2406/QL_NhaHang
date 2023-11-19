@@ -1,7 +1,7 @@
 
 package UI.Compoment;
 
-import UI.Model.Model_Card_for_Table;
+import UI.Model.Model_Table;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -9,25 +9,27 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 
-public class Card_for_Table extends javax.swing.JPanel {
+public class tableItem extends javax.swing.JPanel {
 
     private boolean selected;
     private boolean over;
+    private Model_Table data;
     
-    
-    public Card_for_Table(Model_Card_for_Table data) {
+    public tableItem(Model_Table data) {
         initComponents();
         setOpaque(false);
-        
-        if(data.getType() == Model_Card_for_Table.TableType.NULL){
+        this.data = data;
+        if(data.getType() == Model_Table.TableType.NULL){
             lbGuest.setText("");
             lbName.setText("");
             lbTitle.setText(data.getName());
             this.setBackground(new Color(217,217,217));
         }else{
-            lbGuest.setText(data.getGuestNum()+"");
+            lbGuest.setText(data.getGuestNum()+" Khách");
             lbName.setText(data.getName());
             lbTitle.setText(data.getTotal()+"đ");
+            this.setBackground(new Color(155,190,200));
+
         }
         
     }
@@ -52,6 +54,7 @@ public class Card_for_Table extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(155, 190, 200));
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        setMaximumSize(new java.awt.Dimension(200, 120));
 
         lbName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lbName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -88,14 +91,19 @@ public class Card_for_Table extends javax.swing.JPanel {
 
     @Override
     protected void paintComponent(Graphics grphcs) {
-        if (selected || over) {
+        
+        if (selected || over || data.getType()==Model_Table.TableType.NOTNULL) {
             Graphics2D g2 = (Graphics2D) grphcs;
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            if (selected) {
-                g2.setColor(new Color(255, 241, 190));
-            } else {
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);     
+            if(over){
                 g2.setColor(new Color(255, 241, 190, 80));
             }
+            if(data.getType()==Model_Table.TableType.NOTNULL){
+                g2.setColor(new Color(155, 190, 200));
+            }
+            if (selected) {
+                g2.setColor(new Color(255, 241, 190));
+            } 
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
         }
         super.paintComponent(grphcs);
