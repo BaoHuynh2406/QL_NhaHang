@@ -1,7 +1,9 @@
 
 package UI.Form;
 
+import UI.Compoment.tableItem;
 import UI.Model.Model_Table;
+import java.awt.Dimension;
 
 /**
  *
@@ -14,18 +16,18 @@ public class Test extends javax.swing.JFrame {
      */
     public Test() {
         initComponents();
-        listTable1.setOpaque(true);
-        
-        listTable1.addItem(new Model_Table("A01"));        
-        listTable1.addItem(new Model_Table("A02"));
-        listTable1.addItem(new Model_Table("A03",55000,3,Model_Table.TableType.NOTNULL));
-        
-        for(int i = 4; i<200; i++){
-        listTable1.addItem(new Model_Table("A"+i));
-
+        jPanel1.setPreferredSize(new Dimension(600,6000));
+        for(int i = 0; i<20; i++){
+            tableItem t;
+            if(i%3==0){
+              t = new tableItem(new Model_Table("A"+i, 1000,5, Model_Table.TableType.NOTNULL));
+            }else{
+               t = new tableItem(new Model_Table("A"+i));
+            }
+            
+            jPanel1.add(t);
         }
         
-
 
     }
 
@@ -38,28 +40,28 @@ public class Test extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        listTable1 = new UI.Compoment.ListTable<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        listTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        listTable1.setLayoutOrientation(javax.swing.JList.HORIZONTAL_WRAP);
+        jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
+        jScrollPane1.setViewportView(jPanel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 59, Short.MAX_VALUE)
-                .addComponent(listTable1, javax.swing.GroupLayout.PREFERRED_SIZE, 857, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 59, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 13, Short.MAX_VALUE)
-                .addComponent(listTable1, javax.swing.GroupLayout.PREFERRED_SIZE, 529, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 14, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(29, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(198, 198, 198))
         );
 
         pack();
@@ -101,6 +103,7 @@ public class Test extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private UI.Compoment.ListTable<String> listTable1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,6 +3,7 @@ package UI.Compoment;
 
 import UI.Model.Model_Table;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -11,13 +12,13 @@ import java.awt.RenderingHints;
 
 public class tableItem extends javax.swing.JPanel {
 
-    private boolean selected;
-    private boolean over;
+//    private boolean selected;
+//    private boolean over;
     private Model_Table data;
     
     public tableItem(Model_Table data) {
         initComponents();
-        setOpaque(false);
+        setOpaque(true);
         this.data = data;
         if(data.getType() == Model_Table.TableType.NULL){
             lbGuest.setText("");
@@ -31,18 +32,20 @@ public class tableItem extends javax.swing.JPanel {
             this.setBackground(new Color(155,190,200));
 
         }
+//        this.setLayout(null);
+        this.setPreferredSize(new Dimension(200,120));
         
     }
     
-    public void setOver(boolean over) {
-        this.over = over;
-        repaint();
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-        repaint();
-    }
+//    public void setOver(boolean over) {
+//        this.over = over;
+//        repaint();
+//    }
+//
+//    public void setSelected(boolean selected) {
+//        this.selected = selected;
+//        repaint();
+//    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -92,18 +95,18 @@ public class tableItem extends javax.swing.JPanel {
     @Override
     protected void paintComponent(Graphics grphcs) {
         
-        if (selected || over || data.getType()==Model_Table.TableType.NOTNULL) {
+        if (data.getType()==Model_Table.TableType.NOTNULL) {
             Graphics2D g2 = (Graphics2D) grphcs;
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);     
-            if(over){
-                g2.setColor(new Color(255, 241, 190, 80));
-            }
-            if(data.getType()==Model_Table.TableType.NOTNULL){
+//            if(over){
+//                g2.setColor(new Color(255, 241, 190, 80));
+//            }
+//            if(data.getType()==Model_Table.TableType.NOTNULL){
                 g2.setColor(new Color(155, 190, 200));
-            }
-            if (selected) {
-                g2.setColor(new Color(255, 241, 190));
-            } 
+//            }
+//            if (selected) {
+//                g2.setColor(new Color(255, 241, 190));
+//            } 
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
         }
         super.paintComponent(grphcs);

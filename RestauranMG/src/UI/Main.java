@@ -40,12 +40,12 @@ public class Main extends javax.swing.JFrame {
         //Run clock
         runClock();
         
-//        //Chạy màn hình chào
-//        RunSpalshScreen();
-//        //Chạy màn hình đăng nhập
-//        RunLogin();
-//        
-//        
+        //Chạy màn hình chào
+        RunSpalshScreen();
+        //Chạy màn hình đăng nhập
+        RunLogin();
+
+
         init();
        
         
@@ -122,7 +122,7 @@ public class Main extends javax.swing.JFrame {
         lblClock = new javax.swing.JLabel();
         bg = new javax.swing.JPanel();
         menu2 = new UI.Compoment.menu();
-        order2 = new UI.Form.Order();
+        order2 = new UI.Form.Table();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -353,6 +353,6 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel lblClock;
     private javax.swing.JLabel lblDate;
     private UI.Compoment.menu menu2;
-    private UI.Form.Order order2;
+    private UI.Form.Table order2;
     // End of variables declaration//GEN-END:variables
 }
