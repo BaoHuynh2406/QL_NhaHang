@@ -10,6 +10,50 @@ go
 
 
 select * FROM Employees
-insert into Employees (FullName, [Password], Email, ID_role) VALUES (N'Admin BaoHuynh', 'admin123', 'huynhbaomts2004@gmail.com', 'MG');
+insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Admin BaoHuynh', 'admin123', 'huynhbaomts2004@gmail.com', 'MG',1,'2004-06-24','0388319013');
 
 update Employees set Password = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9' where Password = 'admin123'
+
+select * from Areas
+insert into Areas (AreaName) values ('Khu A');
+
+
+select * from Tables
+DELETE FROM Tables;
+
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A01', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A02', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A03', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A04', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A05', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A06', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A07', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A08', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A09', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A10', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A11', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A12', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A14', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A15', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A16', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A17', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A18', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A19', 1, 0);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A20', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A21', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A22', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A23', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A24', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A25', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A26', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A27', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A28', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A23', 1, 1);
+insert into Tables (TableName, ID_Area, IsOccupied) values ('A23', 1, 1);
+
+
+
+
+
+
+
