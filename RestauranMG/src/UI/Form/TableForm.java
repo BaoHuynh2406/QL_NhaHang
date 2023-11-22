@@ -9,9 +9,11 @@ import Dao.AreasDao;
 import Entity.Areas;
 import Entity.Tables;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class TableForm extends javax.swing.JPanel {
 
@@ -27,40 +30,37 @@ public class TableForm extends javax.swing.JPanel {
    int selectedArea;
     public TableForm() {
         initComponents();
-        PanelTable.setLayout(new GridBagLayout());
-        
-        
-        
         fillKhuVuc();
         
     }
 
-    private void fillTable(int ID_area){
+    private void fillTable(int ID_area) {
         PanelTable.removeAll();
-        List<Tables> t = new ArrayList<>();
-        t = table_DAO.selectByArea(ID_area);
-        
-        if(t == null) return;
-        
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.insets = new Insets(10, 20, 10, 20); // Đặt khoảng cách giữa các thành phần
-        constraints.anchor = GridBagConstraints.NORTHWEST;
+        PanelTable.revalidate();
+        PanelTable.repaint();
 
-        
-        for(Tables e : t){
+        List<Tables> t = table_DAO.selectByArea(ID_area);
+        if (t == null || t.isEmpty()) {
+            return;
+        }
+
+        int numRows = t.size() / 5; // Số hàng cần thiết
+        int remainder = t.size() % 5; // Số item còn lại sau khi chia hết cho 5
+        int canThiet = numRows + (remainder > 0 ? 1 : 0);
+        PanelTable.setLayout(new GridLayout((canThiet > 5 ? canThiet : 5), 5, 20, 10)); // GridLayout với số hàng tính được, có thể cộng thêm 1 hàng nếu còn item thừa
+        for (Tables e : t) {
             tableItem item;
-            if(e.isIsOccupied()){
+            if (e.isIsOccupied()) {
                 item = new tableItem(new Model_Table(e.getTableName(), 0, 0, Model_Table.TableType.NOTNULL));
-            }else{
+            } else {
                 item = new tableItem(new Model_Table(e.getTableName()));
             }
-            //Bắt sự kiện
+
+            // Bắt sự kiện
             item.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                   item.setBackground(new Color(255, 241, 190));
+                    item.setBackground(new Color(255, 241, 190));
                 }
 
                 @Override
@@ -68,16 +68,29 @@ public class TableForm extends javax.swing.JPanel {
                     item.setColor();
                 }
             });
-            PanelTable.add(item, constraints);
-            constraints.gridx++; // Di chuyển đến cột tiếp theo
+
+            PanelTable.add(item);
         }
-    }
+
+        // Thêm các ô trống nếu còn dư item
+        if (t.size() < 25) {
+            for (int i = 0; i < 25 - t.size(); i++) {
+                PanelTable.add(new JLabel());
+            }
+        }
+}
+
+
+
+
+    
     
     private List<JButton> buttons = new ArrayList<>();
 
     private void fillKhuVuc() {
-        List<Areas> k = areas_DAO.selectAll();
         pnKhuVuc.removeAll();
+        buttons.clear();
+        List<Areas> k = areas_DAO.selectAll();
         if (k == null) {
             return;
         }  
@@ -88,15 +101,15 @@ public class TableForm extends javax.swing.JPanel {
             buttons.add(button); // Thêm JButton vào danh sách
             button.addActionListener(e -> {
                 selectedArea = area.getID_Area();
-                updateButtonsAppearance(); // Cập nhật giao diện của các nút khi có nút được chọn
+                update();
             });
             pnKhuVuc.add(button);
         }
-
-        updateButtonsAppearance(); // Cập nhật giao diện ban đầu
+        selectedArea = k.get(0).getID_Area();
+        update(); // Cập nhật giao diện ban đầu
     }
 
-    private void updateButtonsAppearance() {
+    private void update() {
         for (JButton button : buttons) {
             if (button.getName().equals(String.valueOf(selectedArea))) {
                 button.setFont(new Font("Segoe UI", Font.BOLD, 14));

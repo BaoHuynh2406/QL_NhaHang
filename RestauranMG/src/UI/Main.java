@@ -1,6 +1,8 @@
 
 package UI;
 
+import UI.Compoment.EventMenuSelected;
+import UI.Compoment.menu;
 import UI.Form.Login;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
@@ -8,6 +10,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import javax.swing.JFrame;
 import UI.Form.SpalshScreen;
+import UI.Form.TableForm;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,24 +36,25 @@ public class Main extends javax.swing.JFrame {
     private int screenWidth = (int) screenSize.getWidth();
     private int screenHight = (int) screenSize.getHeight();
     
-    
+    private TableForm tableForm = new TableForm();
     
     
     public Main() {
         initComponents();
         //Run clock
         runClock();
-        
-        //Chạy màn hình chào
-//        RunSpalshScreen();
-        //Chạy màn hình đăng nhập
-//        RunLogin();
-
-
+        RunSpalshScreen(); //Chạy màn hình loading
+        RunLogin(); //chạy màn hình login
         init();
-       
-        
-        
+        menu.addEventMenuSelected(new EventMenuSelected() {
+            @Override
+            public void selected(int index) {
+               if(index == 0){
+                   formOrder();
+               }
+            }
+        });
+        formOrder();
     }
     
     public void init(){
@@ -118,6 +123,12 @@ public class Main extends javax.swing.JFrame {
     }
     
     
+    public void formOrder(){
+        pnDashboard.removeAll();
+        pnDashboard.add(tableForm, BorderLayout.CENTER);
+        pnDashboard.repaint();
+        pnDashboard.revalidate();
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -135,8 +146,8 @@ public class Main extends javax.swing.JFrame {
         lblDate = new javax.swing.JLabel();
         lblClock = new javax.swing.JLabel();
         bg = new javax.swing.JPanel();
-        menu2 = new UI.Compoment.menu();
-        order2 = new UI.Form.TableForm();
+        menu = new UI.Compoment.menu();
+        pnDashboard = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -189,7 +200,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 593, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 557, Short.MAX_VALUE)
                 .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,7 +269,7 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 412, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 376, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDate, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblClock, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -280,19 +291,21 @@ public class Main extends javax.swing.JFrame {
 
         bg.setBackground(new java.awt.Color(255, 255, 255));
 
+        pnDashboard.setLayout(new java.awt.BorderLayout());
+
         javax.swing.GroupLayout bgLayout = new javax.swing.GroupLayout(bg);
         bg.setLayout(bgLayout);
         bgLayout.setHorizontalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(bgLayout.createSequentialGroup()
-                .addComponent(menu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(menu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(order2, javax.swing.GroupLayout.PREFERRED_SIZE, 772, Short.MAX_VALUE))
+                .addComponent(pnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE))
         );
         bgLayout.setVerticalGroup(
             bgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menu2, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
-            .addComponent(order2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(menu, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE)
+            .addComponent(pnDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         getContentPane().add(bg, java.awt.BorderLayout.CENTER);
@@ -366,7 +379,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lblClock;
     private javax.swing.JLabel lblDate;
-    private UI.Compoment.menu menu2;
-    private UI.Form.TableForm order2;
+    private UI.Compoment.menu menu;
+    private javax.swing.JPanel pnDashboard;
     // End of variables declaration//GEN-END:variables
 }

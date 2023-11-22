@@ -21,8 +21,10 @@ public class tableItem extends javax.swing.JPanel {
         setOpaque(true);
         this.data = data;
         if(data.getType() == Model_Table.TableType.NULL){
-            lbGuest.setText("");
-            lbName.setText("");
+            lbGuest.setText("-");
+            lbGuest.setForeground(new Color(0,0,0,0));
+            lbName.setText("-");
+            lbName.setForeground(new Color(0,0,0,0));
             lbTitle.setText(data.getName());
             this.setBackground(new Color(217,217,217));
         }else{

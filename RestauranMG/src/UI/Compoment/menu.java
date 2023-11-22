@@ -5,8 +5,12 @@ import UI.Model.Model_Menu;
 
 
 public class menu extends javax.swing.JPanel {
+    private EventMenuSelected event;
 
-   
+   public void addEventMenuSelected(EventMenuSelected event) {
+        this.event = event;
+        listMenu1.addEventMenuSelected(event);
+    }
     public menu() {
         initComponents();
         listMenu1.setOpaque(false);
