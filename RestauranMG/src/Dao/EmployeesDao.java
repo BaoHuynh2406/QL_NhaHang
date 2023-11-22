@@ -89,5 +89,9 @@ public class EmployeesDao extends RestauranDao<Employees, String>{
         }
         return  list;
     }
+
+    public Employees selectById(int idEmployee) {
+        return selectById(String.valueOf(idEmployee));
+    }
     
 }

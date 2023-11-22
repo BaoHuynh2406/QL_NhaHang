@@ -1,7 +1,9 @@
 
 package hoa;
 
+import Entity.Employees;
 import Utils.IMG;
+import Utils.XDate;
 import Utils.msg;
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -30,6 +32,56 @@ public class ChiTiet extends javax.swing.JFrame {
             return null;
         }
     }
+    
+    public void setForm(Employees employees) {
+        txtMaNV.setText(String.valueOf(employees.getID_Employee()));
+        txtTenNV.setText(employees.getFullName());
+        txtPass.setText(employees.getPassword());
+        rdoNam.setSelected(employees.isSex());
+        rdoNu.setSelected(!employees.isSex());
+
+        try {
+            txtNgaySinh.setText(XDate.convertToDMY(employees.getBirthday()));
+        } catch (Exception e) {
+            txtNgaySinh.setText("");
+        }
+
+        txtSDT.setText(employees.getPhoneNumber());
+        txtEmail.setText(employees.getEmail());
+        txtDiaChi.setText(employees.getAddress());
+        cbbChuVu.setToolTipText(employees.getID_role());
+
+        String path = employees.getPhoto();
+        System.out.println(path);
+        if (path == null) {
+            path = "Chưa chọn ảnh!";
+            lblDuongDan.setText(path);
+        } else {
+            lblDuongDan.setText(path);
+            lblAnh.setIcon(IMG.setAvatar(path));
+        }
+    }
+
+    public Employees getForm() {
+    Employees employees = new Employees();
+    try {
+        employees.setID_Employee(Integer.parseInt(txtMaNV.getText()));
+        employees.setFullName(txtTenNV.getText());
+        employees.setPassword(new String(txtPass.getPassword()));
+        employees.setSex(rdoNam.isSelected());
+        employees.setBirthday(XDate.convertToYMD(txtNgaySinh.getText()));
+        employees.setPhoneNumber(txtSDT.getText());
+        employees.setEmail(txtEmail.getText());
+        employees.setAddress(txtDiaChi.getText());
+        employees.setPhoto(lblDuongDan.getText());
+    } catch (Exception e) {
+        msg.Error("Lỗi dữ liệu!");
+        System.out.println(e.getMessage());
+    }
+    return employees;
+}
+
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -198,9 +250,9 @@ public class ChiTiet extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 21, Short.MAX_VALUE))
+                                .addGap(0, 16, Short.MAX_VALUE))
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                         .addComponent(cbbChuVu, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -209,7 +261,7 @@ public class ChiTiet extends javax.swing.JFrame {
                         .addGap(26, 26, 26)
                         .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblAnh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGap(10, 10, 10))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(lblDuongDan, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)

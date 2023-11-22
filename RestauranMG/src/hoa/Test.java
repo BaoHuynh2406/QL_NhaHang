@@ -85,25 +85,34 @@ public class Test extends javax.swing.JFrame {
         RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + name, 2);
         sorter.setRowFilter(filter);
     }
-    // Phương thức hiển thị form ChiTiet và truyền dữ liệu nếu cần
-//    private void showChiTietForm() {
-//        // Lấy chỉ số dòng được chọn
-//        int selectedRow = table.getSelectedRow();
-//
-//        // Kiểm tra xem có dòng nào được chọn không
-//        if (selectedRow != -1) {
-//            // Lấy thông tin từ dòng được chọn
-//            int maNhanVien = (int) table.getValueAt(selectedRow, 1); // Giả sử cột 1 là Mã nhân viên
-//
-//            // Hiển thị form ChiTiet và truyền thông tin
-//            ChiTiet chiTietForm = new ChiTiet(maNhanVien);
-//            chiTietForm.setVisible(true);
-//        } else {
-//            // Thông báo nếu không có dòng nào được chọn
-//            msg.Info("Vui lòng chọn một nhân viên trước khi thêm.");
-//        }
-//    }
 
+    public void ChiTiet(){
+        ChiTiet chiTietForm = new ChiTiet();
+        chiTietForm.setVisible(true);
+    }
+    
+    private void showChiTietForm() {
+        // Lấy chỉ số dòng được chọn
+        int selectedRow = table.getSelectedRow();
+
+        // Kiểm tra xem có dòng nào được chọn không
+        if (selectedRow != -1) {
+            // Lấy thông tin từ dòng được chọn
+            int idEmployee = (int) table.getValueAt(selectedRow, 1); // Giả sử cột 1 là Mã nhân viên
+
+            // Lấy thông tin nhân viên từ cơ sở dữ liệu hoặc danh sách đã có
+            Employees selectedEmployee = dao.selectById(idEmployee);
+
+            // Hiển thị form ChiTiet và truyền thông tin
+            ChiTiet chiTietForm = new ChiTiet();
+            chiTietForm.setForm(selectedEmployee);
+            chiTietForm.setVisible(true);
+        } else {
+            // Thông báo nếu không có dòng nào được chọn
+            msg.Info("Vui lòng chọn một nhân viên trước khi xem chi tiết.");
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -196,15 +205,12 @@ public class Test extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(lbl)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(8, 8, 8)
+                .addComponent(lbl)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                 .addGap(10, 10, 10))
@@ -219,11 +225,11 @@ public class Test extends javax.swing.JFrame {
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void tableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMousePressed
-        
+        showChiTietForm();
     }//GEN-LAST:event_tableMousePressed
 
     private void btnThemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMousePressed
-        
+        ChiTiet();
     }//GEN-LAST:event_btnThemMousePressed
 
     /**
