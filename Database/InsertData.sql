@@ -12,6 +12,7 @@ go
 select * FROM Employees
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Admin BaoHuynh', 'admin123', 'huynhbaomts2004@gmail.com', 'MG',1,'2004-06-24','0388319013');
 
+insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Admin NguyenHoa', 'admin124', 'lynguyenhoa102@gmail.com', 'MG',1,'2004-05-08','0338997477');
 update Employees set Password = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9' where Password = 'admin123'
 
 select * from Areas
@@ -50,7 +51,6 @@ insert into Tables (TableName, ID_Area, IsOccupied) values ('A27', 1, 1);
 insert into Tables (TableName, ID_Area, IsOccupied) values ('A28', 1, 1);
 insert into Tables (TableName, ID_Area, IsOccupied) values ('A23', 1, 1);
 insert into Tables (TableName, ID_Area, IsOccupied) values ('A23', 1, 1);
-
 
 
 
