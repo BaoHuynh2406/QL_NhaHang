@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import UI.Form.SpalshScreen;
 import UI.Form.TableForm;
+import hoa.NhanVienForm;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -37,7 +38,7 @@ public class Main extends javax.swing.JFrame {
     private int screenHight = (int) screenSize.getHeight();
     
     private TableForm tableForm = new TableForm();
-    
+    private NhanVienForm nvForm = new NhanVienForm();
     
     public Main() {
         initComponents();
@@ -52,6 +53,9 @@ public class Main extends javax.swing.JFrame {
                if(index == 0){
                    formOrder();
                }
+               if (index == 2) {
+                    nvForm();
+                }
             }
         });
         formOrder();
@@ -126,6 +130,12 @@ public class Main extends javax.swing.JFrame {
     public void formOrder(){
         pnDashboard.removeAll();
         pnDashboard.add(tableForm, BorderLayout.CENTER);
+        pnDashboard.repaint();
+        pnDashboard.revalidate();
+    }
+    public void nvForm(){
+        pnDashboard.removeAll();
+        pnDashboard.add(nvForm, BorderLayout.CENTER);
         pnDashboard.repaint();
         pnDashboard.revalidate();
     }

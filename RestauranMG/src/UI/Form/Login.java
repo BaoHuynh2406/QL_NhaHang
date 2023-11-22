@@ -34,12 +34,12 @@ public class Login extends javax.swing.JDialog {
 
     public boolean Validate(){
         boolean check = true;
-        String UserName = txtUserName.getText();
+        int UserName = Integer.valueOf(txtUserName.getText());
         String Password = new String(txtPassword.getPassword());
        
         try{
             int UsernameINT = Integer.valueOf(UserName);
-            if(!Validate.isLength(txtUserName, UserName, 6, "User name")){
+            if(!Validate.isLength(txtUserName, UserName + "", 6, "User name")){
                 txtUserName.setBackground(Color.YELLOW);
                 check = false;
             }
@@ -54,7 +54,7 @@ public class Login extends javax.swing.JDialog {
     }
     
     public void submitLogin() {
-        String UserName = txtUserName.getText();
+        int UserName = Integer.valueOf(txtUserName.getText());
         String Password = new String(txtPassword.getPassword());
         
         String HashPassword = null;

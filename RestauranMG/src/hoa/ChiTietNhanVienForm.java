@@ -9,8 +9,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class ChiTiet extends javax.swing.JFrame {
-    public ChiTiet() {
+public class ChiTietNhanVienForm extends javax.swing.JFrame {
+    public ChiTietNhanVienForm() {
         initComponents();
     }
     
@@ -34,9 +34,9 @@ public class ChiTiet extends javax.swing.JFrame {
     }
     
     public void setForm(Employees employees) {
-        txtMaNV.setText(String.valueOf(employees.getID_Employee()));
+        txtMaNV.setText(employees.getID_Employee() + "");
         txtTenNV.setText(employees.getFullName());
-        txtPass.setText(employees.getPassword());
+//        txtPass.setText(employees.getPassword());
         rdoNam.setSelected(employees.isSex());
         rdoNu.setSelected(!employees.isSex());
 
@@ -394,20 +394,21 @@ public class ChiTiet extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChiTiet.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChiTietNhanVienForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChiTiet.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChiTietNhanVienForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChiTiet.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChiTietNhanVienForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChiTiet.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChiTietNhanVienForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ChiTiet().setVisible(true);
+                new ChiTietNhanVienForm().setVisible(true);
             }
         });
     }

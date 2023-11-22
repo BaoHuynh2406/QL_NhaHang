@@ -1,4 +1,4 @@
-package hoa;
+package UI.Compoment;
 
 import java.awt.Color;
 

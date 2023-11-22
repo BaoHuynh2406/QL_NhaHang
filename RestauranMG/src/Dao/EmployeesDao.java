@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeesDao extends RestauranDao<Employees, String>{
+public class EmployeesDao extends RestauranDao<Employees, Integer>{
     final String INSERT_SQL = "INSERT INTO Employees (FullName, Password, Sex, birthday, PhoneNumber, Email, Address, ID_role, Photo)"
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
     final String UPDATE_ALL = "UPDATE Employees SET "
@@ -46,7 +46,7 @@ public class EmployeesDao extends RestauranDao<Employees, String>{
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
     }
 
@@ -56,7 +56,7 @@ public class EmployeesDao extends RestauranDao<Employees, String>{
     }
 
     @Override
-    public Employees selectById(String id) {
+    public Employees selectById(Integer id) {
         List<Employees> list = selectBySql(SELECT_BY_ID_SQL, id);
         if(list.isEmpty()){
             return null;
@@ -89,9 +89,4 @@ public class EmployeesDao extends RestauranDao<Employees, String>{
         }
         return  list;
     }
-
-    public Employees selectById(int idEmployee) {
-        return selectById(String.valueOf(idEmployee));
-    }
-    
 }

@@ -1,9 +1,9 @@
-package hoa;
+package UI.Compoment;
 
 import java.awt.Color;
 import java.awt.Component;
-import hoa.ScrollBar;
-import hoa.SystemColor;
+import UI.Compoment.ScrollBar;
+import UI.Compoment.SystemColor;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

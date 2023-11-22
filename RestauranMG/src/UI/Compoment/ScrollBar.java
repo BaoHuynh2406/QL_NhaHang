@@ -1,5 +1,6 @@
-package hoa;
+package UI.Compoment;
 
+import UI.Compoment.ModernScrollBarUI;
 import java.awt.Dimension;
 import javax.swing.JScrollBar;
 

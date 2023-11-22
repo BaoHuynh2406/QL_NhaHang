@@ -1,4 +1,4 @@
-package hoa;
+package UI.Compoment;
 
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -7,7 +7,6 @@ import java.awt.RenderingHints;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import hoa.SystemColor;
 import javax.swing.JPanel;
 
 public class RoundPanel extends JPanel {
