@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TablesdDao extends RestauranDao<Tables, String>{
+public class TablesdDao extends RestauranDao<Tables, Integer>{
     final String INSERT_SQL = "INSERT INTO Tables (TableName, ID_Area, IsOccupied) VALUES (?, ?, ?)";
     final String UPDATE_ALL = "UPDATE Tables SET TableName = ?, ID_Area = ?, IsOccupied = ? WHERE ID_Table = ?";
     final String DELETE_SQL = "DELETE FROM Tables WHERE ID_Table = ?";
@@ -31,8 +31,7 @@ public class TablesdDao extends RestauranDao<Tables, String>{
                 entity.isIsOccupied());
     }
 
-    @Override
-    public void delete(String id) {
+    public void delete(int id) {
         jdbc.update(DELETE_SQL, id);
     }
 
@@ -41,8 +40,7 @@ public class TablesdDao extends RestauranDao<Tables, String>{
         return selectBySql(SELECT_ALL_SQL);
     }
 
-    @Override
-    public Tables selectById(String id) {
+    public Tables selectById(int id) {
         List<Tables> list = selectBySql(SELECT_BY_ID_SQL, id);
         if(list.isEmpty()){
             return null;
@@ -67,6 +65,16 @@ public class TablesdDao extends RestauranDao<Tables, String>{
             throw new RuntimeException(e);
         }
         return  list;
+    }
+
+    @Override
+    public void delete(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Tables selectById(Integer id) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
 }

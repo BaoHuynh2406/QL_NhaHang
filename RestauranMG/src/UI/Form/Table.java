@@ -5,15 +5,26 @@ import UI.Compoment.tableItem;
 import UI.Model.Model_Table;
 import java.awt.Dimension;
 import Dao.TablesdDao;
+import Dao.AreasDao;
+import Entity.Areas;
 import Entity.Tables;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 
 public class Table extends javax.swing.JPanel {
 
    TablesdDao table_DAO = new TablesdDao();
+   AreasDao areas_DAO = new AreasDao();
+   String selectedArea;
     public Table() {
         initComponents();
+        fillKhuVuc();
         fillTable();
         
     }
@@ -28,20 +39,69 @@ public class Table extends javax.swing.JPanel {
             }else{
                 item = new tableItem(new Model_Table(e.getTableName()));
             }
-            
+            //Bắt sự kiện
+            item.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                   item.setBackground(new Color(255, 241, 190));
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    item.setColor();
+                }
+            });
             PanelTable.add(item);
         }
     }
+    
+    private List<JButton> buttons = new ArrayList<>(); 
+    
+    private void fillKhuVuc() {
+        List<Areas> k = areas_DAO.selectAll();
+        pnKhuVuc.removeAll();
 
+        if (k == null) {
+            return;
+        }
+
+        ButtonGroup buttonGroup = new ButtonGroup();
+
+        for (Areas area : k) {
+            JButton button = new JButton(area.getAreaName());
+            button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            button.setName(area.getID_Area()+"");
+            buttons.add(button); // Thêm JButton vào danh sách
+
+            button.addActionListener(e -> {
+                selectedArea = area.getID_Area()+"";
+                updateButtonsAppearance(); // Cập nhật giao diện của các nút khi có nút được chọn
+            });
+
+            pnKhuVuc.add(button);
+            buttonGroup.add(button);
+        }
+
+        updateButtonsAppearance(); // Cập nhật giao diện ban đầu
+    }
+
+    private void updateButtonsAppearance() {
+        for (JButton button : buttons) {
+            if (selectedArea != null && button.getName().equals(selectedArea)) {
+                button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            } else {
+                button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            }
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         ScroolTable = new javax.swing.JScrollPane();
         PanelTable = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        pnKhuVuc = new javax.swing.JPanel();
 
         setBackground(new java.awt.Color(204, 204, 255));
 
@@ -51,82 +111,34 @@ public class Table extends javax.swing.JPanel {
 
         PanelTable.setBackground(new java.awt.Color(255, 255, 255));
         PanelTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        PanelTable.setLayout(new java.awt.GridLayout(0, 5, 30, 20));
+        PanelTable.setLayout(new java.awt.GridLayout(0, 4, 30, 20));
         ScroolTable.setViewportView(PanelTable);
 
-        jPanel1.setBackground(new java.awt.Color(232, 232, 232));
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 153, 0));
-        jButton1.setText("Tất cả");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton2.setText("Khu A");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addGap(26, 26, 26)
-                .addComponent(jButton2)
-                .addContainerGap(735, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addContainerGap(13, Short.MAX_VALUE))
-        );
+        pnKhuVuc.setBackground(new java.awt.Color(232, 232, 232));
+        pnKhuVuc.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        pnKhuVuc.setPreferredSize(new java.awt.Dimension(44, 50));
+        pnKhuVuc.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 20, 10));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(pnKhuVuc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(ScroolTable, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnKhuVuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(ScroolTable, javax.swing.GroupLayout.DEFAULT_SIZE, 584, Short.MAX_VALUE))
+                .addComponent(ScroolTable, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelTable;
     private javax.swing.JScrollPane ScroolTable;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel pnKhuVuc;
     // End of variables declaration//GEN-END:variables
 }

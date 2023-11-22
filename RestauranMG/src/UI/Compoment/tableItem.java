@@ -32,9 +32,17 @@ public class tableItem extends javax.swing.JPanel {
             this.setBackground(new Color(155,190,200));
 
         }
-//        this.setLayout(null);
         this.setPreferredSize(new Dimension(200,120));
         
+    }
+    
+    public void setColor(){
+         if(data.getType() == Model_Table.TableType.NULL){
+            this.setBackground(new Color(217,217,217));
+        }else{
+            this.setBackground(new Color(155,190,200));
+
+        }
     }
     
 //    public void setOver(boolean over) {
@@ -57,6 +65,7 @@ public class tableItem extends javax.swing.JPanel {
 
         setBackground(new java.awt.Color(155, 190, 200));
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         setMaximumSize(new java.awt.Dimension(200, 120));
 
         lbName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -93,22 +102,13 @@ public class tableItem extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
-    protected void paintComponent(Graphics grphcs) {
-        
-        if (data.getType()==Model_Table.TableType.NOTNULL) {
-            Graphics2D g2 = (Graphics2D) grphcs;
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);     
-//            if(over){
-//                g2.setColor(new Color(255, 241, 190, 80));
-//            }
-//            if(data.getType()==Model_Table.TableType.NOTNULL){
-                g2.setColor(new Color(155, 190, 200));
-//            }
-//            if (selected) {
-//                g2.setColor(new Color(255, 241, 190));
-//            } 
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+    protected void paintComponent(Graphics grphcs) {  
+        Graphics2D g2 = (Graphics2D) grphcs;
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        if (data.getType() == Model_Table.TableType.NOTNULL) {
+            g2.setColor(new Color(155, 190, 200));
         }
+        g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
         super.paintComponent(grphcs);
     }
 

@@ -41,9 +41,9 @@ public class Main extends javax.swing.JFrame {
         runClock();
         
         //Chạy màn hình chào
-        RunSpalshScreen();
+//        RunSpalshScreen();
         //Chạy màn hình đăng nhập
-        RunLogin();
+//        RunLogin();
 
 
         init();
@@ -63,7 +63,7 @@ public class Main extends javax.swing.JFrame {
         gd.setFullScreenWindow(this);
         this.setVisible(true);
         
-        //Bắt sự kiện
+        //Bắt sự kiện nút close
         btnClose.addMouseListener(new MouseAdapter() {
         @Override
         public void mouseEntered(MouseEvent e) {
@@ -73,6 +73,20 @@ public class Main extends javax.swing.JFrame {
         @Override
         public void mouseExited(MouseEvent e) {
             btnClose.setIcon(new ImageIcon("src/IMG/close.png"));
+            // Thực hiện các hành động khi di chuột ra khỏi đây
+        }
+       });
+        
+        //Bắt sự kiện nút hide
+        btnHide.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            btnHide.setIcon(new ImageIcon("src/IMG/hideYellow.png"));
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            btnHide.setIcon(new ImageIcon("src/IMG/hide.png"));
             // Thực hiện các hành động khi di chuột ra khỏi đây
         }
        });

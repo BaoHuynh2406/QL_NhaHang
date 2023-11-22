@@ -1,3 +1,5 @@
+Drop database restaurantData;
+
 Create database restaurantData;
 go
 use restaurantData;

@@ -46,6 +46,7 @@ public class menuItem extends javax.swing.JPanel {
         lblName = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(200, 200, 200));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         lblIcon.setBackground(new java.awt.Color(255, 255, 255));
         lblIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
