@@ -1,41 +1,46 @@
 
 package hoa;
 
+import Dao.EmployeesDao;
+import Entity.Employees;
+import Utils.msg;
 import button.EventCallBack;
 import button.EventTextField;
 import java.awt.Color;
+import java.util.List;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class Test extends javax.swing.JFrame {
+    
+    EmployeesDao dao = new EmployeesDao();
+    int row = 0;
+    DefaultTableModel model;
+    
     public Test() {
         initComponents();
-        init();
+        model = (DefaultTableModel) table.getModel();
         loading();
         getContentPane().setBackground(new Color(240, 240, 240));
+        fillTable();
     }
-    private void init(){
-        table.fixTable(jScrollPane1);
-        table.addRow(new Object[]{"1", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        table.addRow(new Object[]{"2", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        table.addRow(new Object[]{"3", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        table.addRow(new Object[]{"4", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        table.addRow(new Object[]{"5", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        table.addRow(new Object[]{"6", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        table.addRow(new Object[]{"7", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        table.addRow(new Object[]{"8", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        table.addRow(new Object[]{"9", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        table.addRow(new Object[]{"10", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        table.addRow(new Object[]{"11", "NV001", "NgoNgocNhan", "Admin", "0987126543", "Chi tiết"});
-        
-    }
+    // loading
     private void loading(){
-        txt.addEvent(new EventTextField() {
+        txtSearch.addEvent(new EventTextField() {
             @Override
             public void onPressed(EventCallBack call) {
-                //  Test
                 try {
                     for (int i = 1; i <= 100; i++) {
                         lbl.setText("Loading " + i);
                         Thread.sleep(10);
+                    }
+                    // Sau khi tải xong, thực hiện tìm kiếm theo tên
+                    searchByName(txtSearch.getText());
+
+                    //kiểm tra kết quả
+                    if (table.getRowCount() == 0) {
+                        msg.Info("Không tìm thấy thông tin");
                     }
                     call.done();
                 } catch (Exception e) {
@@ -49,29 +54,84 @@ public class Test extends javax.swing.JFrame {
             }
         });
     }
+    // fill dữ liệu
+    public void fillTable(){
+        model.setRowCount(0);
+        try {
+            List<Employees> list = dao.selectAll();
+            int i = 1;
+            for (Employees nv : list) {
+                Object[] row = {i, 
+                    nv.getID_Employee(),
+                    nv.getFullName(),
+                    nv.getID_role(),
+                    nv.getPhoneNumber()};
+                model.addRow(row);
+                i++;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            msg.Error("Có lỗi trong quá trình truy xuất dữ liệu!");
+        }
+    }
+    // search theo ten và ký 1 ký tự có trong đó
+    private void searchByName(String name) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
+
+        // Thiết lập bộ lọc để tìm kiếm theo tên
+        RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + name, 2);
+        sorter.setRowFilter(filter);
+    }
+    // Phương thức hiển thị form ChiTiet và truyền dữ liệu nếu cần
+//    private void showChiTietForm() {
+//        // Lấy chỉ số dòng được chọn
+//        int selectedRow = table.getSelectedRow();
+//
+//        // Kiểm tra xem có dòng nào được chọn không
+//        if (selectedRow != -1) {
+//            // Lấy thông tin từ dòng được chọn
+//            int maNhanVien = (int) table.getValueAt(selectedRow, 1); // Giả sử cột 1 là Mã nhân viên
+//
+//            // Hiển thị form ChiTiet và truyền thông tin
+//            ChiTiet chiTietForm = new ChiTiet(maNhanVien);
+//            chiTietForm.setVisible(true);
+//        } else {
+//            // Thông báo nếu không có dòng nào được chọn
+//            msg.Info("Vui lòng chọn một nhân viên trước khi thêm.");
+//        }
+//    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        button1 = new button.Button();
+        btnThem = new button.Button();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new hoa.Table();
-        txt = new button.Search();
+        txtSearch = new button.Search();
         lbl = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        button1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/add-user.png"))); // NOI18N
-        button1.setText("Thêm nhân viên");
-        button1.setBorderColor(new java.awt.Color(255, 255, 255));
-        button1.setMaximumSize(new java.awt.Dimension(150, 40));
-        button1.setMinimumSize(new java.awt.Dimension(150, 40));
-        button1.setRadius(30);
-        button1.addActionListener(new java.awt.event.ActionListener() {
+        btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/add-user.png"))); // NOI18N
+        btnThem.setText("Thêm nhân viên");
+        btnThem.setBorderColor(new java.awt.Color(255, 255, 255));
+        btnThem.setMaximumSize(new java.awt.Dimension(150, 40));
+        btnThem.setMinimumSize(new java.awt.Dimension(150, 40));
+        btnThem.setRadius(30);
+        btnThem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnThemMousePressed(evt);
+            }
+        });
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                button1ActionPerformed(evt);
+                btnThemActionPerformed(evt);
             }
         });
 
@@ -80,20 +140,25 @@ public class Test extends javax.swing.JFrame {
 
             },
             new String [] {
-                "STT", "Mã nhân viên", "Tên nhân viên", "Chức vụ", "SĐT", "Thông tin"
+                "STT", "Mã nhân viên", "Tên nhân viên", "Chức vụ", "SĐT"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tableMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(table);
 
-        txt.setMinimumSize(new java.awt.Dimension(150, 40));
+        txtSearch.setMinimumSize(new java.awt.Dimension(150, 40));
 
         lbl.setFont(new java.awt.Font("Segoe UI", 2, 8)); // NOI18N
         lbl.setForeground(new java.awt.Color(165, 112, 112));
@@ -111,10 +176,10 @@ public class Test extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txt, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE))
+                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 686, Short.MAX_VALUE))
                 .addGap(10, 10, 10))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,12 +199,12 @@ public class Test extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
-                        .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+                        .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(lbl)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(10, 10, 10)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
                 .addGap(10, 10, 10))
@@ -149,9 +214,17 @@ public class Test extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+    private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_button1ActionPerformed
+    }//GEN-LAST:event_btnThemActionPerformed
+
+    private void tableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMousePressed
+        
+    }//GEN-LAST:event_tableMousePressed
+
+    private void btnThemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMousePressed
+        
+    }//GEN-LAST:event_btnThemMousePressed
 
     /**
      * @param args the command line arguments
@@ -189,11 +262,11 @@ public class Test extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private button.Button button1;
+    private button.Button btnThem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl;
     private hoa.Table table;
-    private button.Search txt;
+    private button.Search txtSearch;
     // End of variables declaration//GEN-END:variables
 }

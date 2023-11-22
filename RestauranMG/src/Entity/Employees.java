@@ -2,21 +2,29 @@
 package Entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Employees implements Serializable{
     private int ID_Employee;
     private String FullName;
     private String Password;
+    private boolean Sex;
+    private Date birthday;
     private String PhoneNumber;
     private String Email;
     private String Address;
     private String ID_role;
     private String Photo;
 
-    public Employees(int ID_Employee, String FullName, String Password, String PhoneNumber, String Email, String Address, String ID_role, String Photo) {
+    public Employees() {
+    }
+
+    public Employees(int ID_Employee, String FullName, String Password, boolean Sex, Date birthday, String PhoneNumber, String Email, String Address, String ID_role, String Photo) {
         this.ID_Employee = ID_Employee;
         this.FullName = FullName;
         this.Password = Password;
+        this.Sex = Sex;
+        this.birthday = birthday;
         this.PhoneNumber = PhoneNumber;
         this.Email = Email;
         this.Address = Address;
@@ -24,9 +32,6 @@ public class Employees implements Serializable{
         this.Photo = Photo;
     }
 
-    public Employees() {
-    }
-    
     public int getID_Employee() {
         return ID_Employee;
     }
@@ -49,6 +54,22 @@ public class Employees implements Serializable{
 
     public void setPassword(String Password) {
         this.Password = Password;
+    }
+
+    public boolean isSex() {
+        return Sex;
+    }
+
+    public void setSex(boolean Sex) {
+        this.Sex = Sex;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public String getPhoneNumber() {
@@ -90,6 +111,8 @@ public class Employees implements Serializable{
     public void setPhoto(String Photo) {
         this.Photo = Photo;
     }
+
+    
     
     @Override
     public String toString() {
@@ -97,6 +120,8 @@ public class Employees implements Serializable{
                 "idEmployee=" + ID_Employee +
                 ", fullName='" + FullName + '\'' +
                 ", password='" + Password + '\'' +
+                ", sex='" + Sex + '\'' +
+                ", birthday='" + birthday + '\'' +
                 ", phoneNumber='" + PhoneNumber + '\'' +
                 ", email='" + Email + '\'' +
                 ", address='" + Address + '\'' +
