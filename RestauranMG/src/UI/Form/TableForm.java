@@ -10,6 +10,9 @@ import Entity.Areas;
 import Entity.Tables;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -24,6 +27,10 @@ public class TableForm extends javax.swing.JPanel {
    int selectedArea;
     public TableForm() {
         initComponents();
+        PanelTable.setLayout(new GridBagLayout());
+        
+        
+        
         fillKhuVuc();
         
     }
@@ -34,6 +41,14 @@ public class TableForm extends javax.swing.JPanel {
         t = table_DAO.selectByArea(ID_area);
         
         if(t == null) return;
+        
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.insets = new Insets(10, 20, 10, 20); // Đặt khoảng cách giữa các thành phần
+        constraints.anchor = GridBagConstraints.NORTHWEST;
+
+        
         for(Tables e : t){
             tableItem item;
             if(e.isIsOccupied()){
@@ -53,7 +68,8 @@ public class TableForm extends javax.swing.JPanel {
                     item.setColor();
                 }
             });
-            PanelTable.add(item);
+            PanelTable.add(item, constraints);
+            constraints.gridx++; // Di chuyển đến cột tiếp theo
         }
     }
     
@@ -110,7 +126,18 @@ public class TableForm extends javax.swing.JPanel {
 
         PanelTable.setBackground(new java.awt.Color(255, 255, 255));
         PanelTable.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 20, 10, 20));
-        PanelTable.setLayout(new java.awt.GridLayout(0, 4, 30, 20));
+
+        javax.swing.GroupLayout PanelTableLayout = new javax.swing.GroupLayout(PanelTable);
+        PanelTable.setLayout(PanelTableLayout);
+        PanelTableLayout.setHorizontalGroup(
+            PanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 798, Short.MAX_VALUE)
+        );
+        PanelTableLayout.setVerticalGroup(
+            PanelTableLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 543, Short.MAX_VALUE)
+        );
+
         ScroolTable.setViewportView(PanelTable);
 
         pnKhuVuc.setBackground(new java.awt.Color(232, 232, 232));
