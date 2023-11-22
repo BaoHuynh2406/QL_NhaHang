@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import UI.Form.SpalshScreen;
 import UI.Form.TableForm;
+import Utils.Auth;
 import hoa.NhanVienForm;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -18,9 +19,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import Utils.IMG;
+import Utils.msg;
+import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
@@ -31,87 +37,145 @@ import javax.swing.border.Border;
  * @author mtsst
  */
 public class Main extends javax.swing.JFrame {
-    
-    //Lấy độ dài và rộng của màn hình
-    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    private int screenWidth = (int) screenSize.getWidth();
-    private int screenHight = (int) screenSize.getHeight();
-    
-    private TableForm tableForm = new TableForm();
-    private NhanVienForm nvForm = new NhanVienForm();
+    private TableForm tableForm = new TableForm(); //Form Hiển thị các danh sách bàn
+    private NhanVienForm nvForm = new NhanVienForm(); //Form Hiển thị nhân viên
     
     public Main() {
+        //Full màn hình
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setUndecorated(true);
         initComponents();
-        //Run clock
         runClock();
         RunSpalshScreen(); //Chạy màn hình loading
         RunLogin(); //chạy màn hình login
         init();
-        menu.addEventMenuSelected(new EventMenuSelected() {
-            @Override
-            public void selected(int index) {
-               if(index == 0){
-                   formOrder();
-               }
-               if (index == 2) {
-                    nvForm();
-                }
-            }
-        });
-        formOrder();
     }
     
     public void init(){
-        //setFull màn hình
-        this.dispose();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        this.setUndecorated(true);
-        this.setResizable(false);
-        gd.setFullScreenWindow(this);
-        this.setVisible(true);
-        
+        //Thiết lập icon
+        this.setIconImage(new ImageIcon("src/IMG/logo512.png").getImage());
         //Bắt sự kiện nút close
         btnClose.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            btnClose.setIcon(new ImageIcon("src/IMG/closeRed.png"));
-        }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnHide.setIcon(new ImageIcon("src/IMG/-Dot.png"));
+                btnClose.setIcon(new ImageIcon("src/IMG/xDot.png"));
+                btnFull.setIcon(new ImageIcon("src/IMG/zDot.png"));
+            }
 
-        @Override
-        public void mouseExited(MouseEvent e) {
-            btnClose.setIcon(new ImageIcon("src/IMG/close.png"));
-            // Thực hiện các hành động khi di chuột ra khỏi đây
-        }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnHide.setIcon(new ImageIcon("src/IMG/ordot.png"));
+                btnClose.setIcon(new ImageIcon("src/IMG/redDot.png"));
+                btnFull.setIcon(new ImageIcon("src/IMG/reenDot.png"));
+            }
        });
         
         //Bắt sự kiện nút hide
         btnHide.addMouseListener(new MouseAdapter() {
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            btnHide.setIcon(new ImageIcon("src/IMG/hideYellow.png"));
-        }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnHide.setIcon(new ImageIcon("src/IMG/-Dot.png"));
+                btnClose.setIcon(new ImageIcon("src/IMG/xDot.png"));
+                btnFull.setIcon(new ImageIcon("src/IMG/zDot.png"));
+            }
 
-        @Override
-        public void mouseExited(MouseEvent e) {
-            btnHide.setIcon(new ImageIcon("src/IMG/hide.png"));
-            // Thực hiện các hành động khi di chuột ra khỏi đây
-        }
+            @Override
+            public void mouseExited(MouseEvent e) {
+               btnHide.setIcon(new ImageIcon("src/IMG/ordot.png"));
+                btnClose.setIcon(new ImageIcon("src/IMG/redDot.png"));
+                btnFull.setIcon(new ImageIcon("src/IMG/reenDot.png"));
+            }
        });
+        
+         //Bắt sự kiện nút Full
+        btnFull.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnHide.setIcon(new ImageIcon("src/IMG/-Dot.png"));
+                btnClose.setIcon(new ImageIcon("src/IMG/xDot.png"));
+                btnFull.setIcon(new ImageIcon("src/IMG/zDot.png"));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+              btnHide.setIcon(new ImageIcon("src/IMG/ordot.png"));
+                btnClose.setIcon(new ImageIcon("src/IMG/redDot.png"));
+                btnFull.setIcon(new ImageIcon("src/IMG/reenDot.png"));
+            }
+       });
+        
+        
+        
+        //Sự kiên mở lại cửa sổ
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                setExtendedState(JFrame.MAXIMIZED_BOTH);
+            }
+        });
     }
 
+   
     
     private void RunSpalshScreen (){
         SpalshScreen sps = new SpalshScreen(this, true);
         sps.setVisible(true);
     }
     
-    private void RunLogin(){
+    private void RunLogin() {
         Login lg = new Login(this, true);
         lg.setVisible(true);
+        if (Auth.isLogin()) {
+            if (Auth.getRole().equals("MG")) {
+                lbChucVu.setText("Quản lý:");
+                lbUserName.setText(Auth.user.getFullName());
+                menu.MG();
+                menu.addEventMenuSelected(new EventMenuSelected() {
+                    @Override
+                    public void selected(int index) {
+                        if (index == 0) {
+                            formOrder();
+                        }
+                        if (index == 2) {
+                            nvForm();
+                        }
+                    }
+                });
+                formOrder();
+            }
+           
+            if(Auth.getRole().equals("SV")){
+                lbChucVu.setText("Phục vụ:");
+                lbUserName.setText(Auth.user.getFullName());
+                menu.SV();
+            }
+            
+            if(Auth.getRole().equals("KS")){
+                lbChucVu.setText("Bếp:");
+                lbUserName.setText(Auth.user.getFullName());
+                menu.KS();
+            }
+            
+            if(Auth.getRole().equals("CS")){
+                lbChucVu.setText("Thu ngân:");
+                lbUserName.setText(Auth.user.getFullName());
+                menu.CS();
+            }
+            
+            
+            this.setVisible(true);
+        } else {
+            msg.Error("Có lỗi xảy ra trong quá trình đăng nhập!. Vui lòng khởi động lại");
+            System.exit(0);
+        }
     }
  
+    private void logOut(){
+        Auth.user = null;
+        this.dispose();
+        RunLogin();
+    }
     //Đồng hồ
     public void runClock() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -133,6 +197,8 @@ public class Main extends javax.swing.JFrame {
         pnDashboard.repaint();
         pnDashboard.revalidate();
     }
+    
+    
     public void nvForm(){
         pnDashboard.removeAll();
         pnDashboard.add(nvForm, BorderLayout.CENTER);
@@ -147,12 +213,13 @@ public class Main extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         btnClose = new javax.swing.JLabel();
+        btnFull = new javax.swing.JLabel();
         btnHide = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        lbChucVu = new javax.swing.JLabel();
         btnOut = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        lbUserName = new javax.swing.JLabel();
         lblDate = new javax.swing.JLabel();
         lblClock = new javax.swing.JLabel();
         bg = new javax.swing.JPanel();
@@ -160,6 +227,7 @@ public class Main extends javax.swing.JFrame {
         pnDashboard = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Restaurant MG");
         setBackground(new java.awt.Color(255, 255, 255));
         setMinimumSize(new java.awt.Dimension(1920, 1080));
         setUndecorated(true);
@@ -177,7 +245,7 @@ public class Main extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/logoNH64x38.png"))); // NOI18N
 
         btnClose.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/close.png"))); // NOI18N
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/redDot.png"))); // NOI18N
         btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnClose.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -188,9 +256,22 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        btnFull.setBackground(new java.awt.Color(255, 255, 255));
+        btnFull.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnFull.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/reenDot.png"))); // NOI18N
+        btnFull.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnFull.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnFullMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnFullMousePressed(evt);
+            }
+        });
+
         btnHide.setBackground(new java.awt.Color(255, 255, 255));
         btnHide.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        btnHide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/hide.png"))); // NOI18N
+        btnHide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/ordot.png"))); // NOI18N
         btnHide.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnHide.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -198,6 +279,9 @@ public class Main extends javax.swing.JFrame {
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btnHideMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btnHideMouseReleased(evt);
             }
         });
 
@@ -210,10 +294,12 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 557, Short.MAX_VALUE)
-                .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 554, Short.MAX_VALUE)
+                .addComponent(btnFull, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnHide, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
         jPanel1Layout.setVerticalGroup(
@@ -224,7 +310,8 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1)
-                    .addComponent(btnHide, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnFull, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnHide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -237,10 +324,10 @@ public class Main extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/user46x38.png"))); // NOI18N
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 153, 0));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel5.setText("Quản lý: ");
+        lbChucVu.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lbChucVu.setForeground(new java.awt.Color(255, 153, 0));
+        lbChucVu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbChucVu.setText("Quản lý: ");
 
         btnOut.setBackground(new java.awt.Color(255, 255, 255));
         btnOut.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -249,11 +336,16 @@ public class Main extends javax.swing.JFrame {
         btnOut.setText("Đăng Xuất");
         btnOut.setToolTipText("");
         btnOut.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnOut.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnOutMousePressed(evt);
+            }
+        });
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(218, 218, 218));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel7.setText("Admin001");
+        lbUserName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lbUserName.setForeground(new java.awt.Color(218, 218, 218));
+        lbUserName.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbUserName.setText("Admin001");
 
         lblDate.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblDate.setForeground(new java.awt.Color(255, 255, 255));
@@ -274,12 +366,12 @@ public class Main extends javax.swing.JFrame {
                 .addGap(32, 32, 32)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lbChucVu, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lbUserName, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 376, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 455, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblDate, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblClock, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -288,13 +380,15 @@ public class Main extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lbChucVu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(btnOut, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(lblClock, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(btnOut, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lbUserName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.SOUTH);
@@ -332,13 +426,29 @@ public class Main extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btnCloseMouseClicked
 
+    private void btnFullMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFullMouseClicked
+        this.setExtendedState(JFrame.HIDE_ON_CLOSE);
+    }//GEN-LAST:event_btnFullMouseClicked
+
+    private void btnFullMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFullMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFullMousePressed
+
     private void btnHideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHideMouseClicked
-        this.setExtendedState(JFrame.ICONIFIED);
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnHideMouseClicked
 
     private void btnHideMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHideMousePressed
-        // TODO add your handling code here:
+       this.setExtendedState(JFrame.HIDE_ON_CLOSE);
     }//GEN-LAST:event_btnHideMousePressed
+
+    private void btnHideMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnHideMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHideMouseReleased
+
+    private void btnOutMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOutMousePressed
+        logOut();
+    }//GEN-LAST:event_btnOutMousePressed
 
     /**
      * @param args the command line arguments
@@ -378,18 +488,23 @@ public class Main extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bg;
     private javax.swing.JLabel btnClose;
+    private javax.swing.JLabel btnFull;
     private javax.swing.JLabel btnHide;
     private javax.swing.JLabel btnOut;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel lbChucVu;
+    private javax.swing.JLabel lbUserName;
     private javax.swing.JLabel lblClock;
     private javax.swing.JLabel lblDate;
     private UI.Compoment.menu menu;
     private javax.swing.JPanel pnDashboard;
     // End of variables declaration//GEN-END:variables
+    //Lấy độ dài và rộng của màn hình
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private int screenWidth = (int) screenSize.getWidth();
+    private int screenHight = (int) screenSize.getHeight();
 }

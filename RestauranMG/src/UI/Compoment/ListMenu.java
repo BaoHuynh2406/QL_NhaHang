@@ -22,6 +22,9 @@ public class ListMenu<E extends Object> extends JList<E> {
         this.event = event;
     }
 
+    public void Clear(){
+        model.removeAllElements();
+    }
     public ListMenu() {
         model = new DefaultListModel();
         setModel(model);

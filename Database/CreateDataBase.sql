@@ -34,7 +34,7 @@ create table Products(
 	Name nvarchar(32) not null,
 	Quantity int default 0, --Số lượng
 	Unit nvarchar(10) not null,
-	Price decimal(10,3) default 0
+	Price int default 0
 );
 
 -- Nhóm nhập hàng
@@ -52,7 +52,7 @@ Create table PurchaseOrdersDetail(
 	ID_PurchaseOrder INT,
 	ID_product varchar(6),
 	Quantity int default 0,
-	Price decimal(10,3) default 0,
+	Price int default 0,
 	Foreign key (ID_PurchaseOrder) References PurchaseOrders(ID_PurchaseOrder),
 	Foreign Key (ID_Product) References Products (ID_product)
 );
@@ -69,7 +69,7 @@ CREATE TABLE MenuItems (
     ID_Item INT identity(1,1) PRIMARY KEY,
     ItemName NVARCHAR(100) not null,
     ID_Category INT ,
-    Price DECIMAL(10, 3) not null,
+    Price int not null,
     Photo nvarchar(50),
 	Foreign key (ID_Category) References MenuCategories(ID_Category)
 );
@@ -117,8 +117,8 @@ CREATE TABLE OrderDetail(
 	ID_Order INT,
 	ID_Item INT,
 	Quantity INT,
-	Price DECIMAL(10,3),
-	TotalPrice DECIMAL(13,3),
+	Price int,
+	TotalPrice int,
 	FOREIGN KEY (ID_Order) REFERENCES Orders(ID_Order),
 	Foreign KEY (ID_Item) REFERENCES MenuItems(ID_Item)
 );
@@ -143,11 +143,117 @@ CREATE TABLE Invoices(
 	ID_Employee INT,
 	ID_Tax INT,
 	InvoiceDate DATETIME,
-	TaxAmount DECIMAL(10,3),
-	TotalAmount DECIMAL(10,3), --Tổng tiền không thuế
+	TaxAmount int,
+	TotalAmount int, --Tổng tiền không thuế
 	IsPaid bit, -- trang thái thanh toán
     FOREIGN KEY (ID_Order) REFERENCES Orders(ID_Order),
 	Foreign KEY (ID_Method) REFERENCES PaymentMethods(ID_Method),
 	FOREIGN KEY (ID_Employee) REFERENCES Employees(ID_Employee),
 	Foreign KEY (ID_Tax) REFERENCES Taxes(ID_Tax)
 );
+
+
+-- -----------------------------------------------------------------
+
+CREATE PROCEDURE UpdateAllTablesStatus
+AS
+BEGIN
+    UPDATE Tables
+    SET IsOccupied = 
+        CASE 
+            WHEN EXISTS (
+                SELECT 1
+                FROM Orders
+                WHERE Orders.ID_Table = Tables.ID_Table
+                AND Orders.IsPaid = 0
+            ) THEN 1 -- Có đơn hàng chưa thanh toán: bàn có khách
+            ELSE 0 -- Không có đơn hàng chưa thanh toán: bàn không khách
+        END
+END
+
+EXEC UpdateAllTablesStatus;
+
+
+CREATE PROCEDURE GetOccupiedTablesInfo
+AS
+BEGIN
+    SELECT T.ID_Table, T.TableName, O.NumberOfGuests
+    FROM Tables T
+    INNER JOIN Orders O ON T.ID_Table = O.ID_Table
+    WHERE O.IsPaid = 0;
+END
+
+EXEC GetOccupiedTablesInfo;
+
+-- -----------
+SELECT 
+    T.ID_Table AS MaBan,
+    T.TableName AS TenBan,
+    O.NumberOfGuests AS SoKhach
+FROM 
+    Tables T
+LEFT JOIN 
+    (SELECT ID_Table, NumberOfGuests
+     FROM Orders
+     WHERE IsPaid = 0) O ON T.ID_Table = O.ID_Table
+
+
+
+
+-- Cập nhật stored procedure để lấy thông tin bàn dựa trên mã khu vực
+
+CREATE PROCEDURE GetTableSummary
+    @AreaID INT = NULL
+AS
+BEGIN
+    SELECT 
+        T.ID_Table,
+        T.TableName,
+        CASE
+            WHEN O.IsPaid = 0 THEN SUM(OD.TotalPrice)
+            ELSE NULL
+        END AS TotalAmount,
+        CASE
+            WHEN O.IsPaid = 0 THEN O.NumberOfGuests
+            ELSE NULL
+        END AS NumberOfGuests
+    FROM 
+        Tables T
+    LEFT JOIN 
+        Orders O ON T.ID_Table = O.ID_Table
+    LEFT JOIN 
+        OrderDetail OD ON O.ID_Order = OD.ID_Order
+    WHERE
+        (@AreaID IS NULL OR T.ID_Area = @AreaID) -- Lọc theo mã khu vực nếu được cung cấp
+    GROUP BY 
+        T.ID_Table, T.TableName, O.IsPaid, O.NumberOfGuests
+END;
+
+
+EXEC GetTableSummary 2;
+
+
+-- Tạo trigger tự động cập nhật trạng thái của bàn
+CREATE OR ALTER TRIGGER UpdateTableStatus
+ON Orders
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    DECLARE @TableID INT;
+
+    -- Lấy ID của bàn từ hóa đơn được thêm hoặc cập nhật
+    SELECT @TableID = ID_Table
+    FROM inserted;
+
+    -- Cập nhật trạng thái của bàn
+    UPDATE Tables
+    SET IsOccupied = CASE
+                        WHEN EXISTS (
+                            SELECT 1
+                            FROM Orders O
+                            WHERE O.ID_Table = @TableID AND O.IsPaid = 0
+                        ) THEN 1 -- Bàn có hóa đơn chưa thanh toán, đặt trạng thái là có khách
+                        ELSE 0 -- Không có hóa đơn chưa thanh toán, đặt trạng thái là không có khách
+                    END
+    WHERE ID_Table = @TableID;
+END;

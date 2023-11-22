@@ -6,6 +6,7 @@ import UI.Model.Model_Table;
 import java.awt.Dimension;
 import Dao.TablesdDao;
 import Dao.AreasDao;
+import Dao.procDao;
 import Entity.Areas;
 import Entity.Tables;
 import java.awt.Color;
@@ -17,6 +18,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ButtonGroup;
@@ -26,6 +28,7 @@ import javax.swing.JLabel;
 public class TableForm extends javax.swing.JPanel {
 
    TablesdDao table_DAO = new TablesdDao();
+   procDao proDao = new procDao();
    AreasDao areas_DAO = new AreasDao();
    int selectedArea;
     public TableForm() {
@@ -38,8 +41,10 @@ public class TableForm extends javax.swing.JPanel {
         PanelTable.removeAll();
         PanelTable.revalidate();
         PanelTable.repaint();
+        //Cập nhật trạng thái của bàn
 
-        List<Tables> t = table_DAO.selectByArea(ID_area);
+        //Truy vấn tất cả và lấy thông tin cần thiết tên bàn,mã bàn, tổng tiền, số khách
+        List<Object[]> t = proDao.GetTableSummary(ID_area);
         if (t == null || t.isEmpty()) {
             return;
         }
@@ -48,14 +53,27 @@ public class TableForm extends javax.swing.JPanel {
         int remainder = t.size() % 5; // Số item còn lại sau khi chia hết cho 5
         int canThiet = numRows + (remainder > 0 ? 1 : 0);
         PanelTable.setLayout(new GridLayout((canThiet > 5 ? canThiet : 5), 5, 20, 10)); // GridLayout với số hàng tính được, có thể cộng thêm 1 hàng nếu còn item thừa
-        for (Tables e : t) {
+        for (Object[] row : t) {
             tableItem item;
-            if (e.isIsOccupied()) {
-                item = new tableItem(new Model_Table(e.getTableName(), 0, 0, Model_Table.TableType.NOTNULL));
-            } else {
-                item = new tableItem(new Model_Table(e.getTableName()));
+            
+            int ID = (Integer) row[0];
+            String TableName = (String) row[1];
+            int total = 0, numGust = 0;
+            try {
+                total = (Integer) row[2];
+                
+            } catch (Exception e) {
             }
-
+            try {
+                numGust = (Integer) row[3]; 
+            } catch (Exception e) {
+            }
+            if(row[3] == null){
+                 item = new tableItem(new Model_Table(ID, TableName));
+            }else{
+                
+                item = new tableItem(new Model_Table(ID, TableName, total, numGust));
+            }
             // Bắt sự kiện
             item.addMouseListener(new MouseAdapter() {
                 @Override
@@ -78,7 +96,7 @@ public class TableForm extends javax.swing.JPanel {
                 PanelTable.add(new JLabel());
             }
         }
-}
+    }
 
 
 

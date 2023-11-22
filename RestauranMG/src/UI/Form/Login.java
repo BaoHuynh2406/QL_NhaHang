@@ -2,12 +2,16 @@ package UI.Form;
 
 import Entity.Employees;
 import Dao.EmployeesDao;
+import Utils.Auth;
 import Utils.Encryption;
 import Utils.FileControl;
 import Utils.Validate;
 import Utils.msg;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.security.NoSuchAlgorithmException;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JDialog {
@@ -30,6 +34,18 @@ public class Login extends javax.swing.JDialog {
         }
         
         
+        //Bắt sự kiện nút Full
+        btnClose.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                btnClose.setIcon(new ImageIcon("src/IMG/xDot.png")); 
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                btnClose.setIcon(new ImageIcon("src/IMG/redDot.png"));
+            }
+       });
     }
 
     public boolean Validate(){
@@ -68,7 +84,7 @@ public class Login extends javax.swing.JDialog {
         System.out.println(nv);
         if (nv != null) {
             if (nv.getPassword().equals(HashPassword)) {
-                msg.Info("Đăng nhập thanh công");
+                Auth.user = nv;
                 if (rdSavePass.isSelected()) {
                     nv.setPassword(Password);
                     FileControl.writeFile(nv, "src/Auth.dat");
@@ -92,7 +108,7 @@ public class Login extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        btnClose = new javax.swing.JLabel();
         btnSubmit = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         txtUserName = new javax.swing.JTextField();
@@ -125,6 +141,7 @@ public class Login extends javax.swing.JDialog {
         });
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 30)); // NOI18N
@@ -136,12 +153,12 @@ public class Login extends javax.swing.JDialog {
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/1.png"))); // NOI18N
 
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/redDot.png"))); // NOI18N
-        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnClose.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        btnClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/redDot.png"))); // NOI18N
+        btnClose.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnClose.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel3MousePressed(evt);
+                btnCloseMousePressed(evt);
             }
         });
 
@@ -151,18 +168,19 @@ public class Login extends javax.swing.JDialog {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                .addComponent(jLabel2)
                 .addContainerGap(15, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnClose, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(btnClose, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         btnSubmit.setBackground(new java.awt.Color(27, 219, 115));
@@ -326,9 +344,9 @@ public class Login extends javax.swing.JDialog {
        
     }//GEN-LAST:event_formWindowClosing
 
-    private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
+    private void btnCloseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMousePressed
         System.exit(0);
-    }//GEN-LAST:event_jLabel3MousePressed
+    }//GEN-LAST:event_btnCloseMousePressed
 
     /**
      * @param args the command line arguments
@@ -373,11 +391,11 @@ public class Login extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    javax.swing.JLabel btnClose;
     javax.swing.JLabel btnForgetPass;
     javax.swing.JButton btnSubmit;
     javax.swing.JLabel jLabel1;
     javax.swing.JLabel jLabel2;
-    javax.swing.JLabel jLabel3;
     javax.swing.JPanel jPanel1;
     javax.swing.JPanel jPanel2;
     javax.swing.JPanel jPanel3;

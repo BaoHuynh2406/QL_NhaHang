@@ -3,6 +3,7 @@ package UI.Model;
 public class Model_Table {
 
     private String name;
+    private int ID;
     private int total;
     private int guestNum;
     private TableType type;
@@ -10,14 +11,18 @@ public class Model_Table {
     public Model_Table() {
     }
 
-    public Model_Table(String name, int total, int guestNum, TableType type) {
+    
+
+    public Model_Table(int ID, String name, int total, int guestNum) {
+        this.ID = ID;
         this.name = name;
         this.total = total;
         this.guestNum = guestNum;
-        this.type = type;
+        this.type = Model_Table.TableType.NOTNULL;
     }
 
-    public Model_Table(String name) {
+    public Model_Table(int ID, String name) {
+        this.ID = ID;
         this.name = name;
         this.type = Model_Table.TableType.NULL;
     }
@@ -33,7 +38,7 @@ public class Model_Table {
         this.name = name;
     }
 
-    public double getTotal() {
+    public int getTotal() {
         return total;
     }
 
@@ -58,7 +63,13 @@ public class Model_Table {
     }
 
    
-    
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
     public static enum TableType {
         NULL, NOTNULL
     }

@@ -26,7 +26,7 @@ public class SpalshScreen extends javax.swing.JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 prLoding.setValue(value);
-                value++;
+                value+=2;
                 if(value==100){
                     dispose();
                 };
