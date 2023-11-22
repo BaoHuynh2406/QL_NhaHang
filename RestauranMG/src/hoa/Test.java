@@ -68,7 +68,7 @@ public class Test extends javax.swing.JFrame {
         button1.setBorderColor(new java.awt.Color(255, 255, 255));
         button1.setMaximumSize(new java.awt.Dimension(150, 40));
         button1.setMinimumSize(new java.awt.Dimension(150, 40));
-        button1.setRadius(20);
+        button1.setRadius(30);
         button1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 button1ActionPerformed(evt);
@@ -111,8 +111,8 @@ public class Test extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txt, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
-                        .addGap(26, 26, 26)
+                        .addComponent(txt, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE))
                 .addGap(10, 10, 10))
