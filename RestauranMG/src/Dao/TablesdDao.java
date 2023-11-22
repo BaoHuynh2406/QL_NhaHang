@@ -31,7 +31,7 @@ public class TablesdDao extends RestauranDao<Tables, Integer>{
                 entity.isIsOccupied());
     }
 
-    public void delete(int id) {
+    public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
     }
 
@@ -40,7 +40,7 @@ public class TablesdDao extends RestauranDao<Tables, Integer>{
         return selectBySql(SELECT_ALL_SQL);
     }
 
-    public Tables selectById(int id) {
+    public Tables selectById(Integer id) {
         List<Tables> list = selectBySql(SELECT_BY_ID_SQL, id);
         if(list.isEmpty()){
             return null;
@@ -67,14 +67,9 @@ public class TablesdDao extends RestauranDao<Tables, Integer>{
         return  list;
     }
 
-    @Override
-    public void delete(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public Tables selectById(Integer id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Tables> selectByArea(int ID_area){
+        String sql = "Select * from Tables where ID_Area = ?";
+        return selectBySql(sql, ID_area);
     }
     
 }

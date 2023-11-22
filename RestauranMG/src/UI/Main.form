@@ -293,7 +293,7 @@
       <SubComponents>
         <Component class="UI.Compoment.menu" name="menu2">
         </Component>
-        <Component class="UI.Form.Table" name="order2">
+        <Component class="UI.Form.TableForm" name="order2">
         </Component>
       </SubComponents>
     </Container>

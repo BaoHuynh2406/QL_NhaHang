@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AreasDao extends RestauranDao<Areas, String>{
+public class AreasDao extends RestauranDao<Areas, Integer>{
     final String INSERT_SQL = "INSERT INTO Areas (AreaName) VALUES (?)";
     final String UPDATE_ALL = "UPDATE Areas SET AreaName = ? WHERE ID_Area = ?";
     final String DELETE_SQL = "DELETE FROM Areas WHERE ID_Area = ?";
@@ -27,8 +27,7 @@ public class AreasDao extends RestauranDao<Areas, String>{
                 entity.getAreaName());
     }
 
-    @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
     }
 
@@ -37,8 +36,7 @@ public class AreasDao extends RestauranDao<Areas, String>{
         return selectBySql(SELECT_ALL_SQL);
     }
 
-    @Override
-    public Areas selectById(String id) {
+    public Areas selectById(Integer id) {
         List<Areas> list = selectBySql(SELECT_BY_ID_SQL, id);
         if(list.isEmpty()){
             return null;
@@ -62,5 +60,7 @@ public class AreasDao extends RestauranDao<Areas, String>{
         }
         return  list;
     }
+
+   
     
 }

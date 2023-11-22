@@ -17,21 +17,23 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
-public class Table extends javax.swing.JPanel {
+public class TableForm extends javax.swing.JPanel {
 
    TablesdDao table_DAO = new TablesdDao();
    AreasDao areas_DAO = new AreasDao();
-   String selectedArea;
-    public Table() {
+   int selectedArea;
+    public TableForm() {
         initComponents();
         fillKhuVuc();
-        fillTable();
         
     }
 
-    private void fillTable(){
+    private void fillTable(int ID_area){
+        PanelTable.removeAll();
         List<Tables> t = new ArrayList<>();
-        t = table_DAO.selectAll();
+        t = table_DAO.selectByArea(ID_area);
+        
+        if(t == null) return;
         for(Tables e : t){
             tableItem item;
             if(e.isIsOccupied()){
@@ -55,31 +57,24 @@ public class Table extends javax.swing.JPanel {
         }
     }
     
-    private List<JButton> buttons = new ArrayList<>(); 
-    
+    private List<JButton> buttons = new ArrayList<>();
+
     private void fillKhuVuc() {
         List<Areas> k = areas_DAO.selectAll();
         pnKhuVuc.removeAll();
-
         if (k == null) {
             return;
-        }
-
-        ButtonGroup buttonGroup = new ButtonGroup();
-
+        }  
         for (Areas area : k) {
             JButton button = new JButton(area.getAreaName());
             button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            button.setName(area.getID_Area()+"");
+            button.setName(area.getID_Area() + "");
             buttons.add(button); // Thêm JButton vào danh sách
-
             button.addActionListener(e -> {
-                selectedArea = area.getID_Area()+"";
+                selectedArea = area.getID_Area();
                 updateButtonsAppearance(); // Cập nhật giao diện của các nút khi có nút được chọn
             });
-
             pnKhuVuc.add(button);
-            buttonGroup.add(button);
         }
 
         updateButtonsAppearance(); // Cập nhật giao diện ban đầu
@@ -87,10 +82,14 @@ public class Table extends javax.swing.JPanel {
 
     private void updateButtonsAppearance() {
         for (JButton button : buttons) {
-            if (selectedArea != null && button.getName().equals(selectedArea)) {
+            if (button.getName().equals(String.valueOf(selectedArea))) {
                 button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+                button.setForeground(new Color(22, 72, 99));
+                fillTable(selectedArea);
             } else {
                 button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                button.setForeground(Color.BLACK);
+
             }
         }
     }

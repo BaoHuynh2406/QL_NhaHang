@@ -33,7 +33,7 @@ public class tableItem extends javax.swing.JPanel {
 
         }
         this.setPreferredSize(new Dimension(200,120));
-        
+      
     }
     
     public void setColor(){
