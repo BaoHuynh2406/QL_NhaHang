@@ -148,7 +148,8 @@ public class QLNV extends javax.swing.JPanel {
         txtSDT.setText(employees.getPhoneNumber());
         txtEmail.setText(employees.getEmail());
         txtDiaChi.setText(employees.getAddress());
-        cbbChuVu.setToolTipText(employees.getID_role());
+        String defaultRole = "MG"; // Giả sử "MG" là mã chức vụ mặc định
+        cbbChuVu.setSelectedItem(defaultRole);
 
         String path = employees.getPhoto();
         System.out.println(path);
@@ -212,6 +213,9 @@ public class QLNV extends javax.swing.JPanel {
         txtEmail.setText("");
         lblDuongDan.setText("Chưa chọn ảnh!");
         lblAnh.setIcon(null);
+        String defaultRole = "MG"; // Giả sử "MG" là mã chức vụ mặc định
+        cbbChuVu.setSelectedItem(defaultRole);
+
         // Cập nhật trạng thái
         updateStatus();
     }
@@ -306,6 +310,8 @@ public class QLNV extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         btnThem = new button.Button();
 
+        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -381,6 +387,11 @@ public class QLNV extends javax.swing.JPanel {
         btnThem1.setText("Mới");
         btnThem1.setBorderColor(new java.awt.Color(0, 153, 153));
         btnThem1.setRadius(30);
+        btnThem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnThem1MousePressed(evt);
+            }
+        });
         btnThem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnThem1ActionPerformed(evt);
@@ -391,6 +402,11 @@ public class QLNV extends javax.swing.JPanel {
         btnXoa.setText("Xóa");
         btnXoa.setBorderColor(new java.awt.Color(0, 153, 153));
         btnXoa.setRadius(30);
+        btnXoa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnXoaMousePressed(evt);
+            }
+        });
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnXoaActionPerformed(evt);
@@ -401,6 +417,11 @@ public class QLNV extends javax.swing.JPanel {
         btnLuu.setText("Lưu");
         btnLuu.setBorderColor(new java.awt.Color(0, 153, 153));
         btnLuu.setRadius(30);
+        btnLuu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnLuuMousePressed(evt);
+            }
+        });
         btnLuu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLuuActionPerformed(evt);
@@ -552,7 +573,11 @@ public class QLNV extends javax.swing.JPanel {
                                             .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(10, 10, 10)))))))
+<<<<<<< HEAD
                 .addContainerGap(137, Short.MAX_VALUE))
+=======
+                .addContainerGap(11, Short.MAX_VALUE))
+>>>>>>> 3085f6ce325e8598ac1d7f40a35c85fee5044597
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -584,6 +609,7 @@ public class QLNV extends javax.swing.JPanel {
             .addGap(0, 1028, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
+<<<<<<< HEAD
                     .addGap(18, 18, 18)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(19, 19, 19)))
@@ -595,6 +621,20 @@ public class QLNV extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+=======
+                    .addGap(7, 7, 7)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(8, 8, 8)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 432, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(29, 29, 29)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(30, 30, 30)))
+>>>>>>> 3085f6ce325e8598ac1d7f40a35c85fee5044597
         );
 
         jTabbedPane1.addTab("Chi Tiet", jPanel2);
@@ -677,7 +717,11 @@ public class QLNV extends javax.swing.JPanel {
                     .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
                     .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
+<<<<<<< HEAD
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+=======
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+>>>>>>> 3085f6ce325e8598ac1d7f40a35c85fee5044597
                 .addGap(10, 10, 10))
         );
 
@@ -764,6 +808,26 @@ public class QLNV extends javax.swing.JPanel {
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
+
+    private void btnThem1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThem1MousePressed
+        clear();
+    }//GEN-LAST:event_btnThem1MousePressed
+
+    private void btnXoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMousePressed
+        // TODO add your handling code here:
+        delete();
+    }//GEN-LAST:event_btnXoaMousePressed
+
+    private void btnLuuMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMousePressed
+        // TODO add your handling code here:
+        if (row >= 0) {
+            // Editing mode
+            update();
+        } else {
+            // Adding mode
+            insert();
+        }
+    }//GEN-LAST:event_btnLuuMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

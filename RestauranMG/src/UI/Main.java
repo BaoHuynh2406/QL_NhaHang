@@ -41,7 +41,13 @@ import javax.swing.border.Border;
  * @author mtsst
  */
 public class Main extends javax.swing.JFrame {
+<<<<<<< HEAD
    
+=======
+    private TableForm tableForm = new TableForm(); //Form Hiển thị các danh sách bàn
+    private QLNV nvForm = new QLNV(); //Form Hiển thị nhân viên
+    private OrderForm orderForm = new OrderForm(); //Form order
+>>>>>>> 3085f6ce325e8598ac1d7f40a35c85fee5044597
     
     public Main() {
         //Full màn hình
