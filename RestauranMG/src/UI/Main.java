@@ -2,6 +2,7 @@
 package UI;
 
 import UI.Compoment.EventMenuSelected;
+import UI.Compoment.EventOrder;
 import UI.Compoment.EventTableSelected;
 import UI.Compoment.menu;
 import UI.Form.Login;
@@ -28,6 +29,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import Utils.IMG;
 import Utils.msg;
+import hoa.QLNV;
 import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -39,9 +41,7 @@ import javax.swing.border.Border;
  * @author mtsst
  */
 public class Main extends javax.swing.JFrame {
-    private TableForm tableForm = new TableForm(); //Form Hiển thị các danh sách bàn
-    private NhanVienForm nvForm = new NhanVienForm(); //Form Hiển thị nhân viên
-    private OrderForm orderForm = new OrderForm(); //Form order
+   
     
     public Main() {
         //Full màn hình
@@ -138,14 +138,14 @@ public class Main extends javax.swing.JFrame {
                     @Override
                     public void selected(int index) {
                         if (index == 0) {
-                            formOrder();
+                            formTable();
                         }
                         if (index == 2) {
                             nvForm();
                         }
                     }
                 });
-                formOrder();
+                formTable();
             }
            
             if(Auth.getRole().equals("SV")){
@@ -194,31 +194,50 @@ public class Main extends javax.swing.JFrame {
     }
     
     
-    public void formOrder(){
+    //Form Table
+    public void formTable(){
+        TableForm tableForm = new TableForm(); //Form Hiển thị các danh sách bàn
+
         pnDashboard.removeAll();
         pnDashboard.add(tableForm, BorderLayout.CENTER);
         pnDashboard.repaint();
         pnDashboard.revalidate();
         
-       tableForm.addEventTableSelected(new EventTableSelected() {
-            @Override
-            public void selected(int index) {
-                setFormOrder(index);
-            }
-       });
+        tableForm.addEventTableSelected(new EventTableSelected() {
+             @Override
+             public void selected(int index) {
+                 setFormOrder(index);
+             }
+        });
     }
     
     
+    //Form order
     private void setFormOrder(int ID){
+        OrderForm orderForm = new OrderForm(); //Form order
         pnDashboard.removeAll();
         orderForm.setTable(ID);
         pnDashboard.add(orderForm,BorderLayout.CENTER);
         pnDashboard.repaint();
         pnDashboard.revalidate();
+        
+        orderForm.addEventOrder(new EventOrder() {
+            @Override
+            public void selected(int index) {
+                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            }
+
+            @Override
+            public void GoBack() {
+                formTable();
+            }
+        });
     }
     
     
+    //Form Nhân viên
     public void nvForm(){
+        QLNV nvForm = new QLNV(); //Form Hiển thị nhân viên
         pnDashboard.removeAll();
         pnDashboard.add(nvForm, BorderLayout.CENTER);
         pnDashboard.repaint();

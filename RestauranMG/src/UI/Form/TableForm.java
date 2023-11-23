@@ -28,7 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 public class TableForm extends javax.swing.JPanel {
-     private EventTableSelected event;
+    private EventTableSelected event;
 
     public void addEventTableSelected(EventTableSelected event) {
         this.event = event;

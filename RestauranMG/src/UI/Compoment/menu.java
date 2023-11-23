@@ -24,7 +24,6 @@ public class menu extends javax.swing.JPanel {
         listMenu1.addItem(new Model_Menu("nhanvien", "QL Nhân viên", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("caidat", "QL Nhà hàng", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("thongke", "Báo cáo & TK", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("info", "Giới thiệu", Model_Menu.MenuType.MENU));
     }
 
@@ -32,12 +31,6 @@ public class menu extends javax.swing.JPanel {
     public void SV() {
         listMenu1.Clear();
         listMenu1.addItem(new Model_Menu("Order", "Gọi món", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("info", "Giới thiệu", Model_Menu.MenuType.MENU));
     }
 
@@ -46,11 +39,6 @@ public class menu extends javax.swing.JPanel {
         listMenu1.Clear();
         listMenu1.addItem(new Model_Menu("Order", "Gọi món", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("thongke", "Báo cáo & TK", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("info", "Giới thiệu", Model_Menu.MenuType.MENU));
     }
 
@@ -58,12 +46,6 @@ public class menu extends javax.swing.JPanel {
     public void KS() {
         listMenu1.Clear();
         listMenu1.addItem(new Model_Menu("Product", "Hàng hóa", Model_Menu.MenuType.MENU));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
-
-        listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
         listMenu1.addItem(new Model_Menu("info", "Giới thiệu", Model_Menu.MenuType.MENU));
     }
 
