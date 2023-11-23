@@ -21,15 +21,21 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
 public class QLNV extends javax.swing.JPanel {
-    EmployeesDao dao = new EmployeesDao();
-    int row = 0;
+    
+    int row = -1;
     DefaultTableModel model;
+    EmployeesDao dao = new EmployeesDao();
     RoleDao cvdao = new RoleDao();
+    Employees employees = new Employees();
     
     public QLNV() {
         initComponents();
+        model = (DefaultTableModel) table.getModel();
+        loading();
         fillTable();
-        fillComboBoxChuyenDe();
+        fillComboBox();
+        jTabbedPane1.setSelectedIndex(1);
+        
     }
 
         // loading
@@ -54,8 +60,11 @@ public class QLNV extends javax.swing.JPanel {
                 }
 
                 call.done();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Thread interrupted: " + e);
             } catch (Exception e) {
-                System.err.println(e);
+                System.err.println("Unexpected exception: " + e);
             }
         }
 
@@ -96,38 +105,6 @@ public class QLNV extends javax.swing.JPanel {
         RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + name, 2);
         sorter.setRowFilter(filter);
     }
-
-    public void ChiTiet(){   
-        NVChiTiet chiTietForm = new NVChiTiet();
-        chiTietForm.setVisible(true);
-        System.out.println("ChiTiet() is called.");
-    }
-    
-    private void showChiTietForm() {
-        // Lấy chỉ số dòng được chọn
-        int selectedRow = table.getSelectedRow();
-        System.out.println("Selected Row: " + selectedRow);
-
-        // Kiểm tra xem có dòng nào được chọn không
-        if (selectedRow != -1) {
-            // Lấy thông tin từ dòng được chọn
-            int id = (int) table.getValueAt(selectedRow, 1);
-            System.out.println("ID Employee: " + id);
-
-            // Lấy thông tin nhân viên từ cơ sở dữ liệu hoặc danh sách đã có
-            Employees selectedEmployee = dao.selectById(id);
-            System.out.println("Selected Employee: " + selectedEmployee);
-
-            // Hiển thị form NVChiTiet và truyền thông tin
-            NVChiTiet chiTietForm = new NVChiTiet();
-            chiTietForm.setForm(selectedEmployee);
-            chiTietForm.setVisible(true);
-
-        } else {
-            // Thông báo nếu không có dòng nào được chọn
-            msg.Info("Vui lòng chọn một nhân viên trước khi xem chi tiết.");
-        }
-    }
     // chọn ảnh
     public String selectAnh(){
        JFileChooser fileChooser = new JFileChooser();
@@ -147,7 +124,7 @@ public class QLNV extends javax.swing.JPanel {
         }
     }
     //fill comboBox
-    public void fillComboBoxChuyenDe(){
+    public void fillComboBox(){
         DefaultComboBoxModel model = (DefaultComboBoxModel) cbbChuVu.getModel();
         model.removeAllElements();
         List<Role> list = cvdao.selectAll();
@@ -158,7 +135,7 @@ public class QLNV extends javax.swing.JPanel {
     public void setForm(Employees employees) {
         txtMaNV.setText(employees.getID_Employee() + "");
         txtTenNV.setText(employees.getFullName());
-        txtPass.setText(employees.getPassword());
+//        txtPass.setText(employees.getPassword());
         rdoNam.setSelected(employees.isSex());
         rdoNu.setSelected(!employees.isSex());
 
@@ -183,25 +160,39 @@ public class QLNV extends javax.swing.JPanel {
             lblAnh.setIcon(IMG.setAvatar(path));
         }
     }
-    
-    public Employees getForm() {
-    Employees employees = new Employees();
-    try {
-        employees.setID_Employee(Integer.parseInt(txtMaNV.getText()));
-        employees.setFullName(txtTenNV.getText());
-        employees.setPassword(new String(txtPass.getPassword()));
-        employees.setSex(rdoNam.isSelected());
-        employees.setBirthday(XDate.convertToYMD(txtNgaySinh.getText()));
-        employees.setPhoneNumber(txtSDT.getText());
-        employees.setEmail(txtEmail.getText());
-        employees.setAddress(txtDiaChi.getText());
-        employees.setPhoto(lblDuongDan.getText());
-    } catch (Exception e) {
-        msg.Error("Lỗi dữ liệu!");
-        System.out.println(e.getMessage());
+    public void edit() {
+        this.row = table.getSelectedRow();
+
+        if (this.row >= 0) {
+            int maNV = (Integer) table.getValueAt(this.row, 1);
+            employees = dao.selectById(maNV);
+            this.setForm(employees);
+            jTabbedPane1.setSelectedIndex(0);
+            this.updateStatus();
+        }
     }
-    return employees;
-}
+
+
+    public Employees getForm() {
+        Employees employees = new Employees();
+        try {
+            int maNV = Integer.parseInt(txtMaNV.getText());
+            employees.setID_Employee(maNV);
+            employees.setFullName(txtTenNV.getText());
+            employees.setPassword(new String(txtPass.getPassword()));
+            employees.setSex(rdoNam.isSelected());
+            employees.setBirthday(XDate.convertToYMD(txtNgaySinh.getText()));
+            employees.setPhoneNumber(txtSDT.getText());
+            employees.setEmail(txtEmail.getText());
+            employees.setAddress(txtDiaChi.getText());
+            employees.setPhoto(lblDuongDan.getText());
+//            employees.setID_role(cbbChuVu.getToolTipText());
+        } catch (NumberFormatException e) {
+            msg.Error("Lỗi chuyển đổi dữ liệu! Vui lòng kiểm tra lại.");
+            System.out.println(e.getMessage());
+        }
+        return employees;
+    }
     public void updateStatus() {
         boolean edit = (this.row >= 0);
         // Trạng thái form
@@ -211,32 +202,37 @@ public class QLNV extends javax.swing.JPanel {
         btnLuu.setEnabled(true); 
     }
 
-    public void clear()  {
-        Employees nv = new Employees();
-        nv.setBirthday(new Date());
-        this.setForm(nv);
-        this.row = -1;
-        this.updateStatus();
+    private void clear() {
+        // Thực hiện các bước để làm mới form, ví dụ:
+        txtMaNV.setText("");
+        txtTenNV.setText("");
+        txtPass.setText("");
+        txtNgaySinh.setText("");
+        txtSDT.setText("");
+        txtEmail.setText("");
+        lblDuongDan.setText("Chưa chọn ảnh!");
+        lblAnh.setIcon(null);
+        // Cập nhật trạng thái
+        updateStatus();
     }
-    //insert
     public void insert() {
-        Employees employees = this.getForm();
+        Employees employees = getForm();
         try {
             dao.insert(employees);
-            this.clear();
-            this.row = -1; // Cập nhật giá trị của row
+            clear();
+            row = -1; // Cập nhật giá trị của row
             msg.Info("Thêm mới thành công!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             msg.Error("Có lỗi trong quá trình thêm mới nhân viên!");
         }
     }
-    // sua
+
     public void update() {
-        Employees employees = this.getForm();
+        Employees employees = getForm();
         try {
             dao.update(employees);
-            this.row = -1; // Cập nhật giá trị của row
+            row = -1; // Cập nhật giá trị của row
             msg.Info("Cập nhật thành công!");
         } catch (Exception e) {
             msg.Error("Có lỗi trong quá trình cập nhật nhân viên!");
@@ -244,41 +240,34 @@ public class QLNV extends javax.swing.JPanel {
     }
     // xoa
     public void delete() {
-    int manv = 0; 
-    
-    try {
-        manv = Integer.parseInt(txtMaNV.getText());
-    } catch (NumberFormatException e) {
-        msg.Error("Lỗi chuyển đổi dữ liệu!");
-        System.out.println(e.getMessage());
-        return; 
-    }
-    
-    if (msg.Yes_no("Bạn thực sự muốn xóa nhân viên này?")) {
+        int manv = 0; 
+
         try {
-            System.out.println("delete " + manv);
-            dao.delete(manv);
-            this.clear();
-            this.row = -1; // Cập nhật giá trị của row
-            msg.Info("Đã xóa");
-        } catch (Exception e) {
+            manv = Integer.parseInt(txtMaNV.getText());
+        } catch (NumberFormatException e) {
+            msg.Error("Lỗi chuyển đổi dữ liệu!");
             System.out.println(e.getMessage());
-            msg.Error("Lỗi!, vui lòng thử lại sau.");
+            return; 
+        }
+
+        if (msg.Yes_no("Bạn thực sự muốn xóa nhân viên này?")) {
+            try {
+                System.out.println("delete " + manv);
+                dao.delete(manv);
+                clear();
+                msg.Info("Đã xóa");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                msg.Error("Lỗi!, vui lòng thử lại sau.");
+            }
         }
     }
-}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        table = new UI.Compoment.Table();
-        txtSearch = new button.Search();
-        jLabel1 = new javax.swing.JLabel();
-        btnThem = new button.Button();
         jPanel2 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -310,109 +299,12 @@ public class QLNV extends javax.swing.JPanel {
         lblDuongDan = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
-
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-
-        table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "STT", "Mã nhân viên", "Tên nhân viên", "Chức vụ", "SĐT"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        table.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tableMousePressed(evt);
-            }
-        });
-        jScrollPane1.setViewportView(table);
-
-        txtSearch.setMinimumSize(new java.awt.Dimension(150, 40));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(206, 151, 32));
-        jLabel1.setText("Danh Sách Nhân Viên");
-
-        btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/add-user.png"))); // NOI18N
-        btnThem.setText("Thêm nhân viên");
-        btnThem.setBorderColor(new java.awt.Color(0, 102, 102));
-        btnThem.setMaximumSize(new java.awt.Dimension(150, 40));
-        btnThem.setMinimumSize(new java.awt.Dimension(150, 40));
-        btnThem.setRadius(30);
-        btnThem.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btnThemMousePressed(evt);
-            }
-        });
-        btnThem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThemActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(181, 181, 181)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(10, 10, 10))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(25, 25, 25)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
-                .addGap(10, 10, 10)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1006, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(223, Short.MAX_VALUE)))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 435, Short.MAX_VALUE)
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-
-        jTabbedPane1.addTab("Danh Sach", jPanel1);
+        jPanel3 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        table = new UI.Compoment.Table();
+        txtSearch = new button.Search();
+        jLabel1 = new javax.swing.JLabel();
+        btnThem = new button.Button();
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -469,6 +361,7 @@ public class QLNV extends javax.swing.JPanel {
 
         jLabel12.setText("Ngày sinh");
 
+        buttonGroup1.add(rdoNam);
         rdoNam.setText("Nam");
         rdoNam.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -476,6 +369,7 @@ public class QLNV extends javax.swing.JPanel {
             }
         });
 
+        buttonGroup1.add(rdoNu);
         rdoNu.setText("Nữ");
         rdoNu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -484,7 +378,7 @@ public class QLNV extends javax.swing.JPanel {
         });
 
         btnThem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/add-user.png"))); // NOI18N
-        btnThem1.setText("Thêm");
+        btnThem1.setText("Mới");
         btnThem1.setBorderColor(new java.awt.Color(0, 153, 153));
         btnThem1.setRadius(30);
         btnThem1.addActionListener(new java.awt.event.ActionListener() {
@@ -590,11 +484,10 @@ public class QLNV extends javax.swing.JPanel {
                             .addComponent(txtEmail)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addComponent(btnThem1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
@@ -710,6 +603,90 @@ public class QLNV extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Chi Tiet", jPanel2);
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "STT", "Mã nhân viên", "Tên nhân viên", "Chức vụ", "SĐT"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tableMousePressed(evt);
+            }
+        });
+        jScrollPane1.setViewportView(table);
+
+        txtSearch.setMinimumSize(new java.awt.Dimension(150, 40));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(206, 151, 32));
+        jLabel1.setText("Danh Sách Nhân Viên");
+
+        btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/add-user.png"))); // NOI18N
+        btnThem.setText("Thêm nhân viên");
+        btnThem.setBorderColor(new java.awt.Color(0, 102, 102));
+        btnThem.setMaximumSize(new java.awt.Dimension(150, 40));
+        btnThem.setMinimumSize(new java.awt.Dimension(150, 40));
+        btnThem.setRadius(30);
+        btnThem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnThemMousePressed(evt);
+            }
+        });
+        btnThem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(181, 181, 181)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 990, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10))))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(25, 25, 25)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                .addGap(10, 10, 10))
+        );
+
+        jTabbedPane1.addTab("Danh Sách", jPanel3);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -724,25 +701,48 @@ public class QLNV extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMousePressed
-        showChiTietForm();
-    }//GEN-LAST:event_tableMousePressed
-
-    private void btnThemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMousePressed
-        ChiTiet();
-    }//GEN-LAST:event_btnThemMousePressed
-
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
 
     }//GEN-LAST:event_btnThemActionPerformed
 
-    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtEmailActionPerformed
+    private void btnThemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMousePressed
 
-    private void txtSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSDTActionPerformed
+    }//GEN-LAST:event_btnThemMousePressed
+
+    private void tableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMousePressed
+        this.row = table.getSelectedColumn();
+        edit();
+    }//GEN-LAST:event_tableMousePressed
+
+    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
+        if (row >= 0) {
+            // Nếu row >= 0, tức là đang cập nhật
+            update();
+        } else {
+            // Ngược lại, đang thêm mới
+            insert();
+        }
+    }//GEN-LAST:event_btnLuuActionPerformed
+
+    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+        delete();
+    }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void btnThem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThem1ActionPerformed
+        clear();
+    }//GEN-LAST:event_btnThem1ActionPerformed
+
+    private void rdoNuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNuActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtSDTActionPerformed
+    }//GEN-LAST:event_rdoNuActionPerformed
+
+    private void rdoNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rdoNamActionPerformed
+
+    private void cbbChuVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbChuVuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbbChuVuActionPerformed
 
     private void lblAnhMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAnhMousePressed
         String path = selectAnh();
@@ -758,35 +758,13 @@ public class QLNV extends javax.swing.JPanel {
         lblAnh.setIcon(IMG.setLogo(selectedFile.getName()));
     }//GEN-LAST:event_lblAnhMousePressed
 
-    private void cbbChuVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbChuVuActionPerformed
+    private void txtSDTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSDTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbbChuVuActionPerformed
+    }//GEN-LAST:event_txtSDTActionPerformed
 
-    private void rdoNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNamActionPerformed
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_rdoNamActionPerformed
-
-    private void rdoNuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdoNuActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_rdoNuActionPerformed
-
-    private void btnThem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThem1ActionPerformed
-        insert();
-    }//GEN-LAST:event_btnThem1ActionPerformed
-
-    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        delete();
-    }//GEN-LAST:event_btnXoaActionPerformed
-
-    private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
-        if (row >= 0) {
-            // Editing mode
-            update();
-        } else {
-            // Adding mode
-            insert();
-        }
-    }//GEN-LAST:event_btnLuuActionPerformed
+    }//GEN-LAST:event_txtEmailActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -794,6 +772,7 @@ public class QLNV extends javax.swing.JPanel {
     private button.Button btnThem;
     private button.Button btnThem1;
     private button.Button btnXoa;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JComboBox<String> cbbChuVu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -806,7 +785,6 @@ public class QLNV extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

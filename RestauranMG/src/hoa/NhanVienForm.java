@@ -188,7 +188,7 @@ public class NhanVienForm extends javax.swing.JPanel {
                         .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
                 .addGap(10, 10, 10))
             .addGroup(layout.createSequentialGroup()
                 .addGap(181, 181, 181)
@@ -212,6 +212,8 @@ public class NhanVienForm extends javax.swing.JPanel {
 
     private void tableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMousePressed
         showChiTietForm();
+        
+        
     }//GEN-LAST:event_tableMousePressed
 
     private void btnThemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMousePressed
