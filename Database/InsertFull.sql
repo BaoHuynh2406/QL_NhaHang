@@ -44,9 +44,13 @@ INSERT INTO MenuCategories (CategoryName) VALUES
 
 -- Thêm dữ liệu mẫu cho bảng MenuItems
 INSERT INTO MenuItems (ItemName, ID_Category, Price, Photo) VALUES 
-(N'Bánh', 1, 8.99, 'item1.jpg'),
-('Bia SG', 2, 15.99, 'item2.jpg'),
-(N'Bò gát bếp', 3, 6.99, 'item3.jpg');
+(N'Test', 1, 899, 'muc-trung-chien-mam.jpg'),
+('Test', 2, 1599, 'lau-bo.jpg'),
+(N'Test', 3, 699, 'dau-hu-chien-don.jpg');
+
+Select * from MenuItems
+
+
 
 -- Thêm dữ liệu mẫu cho bảng MenuItemDetail
 INSERT INTO MenuItemDetail (ID_Item, ID_Product, Quantity) VALUES 

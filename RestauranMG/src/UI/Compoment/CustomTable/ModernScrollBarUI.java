@@ -1,4 +1,4 @@
-package UI.Compoment;
+package UI.Compoment.CustomTable;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

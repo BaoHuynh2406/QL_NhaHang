@@ -1,9 +1,8 @@
-package UI.Compoment;
+package UI.Compoment.CustomTable;
 
+import UI.Compoment.CustomTable.TableHeader;
 import java.awt.Color;
 import java.awt.Component;
-import UI.Compoment.ScrollBar;
-import UI.Compoment.SystemColor;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

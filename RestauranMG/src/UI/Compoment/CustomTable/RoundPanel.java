@@ -1,5 +1,6 @@
-package UI.Compoment;
+package UI.Compoment.CustomTable;
 
+import UI.Compoment.CustomTable.SystemColor;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

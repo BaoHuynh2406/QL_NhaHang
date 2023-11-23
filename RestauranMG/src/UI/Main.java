@@ -1,10 +1,10 @@
 
 package UI;
 
-import UI.Compoment.EventMenuSelected;
-import UI.Compoment.EventOrder;
-import UI.Compoment.EventTableSelected;
-import UI.Compoment.menu;
+import Controller.EventMenuSelected;
+import Controller.EventOrder;
+import Controller.EventTableSelected;
+import UI.Compoment.MainMenu.MainMenu;
 import UI.Form.Login;
 import UI.Form.OrderForm;
 import java.awt.Dimension;
@@ -41,13 +41,7 @@ import javax.swing.border.Border;
  * @author mtsst
  */
 public class Main extends javax.swing.JFrame {
-<<<<<<< HEAD
-   
-=======
-    private TableForm tableForm = new TableForm(); //Form Hiển thị các danh sách bàn
-    private QLNV nvForm = new QLNV(); //Form Hiển thị nhân viên
-    private OrderForm orderForm = new OrderForm(); //Form order
->>>>>>> 3085f6ce325e8598ac1d7f40a35c85fee5044597
+
     
     public Main() {
         //Full màn hình
@@ -267,7 +261,7 @@ public class Main extends javax.swing.JFrame {
         lblDate = new javax.swing.JLabel();
         lblClock = new javax.swing.JLabel();
         bg = new javax.swing.JPanel();
-        menu = new UI.Compoment.menu();
+        menu = new UI.Compoment.MainMenu.MainMenu();
         pnDashboard = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -544,7 +538,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel lbUserName;
     private javax.swing.JLabel lblClock;
     private javax.swing.JLabel lblDate;
-    private UI.Compoment.menu menu;
+    private UI.Compoment.MainMenu.MainMenu menu;
     private javax.swing.JPanel pnDashboard;
     // End of variables declaration//GEN-END:variables
     //Lấy độ dài và rộng của màn hình

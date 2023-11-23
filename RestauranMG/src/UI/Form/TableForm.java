@@ -9,7 +9,7 @@ import Dao.AreasDao;
 import Dao.procDao;
 import Entity.Areas;
 import Entity.Tables;
-import UI.Compoment.EventTableSelected;
+import Controller.EventTableSelected;
 import Utils.msg;
 import java.awt.Color;
 import java.awt.FlowLayout;

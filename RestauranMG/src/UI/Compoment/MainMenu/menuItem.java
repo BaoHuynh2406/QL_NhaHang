@@ -1,5 +1,5 @@
 
-package UI.Compoment;
+package UI.Compoment.MainMenu;
 
 import UI.Model.Model_Menu;
 import java.awt.Color;

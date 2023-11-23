@@ -305,7 +305,7 @@ public class QLNV extends javax.swing.JPanel {
         jSeparator3 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new UI.Compoment.Table();
+        table = new UI.Compoment.CustomTable.Table();
         txtSearch = new button.Search();
         jLabel1 = new javax.swing.JLabel();
         btnThem = new button.Button();
@@ -573,11 +573,8 @@ public class QLNV extends javax.swing.JPanel {
                                             .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(10, 10, 10)))))))
-<<<<<<< HEAD
                 .addContainerGap(137, Short.MAX_VALUE))
-=======
-                .addContainerGap(11, Short.MAX_VALUE))
->>>>>>> 3085f6ce325e8598ac1d7f40a35c85fee5044597
+
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -609,7 +606,7 @@ public class QLNV extends javax.swing.JPanel {
             .addGap(0, 1028, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
-<<<<<<< HEAD
+
                     .addGap(18, 18, 18)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(19, 19, 19)))
@@ -621,20 +618,6 @@ public class QLNV extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-=======
-                    .addGap(7, 7, 7)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(8, 8, 8)))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 432, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(29, 29, 29)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(30, 30, 30)))
->>>>>>> 3085f6ce325e8598ac1d7f40a35c85fee5044597
         );
 
         jTabbedPane1.addTab("Chi Tiet", jPanel2);
@@ -717,11 +700,9 @@ public class QLNV extends javax.swing.JPanel {
                     .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
                     .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
-<<<<<<< HEAD
+
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
-=======
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
->>>>>>> 3085f6ce325e8598ac1d7f40a35c85fee5044597
+
                 .addGap(10, 10, 10))
         );
 
@@ -861,7 +842,7 @@ public class QLNV extends javax.swing.JPanel {
     private javax.swing.JLabel lblDuongDan;
     private javax.swing.JRadioButton rdoNam;
     private javax.swing.JRadioButton rdoNu;
-    private UI.Compoment.Table table;
+    private UI.Compoment.CustomTable.Table table;
     private javax.swing.JTextArea txtDiaChi;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtMaNV;

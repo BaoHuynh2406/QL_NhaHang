@@ -4,19 +4,33 @@ public class MenuItems {
     private int ID_Item;
     private String ItemName;
     private int ID_Category;
-    private double Price;
+    private int Price;
     private String Photo;
+    private boolean Available;
 
-    public MenuItems(int ID_Item, String ItemName, int ID_Category, double Price, String Photo) {
+    public MenuItems(int ID_Item, String ItemName, int ID_Category, int Price, String Photo, boolean Available) {
         this.ID_Item = ID_Item;
         this.ItemName = ItemName;
         this.ID_Category = ID_Category;
         this.Price = Price;
         this.Photo = Photo;
+        this.Available = Available;
     }
 
+  
+
+    
     public MenuItems() {
     }
+
+    public boolean isAvailable() {
+        return Available;
+    }
+
+    public void setAvailable(boolean Available) {
+        this.Available = Available;
+    }
+    
     
     public int getID_Category() {
         return ID_Category;
@@ -42,11 +56,11 @@ public class MenuItems {
         this.ItemName = ItemName;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return Price;
     }
 
-    public void setPrice(double Price) {
+    public void setPrice(int Price) {
         this.Price = Price;
     }
 

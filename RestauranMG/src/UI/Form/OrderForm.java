@@ -1,4 +1,3 @@
-
 package UI.Form;
 
 import UI.Compoment.tableItem;
@@ -11,7 +10,11 @@ import Dao.procDao;
 import Entity.Areas;
 import Entity.MenuCategories;
 import Entity.Tables;
-import UI.Compoment.EventOrder;
+import Controller.EventOrder;
+import Dao.MenuItemsDao;
+import Entity.MenuItems;
+import UI.Compoment.MonAnItem;
+import UI.Model.Model_Item_Menu;
 import Utils.msg;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -28,6 +31,7 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.SwingWorker;
 
 public class OrderForm extends javax.swing.JPanel {
 
@@ -36,110 +40,94 @@ public class OrderForm extends javax.swing.JPanel {
     public void addEventOrder(EventOrder event) {
         this.event = event;
     }
-    
-    
-   TablesdDao table_DAO = new TablesdDao();
-   Tables tableSelected;
-   procDao proDao = new procDao();
-   MenuCategoriesDao loaiMenuDao = new MenuCategoriesDao();
-   int selectedLoai;
-   
-   
-   
+
+    TablesdDao table_DAO = new TablesdDao();
+    MenuItemsDao menu_Dao = new MenuItemsDao();
+    Tables tableSelected;
+    procDao proDao = new procDao();
+    MenuCategoriesDao loaiMenuDao = new MenuCategoriesDao();
+    int selectedLoai;
+
     public OrderForm() {
         initComponents();
+        ScroolTable.getVerticalScrollBar().setUnitIncrement(20); 
     }
-    
-    public void setTable(int ID_table){
+
+    public void setTable(int ID_table) {
         try {
-        tableSelected = table_DAO.selectById(ID_table);
-        txtTableName.setText("Bàn: "+tableSelected.getTableName());
-        fillLoaiMenu();
+            tableSelected = table_DAO.selectById(ID_table);
+            txtTableName.setText("Bàn: " + tableSelected.getTableName());
+            fillLoaiMenu();
         } catch (Exception e) {
             msg.Error("Bàn không hợp lệ");
         }
-        
+
     }
 
-    private void fillTable(int ID_area) {
+    private void fillItem(int ID_area) {
         PanelTable.removeAll();
-        PanelTable.revalidate();
-        PanelTable.repaint();
+       
+       
         //Cập nhật trạng thái của bàn
 
-        //Truy vấn tất cả và lấy thông tin cần thiết tên bàn,mã bàn, tổng tiền, số khách
-        List<Object[]> t = proDao.GetTableSummary(ID_area);
+        //Lấy toàn bộ menu
+        List<MenuItems> t = menu_Dao.selectCatory(ID_area);
         if (t == null || t.isEmpty()) {
             return;
         }
 
-        int numRows = t.size() / 5; // Số hàng cần thiết
-        int remainder = t.size() % 5; // Số item còn lại sau khi chia hết cho 5
+        int numRows = t.size() / 3; // Số hàng cần thiết
+        int remainder = t.size() % 3; // Số item còn lại sau khi chia hết cho 3
         int canThiet = numRows + (remainder > 0 ? 1 : 0);
-        PanelTable.setLayout(new GridLayout((canThiet > 5 ? canThiet : 5), 5, 20, 10)); // GridLayout với số hàng tính được, có thể cộng thêm 1 hàng nếu còn item thừa
-        for (Object[] row : t) {
-            tableItem item;
-            
-            int ID = (Integer) row[0];
-            String TableName = (String) row[1];
-            int total = 0, numGust = 0;
-            try {
-                total = (Integer) row[2];
-                
-            } catch (Exception e) {
-            }
-            try {
-                numGust = (Integer) row[3]; 
-            } catch (Exception e) {
-            }
-            if(row[3] == null){
-                 item = new tableItem(new Model_Table(ID, TableName));
+        PanelTable.setLayout(new GridLayout((canThiet > 3 ? canThiet : 3), 4, 20, 20)); // GridLayout với số hàng tính được, có thể cộng thêm 1 hàng nếu còn item thừa
+        for (MenuItems row : t) {
+            MonAnItem item;
+            if(row.isAvailable()){
+                item = new MonAnItem(new Model_Item_Menu(row.getItemName(), row.getID_Item()
+                                          ,row.getPrice() , row.getPhoto(), Model_Item_Menu.MenuType.AVAiLABLE));
             }else{
-                
-                item = new tableItem(new Model_Table(ID, TableName, total, numGust));
+                 item = new MonAnItem(new Model_Item_Menu(row.getItemName(), row.getID_Item()
+                                          ,row.getPrice() , row.getPhoto(), Model_Item_Menu.MenuType.UNAVAiLABLE));
             }
             // Bắt sự kiện
-            
+
             item.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    item.setBackground(new Color(255, 241, 190));
+                    item.setColor(new Color(245,255,135,200));
+                    item.setIcon("src/IMG/plus.png");
+                    PanelTable.repaint();
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    item.setColor();
+                   item.setColor(new Color(228, 253, 255, 200));
+                    item.setIcon("src/IMG/plus1.png");
+                    PanelTable.repaint();
                 }
 
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    msg.Info("Đang chọn bàn " + TableName + " Mã " + ID);
-                    System.out.println(item.getName());
+                  
                 }
-                
-                
+
             });
 
             PanelTable.add(item);
+            PanelTable.revalidate();
         }
 
         // Thêm các ô trống nếu còn dư item
-        if (t.size() < 25) {
-            for (int i = 0; i < 25 - t.size(); i++) {
+        if (t.size() < 12) {
+            for (int i = 0; i < 12 - t.size(); i++) {
                 PanelTable.add(new JLabel());
             }
         }
     }
 
-
-
-
-    
-    
     private List<JButton> buttons = new ArrayList<>();
 
     private void fillLoaiMenu() {
-
 
         pnLoaiMenu.removeAll();
         //Loại menu
@@ -147,7 +135,7 @@ public class OrderForm extends javax.swing.JPanel {
         List<MenuCategories> k = loaiMenuDao.selectAll();
         if (k == null) {
             return;
-        }  
+        }
         JButton b = new JButton("Tất cả");
         b.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         b.setName("0");
@@ -158,8 +146,6 @@ public class OrderForm extends javax.swing.JPanel {
             updateSelectLoai();
         });
 
-
-        
         for (MenuCategories lMenu : k) {
             JButton button = new JButton(lMenu.getCategoryName());
             button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -181,7 +167,9 @@ public class OrderForm extends javax.swing.JPanel {
             if (button.getName().equals(String.valueOf(selectedLoai))) {
                 button.setFont(new Font("Segoe UI", Font.BOLD, 14));
                 button.setForeground(new Color(22, 72, 99));
-//                fillTable(selectedLoai);
+
+                 fillItemInBackground(selectedLoai);
+                
             } else {
                 button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
                 button.setForeground(Color.BLACK);
@@ -189,7 +177,7 @@ public class OrderForm extends javax.swing.JPanel {
             }
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -391,4 +379,26 @@ public class OrderForm extends javax.swing.JPanel {
     private javax.swing.JTextField txtGustNum;
     private javax.swing.JButton txtTableName;
     // End of variables declaration//GEN-END:variables
+
+    private void fillItemInBackground(int ID_area) {
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                // Thực hiện công việc tải dữ liệu trong background
+                // Gọi hàm fillItem từ SwingWorker
+                fillItem(ID_area);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                // Cập nhật giao diện sau khi công việc hoàn thành
+                 PanelTable.revalidate();
+            }
+        };
+
+        worker.execute(); // Bắt đầu thực hiện công việc trong luồng phụ
+    }
+
+
 }

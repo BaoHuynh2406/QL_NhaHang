@@ -1,8 +1,9 @@
-package UI.Compoment;
+package UI.Compoment.MainMenu;
 
+import Controller.EventMenuSelected;
 import UI.Model.Model_Menu;
 
-public class menu extends javax.swing.JPanel {
+public class MainMenu extends javax.swing.JPanel {
 
     private EventMenuSelected event;
 
@@ -11,7 +12,7 @@ public class menu extends javax.swing.JPanel {
         listMenu1.addEventMenuSelected(event);
     }
 
-    public menu() {
+    public MainMenu() {
         initComponents();
         listMenu1.setOpaque(false);
     }
@@ -53,7 +54,7 @@ public class menu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        listMenu1 = new UI.Compoment.ListMenu<>();
+        listMenu1 = new UI.Compoment.MainMenu.ListMenu<>();
 
         setBackground(new java.awt.Color(155, 190, 200));
 
@@ -71,6 +72,6 @@ public class menu extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private UI.Compoment.ListMenu<String> listMenu1;
+    private UI.Compoment.MainMenu.ListMenu<String> listMenu1;
     // End of variables declaration//GEN-END:variables
 }

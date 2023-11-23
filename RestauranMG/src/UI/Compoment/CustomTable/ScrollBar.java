@@ -1,6 +1,6 @@
-package UI.Compoment;
+package UI.Compoment.CustomTable;
 
-import UI.Compoment.ModernScrollBarUI;
+import UI.Compoment.CustomTable.ModernScrollBarUI;
 import java.awt.Dimension;
 import javax.swing.JScrollBar;
 

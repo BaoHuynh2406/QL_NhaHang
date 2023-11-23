@@ -124,7 +124,7 @@ public class NhanVienForm extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        table = new UI.Compoment.Table();
+        table = new UI.Compoment.CustomTable.Table();
         txtSearch = new button.Search();
         jLabel1 = new javax.swing.JLabel();
         btnThem = new button.Button();
@@ -229,7 +229,7 @@ public class NhanVienForm extends javax.swing.JPanel {
     private button.Button btnThem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private UI.Compoment.Table table;
+    private UI.Compoment.CustomTable.Table table;
     private button.Search txtSearch;
     // End of variables declaration//GEN-END:variables
 }

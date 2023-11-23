@@ -1,5 +1,6 @@
-package UI.Compoment;
+package UI.Compoment.MainMenu;
 
+import Controller.EventMenuSelected;
 import UI.Model.Model_Menu;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;

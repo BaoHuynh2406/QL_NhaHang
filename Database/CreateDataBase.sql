@@ -71,6 +71,7 @@ CREATE TABLE MenuItems (
     ID_Category INT ,
     Price int not null,
     Photo nvarchar(50),
+	IsAvailable BIT default 1,
 	Foreign key (ID_Category) References MenuCategories(ID_Category)
 );
 
