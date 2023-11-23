@@ -12,9 +12,10 @@ public class TableHeader extends JLabel {
         super(text);
         setOpaque(true);
         setBackground(Color.WHITE);
-        setFont(new Font("sansserif", 1, 12));
+        setFont(new Font("sansserif", Font.BOLD, 12)); // Đặt kiểu chữ là đậm
         setForeground(new Color(102, 102, 102));
         setBorder(new EmptyBorder(10, 5, 10, 5));
+        setHorizontalAlignment(JLabel.CENTER); // Canh giữa văn bản trong Label
     }
 
     @Override

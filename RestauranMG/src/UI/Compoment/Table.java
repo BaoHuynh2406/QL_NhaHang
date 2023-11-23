@@ -24,12 +24,18 @@ public class Table extends JTable {
                 return header;
             }
         });
+        
+        // Thiết lập DefaultTableCellRenderer để canh giữa văn bản trong ô
         setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable jtable, Object o, boolean selected, boolean bln1, int i, int i1) {
                 Component com = super.getTableCellRendererComponent(jtable, o, selected, bln1, i, i1);
                 com.setBackground(Color.WHITE);
                 setBorder(noFocusBorder);
+                
+                // Thiết lập canh giữa văn bản trong ô
+                setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
+                
                 if (selected) {
                     com.setForeground(SystemColor.MAIN_COLOR_1);
                 } else {
@@ -43,15 +49,5 @@ public class Table extends JTable {
     public void addRow(Object[] row) {
         DefaultTableModel model = (DefaultTableModel) getModel();
         model.addRow(row);
-    }
-
-    public void fixTable(JScrollPane scroll) {
-        scroll.setBorder(null);
-        scroll.setVerticalScrollBar(new ScrollBar());
-        scroll.getVerticalScrollBar().setBackground(Color.WHITE);
-        scroll.getViewport().setBackground(Color.WHITE);
-        JPanel p = new JPanel();
-        p.setBackground(Color.WHITE);
-        scroll.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
     }
 }

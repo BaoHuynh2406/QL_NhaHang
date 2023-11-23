@@ -45,6 +45,7 @@ public class Search extends JTextField {
     }
 
     private Color backgroundColor = Color.WHITE;
+    private Color borderColor = Color.BLACK;
     private Color animationColor = new Color(3, 175, 255);
     private final Icon iconSearch;
     private final Icon iconClose;
@@ -151,6 +152,9 @@ public class Search extends JTextField {
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR); //  For smooth image
         g2.setColor(backgroundColor);
         g2.fillRoundRect(0, 0, width, height, height, height);
+        g2.setColor(borderColor);
+        g2.drawRoundRect(0, 0, width - 1, height - 1, height, height); // Add this line to draw the border
+
         super.paintComponent(grphcs);
         //  Create Button
         int marginButton = 5;
@@ -232,4 +236,5 @@ public class Search extends JTextField {
     public void addEvent(EventTextField event) {
         this.event = event;
     }
+    
 }

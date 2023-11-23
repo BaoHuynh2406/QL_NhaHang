@@ -23,34 +23,40 @@ public class NhanVienForm extends javax.swing.JPanel {
         fillTable();
     }
     // loading
-    private void loading(){
-        txtSearch.addEvent(new EventTextField() {
-            @Override
-            public void onPressed(EventCallBack call) {
-                try {
-                    for (int i = 1; i <= 100; i++) {
-                        lbl.setText("Loading " + i);
-                        Thread.sleep(10);
-                    }
-                    // Sau khi tải xong, thực hiện tìm kiếm theo tên
+    private void loading() {
+    txtSearch.addEvent(new EventTextField() {
+        @Override
+        public void onPressed(EventCallBack call) {
+            try {
+                // Kiểm tra xem đã nhập thông tin tìm kiếm chưa
+                if (txtSearch.getText().isEmpty()) {
+                    msg.Info("Vui lòng nhập thông tin tìm kiếm");
+                } else {
+                    // Giả sử bạn muốn delay 2 giây để simulating loading
+                    Thread.sleep(2000);
+
+                    // Thực hiện tìm kiếm theo tên
                     searchByName(txtSearch.getText());
 
-                    //kiểm tra kết quả
                     if (table.getRowCount() == 0) {
                         msg.Info("Không tìm thấy thông tin");
                     }
-                    call.done();
-                } catch (Exception e) {
-                    System.err.println(e);
                 }
-            }
 
-            @Override
-            public void onCancel() {
-
+                call.done();
+            } catch (Exception e) {
+                System.err.println(e);
             }
-        });
-    }
+        }
+
+        @Override
+        public void onCancel() {
+            // Không có hành động cần thiết cho onCancel
+        }
+    });
+}
+
+
     // fill dữ liệu
     public void fillTable(){
         model.setRowCount(0);
@@ -84,7 +90,7 @@ public class NhanVienForm extends javax.swing.JPanel {
     }
 
     public void ChiTiet(){
-        ChiTietNhanVienForm chiTietForm = new ChiTietNhanVienForm();
+        NVChiTiet chiTietForm = new NVChiTiet();
         chiTietForm.setVisible(true);
     }
     
@@ -100,8 +106,8 @@ public class NhanVienForm extends javax.swing.JPanel {
             // Lấy thông tin nhân viên từ cơ sở dữ liệu hoặc danh sách đã có
             Employees selectedEmployee = dao.selectById(idEmployee);
 
-            // Hiển thị form ChiTiet và truyền thông tin
-            ChiTietNhanVienForm chiTietForm = new ChiTietNhanVienForm();
+            // Hiển thị form NVChiTiet và truyền thông tin
+            NVChiTiet chiTietForm = new NVChiTiet();
             chiTietForm.setForm(selectedEmployee);
             chiTietForm.setVisible(true);
         } else {
@@ -116,7 +122,6 @@ public class NhanVienForm extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new UI.Compoment.Table();
         txtSearch = new button.Search();
-        lbl = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         btnThem = new button.Button();
 
@@ -147,17 +152,13 @@ public class NhanVienForm extends javax.swing.JPanel {
 
         txtSearch.setMinimumSize(new java.awt.Dimension(150, 40));
 
-        lbl.setFont(new java.awt.Font("Segoe UI", 2, 8)); // NOI18N
-        lbl.setForeground(new java.awt.Color(165, 112, 112));
-        lbl.setText("Loading ... ");
-
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(206, 151, 32));
         jLabel1.setText("Danh Sách Nhân Viên");
 
         btnThem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/add-user.png"))); // NOI18N
         btnThem.setText("Thêm nhân viên");
-        btnThem.setBorderColor(new java.awt.Color(255, 255, 255));
+        btnThem.setBorderColor(new java.awt.Color(0, 102, 102));
         btnThem.setMaximumSize(new java.awt.Dimension(150, 40));
         btnThem.setMinimumSize(new java.awt.Dimension(150, 40));
         btnThem.setRadius(30);
@@ -183,16 +184,11 @@ public class NhanVienForm extends javax.swing.JPanel {
                         .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 920, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE))
                 .addGap(10, 10, 10))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(181, 181, 181)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(lbl, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(181, 181, 181)
+                .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -200,9 +196,7 @@ public class NhanVienForm extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(8, 8, 8)
-                .addComponent(lbl)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
                     .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
@@ -217,11 +211,11 @@ public class NhanVienForm extends javax.swing.JPanel {
     }//GEN-LAST:event_tableMousePressed
 
     private void btnThemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMousePressed
-        ChiTiet();
+
     }//GEN-LAST:event_btnThemMousePressed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        // TODO add your handling code here:
+        ChiTiet();
     }//GEN-LAST:event_btnThemActionPerformed
 
 
@@ -229,7 +223,6 @@ public class NhanVienForm extends javax.swing.JPanel {
     private button.Button btnThem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbl;
     private UI.Compoment.Table table;
     private button.Search txtSearch;
     // End of variables declaration//GEN-END:variables
