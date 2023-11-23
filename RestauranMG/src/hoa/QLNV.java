@@ -381,6 +381,11 @@ public class QLNV extends javax.swing.JPanel {
         btnThem1.setText("Mới");
         btnThem1.setBorderColor(new java.awt.Color(0, 153, 153));
         btnThem1.setRadius(30);
+        btnThem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnThem1MousePressed(evt);
+            }
+        });
         btnThem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnThem1ActionPerformed(evt);
@@ -391,6 +396,11 @@ public class QLNV extends javax.swing.JPanel {
         btnXoa.setText("Xóa");
         btnXoa.setBorderColor(new java.awt.Color(0, 153, 153));
         btnXoa.setRadius(30);
+        btnXoa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnXoaMousePressed(evt);
+            }
+        });
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnXoaActionPerformed(evt);
@@ -401,6 +411,11 @@ public class QLNV extends javax.swing.JPanel {
         btnLuu.setText("Lưu");
         btnLuu.setBorderColor(new java.awt.Color(0, 153, 153));
         btnLuu.setRadius(30);
+        btnLuu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnLuuMousePressed(evt);
+            }
+        });
         btnLuu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLuuActionPerformed(evt);
@@ -765,6 +780,26 @@ public class QLNV extends javax.swing.JPanel {
     private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEmailActionPerformed
+
+    private void btnThem1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThem1MousePressed
+        clear();
+    }//GEN-LAST:event_btnThem1MousePressed
+
+    private void btnXoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMousePressed
+        // TODO add your handling code here:
+        delete();
+    }//GEN-LAST:event_btnXoaMousePressed
+
+    private void btnLuuMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMousePressed
+        // TODO add your handling code here:
+        if (row >= 0) {
+            // Editing mode
+            update();
+        } else {
+            // Adding mode
+            insert();
+        }
+    }//GEN-LAST:event_btnLuuMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

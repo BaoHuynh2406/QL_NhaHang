@@ -446,6 +446,7 @@
                         <Property name="radius" type="int" value="30"/>
                       </Properties>
                       <Events>
+                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnThem1MousePressed"/>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnThem1ActionPerformed"/>
                       </Events>
                     </Component>
@@ -461,6 +462,7 @@
                         <Property name="radius" type="int" value="30"/>
                       </Properties>
                       <Events>
+                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnXoaMousePressed"/>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXoaActionPerformed"/>
                       </Events>
                     </Component>
@@ -476,6 +478,7 @@
                         <Property name="radius" type="int" value="30"/>
                       </Properties>
                       <Events>
+                        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnLuuMousePressed"/>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLuuActionPerformed"/>
                       </Events>
                     </Component>
