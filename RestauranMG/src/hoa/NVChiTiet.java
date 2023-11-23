@@ -1,13 +1,17 @@
 
 package hoa;
 import Dao.EmployeesDao;
+import Dao.RoleDao;
 import Entity.Employees;
+import Entity.Role;
 import Utils.Auth;
 import Utils.IMG;
 import Utils.XDate;
 import Utils.msg;
 import java.io.File;
 import java.util.Date;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -16,8 +20,10 @@ public class NVChiTiet extends javax.swing.JPanel {
     
     private int row = -1;
     EmployeesDao dao = new EmployeesDao();
+    RoleDao cvdao = new RoleDao();
     public NVChiTiet() {
         initComponents();
+        fillComboBoxChuyenDe();
     }
 
     // chọn ảnh
@@ -38,11 +44,19 @@ public class NVChiTiet extends javax.swing.JPanel {
             return null;
         }
     }
-    
+    //fill comboBox
+    public void fillComboBoxChuyenDe(){
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cbbChuVu.getModel();
+        model.removeAllElements();
+        List<Role> list = cvdao.selectAll();
+        for(Role cv : list ){
+            model.addElement(cv);
+        }
+    }
     public void setForm(Employees employees) {
         txtMaNV.setText(employees.getID_Employee() + "");
         txtTenNV.setText(employees.getFullName());
-//        txtPass.setText(employees.getPassword());
+        txtPass.setText(employees.getPassword());
         rdoNam.setSelected(employees.isSex());
         rdoNu.setSelected(!employees.isSex());
 
@@ -108,6 +122,7 @@ public class NVChiTiet extends javax.swing.JPanel {
         try {
             dao.insert(employees);
             this.clear();
+            this.row = -1; // Cập nhật giá trị của row
             msg.Info("Thêm mới thành công!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -119,6 +134,7 @@ public class NVChiTiet extends javax.swing.JPanel {
         Employees employees = this.getForm();
         try {
             dao.update(employees);
+            this.row = -1; // Cập nhật giá trị của row
             msg.Info("Cập nhật thành công!");
         } catch (Exception e) {
             msg.Error("Có lỗi trong quá trình cập nhật nhân viên!");
@@ -141,6 +157,7 @@ public class NVChiTiet extends javax.swing.JPanel {
             System.out.println("delete " + manv);
             dao.delete(manv);
             this.clear();
+            this.row = -1; // Cập nhật giá trị của row
             msg.Info("Đã xóa");
         } catch (Exception e) {
             System.out.println(e.getMessage());

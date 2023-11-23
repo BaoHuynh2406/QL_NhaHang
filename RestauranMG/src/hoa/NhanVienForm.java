@@ -16,6 +16,7 @@ public class NhanVienForm extends javax.swing.JPanel {
     EmployeesDao dao = new EmployeesDao();
     int row = 0;
     DefaultTableModel model;
+    
     public NhanVienForm() {
         initComponents();
         model = (DefaultTableModel) table.getModel();
@@ -90,31 +91,40 @@ public class NhanVienForm extends javax.swing.JPanel {
     }
 
     public void ChiTiet(){
+        System.out.println("ChiTiet() is called.");
         NVChiTiet chiTietForm = new NVChiTiet();
-        chiTietForm.setVisible(true);
+
     }
     
     private void showChiTietForm() {
+        System.out.println("showChiTietForm() is called.");
+
         // Lấy chỉ số dòng được chọn
         int selectedRow = table.getSelectedRow();
+        System.out.println("Selected Row: " + selectedRow);
 
         // Kiểm tra xem có dòng nào được chọn không
         if (selectedRow != -1) {
             // Lấy thông tin từ dòng được chọn
             int idEmployee = (int) table.getValueAt(selectedRow, 1); // Giả sử cột 1 là Mã nhân viên
+            System.out.println("ID Employee: " + idEmployee);
 
             // Lấy thông tin nhân viên từ cơ sở dữ liệu hoặc danh sách đã có
             Employees selectedEmployee = dao.selectById(idEmployee);
+            System.out.println("Selected Employee: " + selectedEmployee);
 
             // Hiển thị form NVChiTiet và truyền thông tin
             NVChiTiet chiTietForm = new NVChiTiet();
             chiTietForm.setForm(selectedEmployee);
-            chiTietForm.setVisible(true);
+
         } else {
             // Thông báo nếu không có dòng nào được chọn
             msg.Info("Vui lòng chọn một nhân viên trước khi xem chi tiết.");
         }
     }
+
+
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -211,11 +221,11 @@ public class NhanVienForm extends javax.swing.JPanel {
     }//GEN-LAST:event_tableMousePressed
 
     private void btnThemMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMousePressed
-
+        ChiTiet();
     }//GEN-LAST:event_btnThemMousePressed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        ChiTiet();
+        
     }//GEN-LAST:event_btnThemActionPerformed
 
 

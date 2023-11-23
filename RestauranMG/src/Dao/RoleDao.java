@@ -62,5 +62,4 @@ public class RoleDao extends RestauranDao<Role, String>{
         }
         return  list;
     }
-    
 }
