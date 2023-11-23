@@ -357,6 +357,7 @@ public class Login extends javax.swing.JDialog {
         this.setVisible(false);
        ForgetPass f = new ForgetPass(new javax.swing.JFrame(), true);
        f.setVisible(true);
+       this.setVisible(true);
     }//GEN-LAST:event_btnForgetPassMousePressed
 
     /**

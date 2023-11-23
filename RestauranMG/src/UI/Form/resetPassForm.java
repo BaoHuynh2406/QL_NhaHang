@@ -6,6 +6,7 @@ import Entity.Employees;
 import Utils.Encryption;
 import Utils.Validate;
 import Utils.msg;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
@@ -99,6 +100,11 @@ public class resetPassForm extends javax.swing.JPanel {
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mật khẩu mới", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
 
         txtPass.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtPassMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -120,6 +126,11 @@ public class resetPassForm extends javax.swing.JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Mã xác nhận 6 số", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
 
         txtCode.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtCode.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtCodeMousePressed(evt);
+            }
+        });
         txtCode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCodeActionPerformed(evt);
@@ -212,7 +223,8 @@ public class resetPassForm extends javax.swing.JPanel {
     }//GEN-LAST:event_txtCodeActionPerformed
 
     private void btnBackMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBackMousePressed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        d.setVisible(true);
     }//GEN-LAST:event_btnBackMousePressed
 
     private void btnCloseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMousePressed
@@ -234,6 +246,14 @@ public class resetPassForm extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnSupmitActionPerformed
+
+    private void txtCodeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtCodeMousePressed
+        txtCode.setBackground(Color.white);
+    }//GEN-LAST:event_txtCodeMousePressed
+
+    private void txtPassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPassMousePressed
+         txtPass.setBackground(Color.white);
+    }//GEN-LAST:event_txtPassMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

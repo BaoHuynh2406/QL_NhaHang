@@ -133,6 +133,11 @@ public class ForgetPass extends javax.swing.JDialog {
 
         txtUserName.setBackground(new java.awt.Color(229, 229, 229));
         txtUserName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtUserName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtUserNameMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -155,6 +160,11 @@ public class ForgetPass extends javax.swing.JDialog {
 
         txtEmail.setBackground(new java.awt.Color(229, 229, 229));
         txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtEmail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtEmailMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -271,7 +281,7 @@ public class ForgetPass extends javax.swing.JDialog {
     }//GEN-LAST:event_btnCloseMousePressed
 
     private void btnBackMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBackMousePressed
-        // TODO add your handling code here:
+        this.setVisible(false);
     }//GEN-LAST:event_btnBackMousePressed
 
     private void btnSupmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSupmitActionPerformed
@@ -279,6 +289,14 @@ public class ForgetPass extends javax.swing.JDialog {
         submit();
 
     }//GEN-LAST:event_btnSupmitActionPerformed
+
+    private void txtUserNameMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUserNameMousePressed
+         txtUserName.setBackground(Color.white);
+    }//GEN-LAST:event_txtUserNameMousePressed
+
+    private void txtEmailMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtEmailMousePressed
+        txtEmail.setBackground(Color.white);
+    }//GEN-LAST:event_txtEmailMousePressed
 
     /**
      * @param args the command line arguments
