@@ -1,5 +1,5 @@
 ﻿use restaurantData
-
+SELECT * FROM Role
 -- Thêm dữ liệu mẫu cho bảng Role
 insert into Role VALUES ('MG', N'Quản Lý');
 insert into Role VALUES ('SV', N'Phục vụ');
@@ -8,7 +8,7 @@ insert into Role VALUES ('KS', N'Bếp');
 go
 
 
-select * FROM Employees
+select * FROM Employees where ID_Employee = 100000
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Admin', 'admin123', 'huynhbaomts2004@gmail.com', 'MG',1,'2004-06-24','0388319013');
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Bé Hoa', 'admin123', 'huynhbaomts2004@gmail.com', 'SV',1,'2004-06-24','0388319013');
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Bé Bò', 'admin123', 'huynhbaomts2004@gmail.com', 'KS',1,'2004-06-24','0388319013');

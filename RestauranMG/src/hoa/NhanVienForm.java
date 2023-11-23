@@ -56,8 +56,6 @@ public class NhanVienForm extends javax.swing.JPanel {
         }
     });
 }
-
-
     // fill dữ liệu
     public void fillTable(){
         model.setRowCount(0);
@@ -90,15 +88,13 @@ public class NhanVienForm extends javax.swing.JPanel {
         sorter.setRowFilter(filter);
     }
 
-    public void ChiTiet(){
-        System.out.println("ChiTiet() is called.");
+    public void ChiTiet(){   
         NVChiTiet chiTietForm = new NVChiTiet();
-
+        chiTietForm.setVisible(true);
+        System.out.println("ChiTiet() is called.");
     }
     
     private void showChiTietForm() {
-        System.out.println("showChiTietForm() is called.");
-
         // Lấy chỉ số dòng được chọn
         int selectedRow = table.getSelectedRow();
         System.out.println("Selected Row: " + selectedRow);
@@ -106,25 +102,23 @@ public class NhanVienForm extends javax.swing.JPanel {
         // Kiểm tra xem có dòng nào được chọn không
         if (selectedRow != -1) {
             // Lấy thông tin từ dòng được chọn
-            int idEmployee = (int) table.getValueAt(selectedRow, 1); // Giả sử cột 1 là Mã nhân viên
-            System.out.println("ID Employee: " + idEmployee);
+            int id = (int) table.getValueAt(selectedRow, 1);
+            System.out.println("ID Employee: " + id);
 
             // Lấy thông tin nhân viên từ cơ sở dữ liệu hoặc danh sách đã có
-            Employees selectedEmployee = dao.selectById(idEmployee);
+            Employees selectedEmployee = dao.selectById(id);
             System.out.println("Selected Employee: " + selectedEmployee);
 
             // Hiển thị form NVChiTiet và truyền thông tin
             NVChiTiet chiTietForm = new NVChiTiet();
             chiTietForm.setForm(selectedEmployee);
+            chiTietForm.setVisible(true);
 
         } else {
             // Thông báo nếu không có dòng nào được chọn
             msg.Info("Vui lòng chọn một nhân viên trước khi xem chi tiết.");
         }
     }
-
-
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
