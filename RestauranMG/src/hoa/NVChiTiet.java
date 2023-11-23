@@ -18,7 +18,7 @@ import javax.swing.table.DefaultTableModel;
 public class NVChiTiet extends javax.swing.JPanel {
     DefaultTableModel model;
     
-    private int row = -1;
+    private int row = 0;
     EmployeesDao dao = new EmployeesDao();
     RoleDao cvdao = new RoleDao();
     public NVChiTiet() {
