@@ -148,7 +148,8 @@ public class QLNV extends javax.swing.JPanel {
         txtSDT.setText(employees.getPhoneNumber());
         txtEmail.setText(employees.getEmail());
         txtDiaChi.setText(employees.getAddress());
-        cbbChuVu.setToolTipText(employees.getID_role());
+        String defaultRole = "MG"; // Giả sử "MG" là mã chức vụ mặc định
+        cbbChuVu.setSelectedItem(defaultRole);
 
         String path = employees.getPhoto();
         System.out.println(path);
@@ -212,6 +213,9 @@ public class QLNV extends javax.swing.JPanel {
         txtEmail.setText("");
         lblDuongDan.setText("Chưa chọn ảnh!");
         lblAnh.setIcon(null);
+        String defaultRole = "MG"; // Giả sử "MG" là mã chức vụ mặc định
+        cbbChuVu.setSelectedItem(defaultRole);
+
         // Cập nhật trạng thái
         updateStatus();
     }
@@ -305,6 +309,8 @@ public class QLNV extends javax.swing.JPanel {
         txtSearch = new button.Search();
         jLabel1 = new javax.swing.JLabel();
         btnThem = new button.Button();
+
+        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -567,7 +573,7 @@ public class QLNV extends javax.swing.JPanel {
                                             .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(10, 10, 10)))))))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(11, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -602,18 +608,18 @@ public class QLNV extends javax.swing.JPanel {
             .addGap(0, 1006, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(7, 7, 7)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(8, 8, 8)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 435, Short.MAX_VALUE)
+            .addGap(0, 432, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(29, 29, 29)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(30, 30, 30)))
         );
 
         jTabbedPane1.addTab("Chi Tiet", jPanel2);
@@ -696,7 +702,7 @@ public class QLNV extends javax.swing.JPanel {
                     .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
                     .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                 .addGap(10, 10, 10)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 309, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
                 .addGap(10, 10, 10))
         );
 

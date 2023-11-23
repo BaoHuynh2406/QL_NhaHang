@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import Utils.IMG;
 import Utils.msg;
+import hoa.QLNV;
 import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -40,7 +41,7 @@ import javax.swing.border.Border;
  */
 public class Main extends javax.swing.JFrame {
     private TableForm tableForm = new TableForm(); //Form Hiển thị các danh sách bàn
-    private NhanVienForm nvForm = new NhanVienForm(); //Form Hiển thị nhân viên
+    private QLNV nvForm = new QLNV(); //Form Hiển thị nhân viên
     private OrderForm orderForm = new OrderForm(); //Form order
     
     public Main() {
