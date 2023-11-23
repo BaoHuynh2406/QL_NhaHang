@@ -2,8 +2,10 @@
 package UI;
 
 import UI.Compoment.EventMenuSelected;
+import UI.Compoment.EventTableSelected;
 import UI.Compoment.menu;
 import UI.Form.Login;
+import UI.Form.OrderForm;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
@@ -39,6 +41,7 @@ import javax.swing.border.Border;
 public class Main extends javax.swing.JFrame {
     private TableForm tableForm = new TableForm(); //Form Hiển thị các danh sách bàn
     private NhanVienForm nvForm = new NhanVienForm(); //Form Hiển thị nhân viên
+    private OrderForm orderForm = new OrderForm(); //Form order
     
     public Main() {
         //Full màn hình
@@ -194,6 +197,22 @@ public class Main extends javax.swing.JFrame {
     public void formOrder(){
         pnDashboard.removeAll();
         pnDashboard.add(tableForm, BorderLayout.CENTER);
+        pnDashboard.repaint();
+        pnDashboard.revalidate();
+        
+       tableForm.addEventTableSelected(new EventTableSelected() {
+            @Override
+            public void selected(int index) {
+                setFormOrder(index);
+            }
+       });
+    }
+    
+    
+    private void setFormOrder(int ID){
+        pnDashboard.removeAll();
+        orderForm.setTable(ID);
+        pnDashboard.add(orderForm,BorderLayout.CENTER);
         pnDashboard.repaint();
         pnDashboard.revalidate();
     }

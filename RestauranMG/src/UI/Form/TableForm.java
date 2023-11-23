@@ -9,6 +9,7 @@ import Dao.AreasDao;
 import Dao.procDao;
 import Entity.Areas;
 import Entity.Tables;
+import UI.Compoment.EventTableSelected;
 import Utils.msg;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -27,7 +28,14 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 public class TableForm extends javax.swing.JPanel {
+     private EventTableSelected event;
 
+    public void addEventTableSelected(EventTableSelected event) {
+        this.event = event;
+    }
+    
+    
+    
    TablesdDao table_DAO = new TablesdDao();
    procDao proDao = new procDao();
    AreasDao areas_DAO = new AreasDao();
@@ -90,8 +98,7 @@ public class TableForm extends javax.swing.JPanel {
 
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    msg.Info("Đang chọn bàn " + TableName + " Mã " + ID);
-                    System.out.println(item.getName());
+                    event.selected(ID);
                 }
                 
                 
