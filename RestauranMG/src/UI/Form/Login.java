@@ -34,7 +34,7 @@ public class Login extends javax.swing.JDialog {
         }
         
         
-        //Bắt sự kiện nút Full
+        //Bắt sự kiện nút exit
         btnClose.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -253,6 +253,11 @@ public class Login extends javax.swing.JDialog {
         btnForgetPass.setForeground(new java.awt.Color(255, 255, 255));
         btnForgetPass.setText("Quên mật khẩu ?");
         btnForgetPass.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnForgetPass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btnForgetPassMousePressed(evt);
+            }
+        });
 
         rdSavePass.setBackground(new java.awt.Color(0, 102, 102));
         rdSavePass.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
@@ -347,6 +352,12 @@ public class Login extends javax.swing.JDialog {
     private void btnCloseMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCloseMousePressed
         System.exit(0);
     }//GEN-LAST:event_btnCloseMousePressed
+
+    private void btnForgetPassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnForgetPassMousePressed
+        this.setVisible(false);
+       ForgetPass f = new ForgetPass(new javax.swing.JFrame(), true);
+       f.setVisible(true);
+    }//GEN-LAST:event_btnForgetPassMousePressed
 
     /**
      * @param args the command line arguments

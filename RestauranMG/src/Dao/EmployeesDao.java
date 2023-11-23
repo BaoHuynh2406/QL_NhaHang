@@ -33,7 +33,6 @@ public class EmployeesDao extends RestauranDao<Employees, Integer>{
     @Override
     public void update(Employees entity) {
         jdbc.update(UPDATE_ALL,
-                entity.getID_Employee(),
                 entity.getFullName(),
                 entity.getPassword(),
                 entity.isSex(),
@@ -42,7 +41,8 @@ public class EmployeesDao extends RestauranDao<Employees, Integer>{
                 entity.getEmail(),
                 entity.getAddress(),
                 entity.getID_role(),
-                entity.getPhoto());
+                entity.getPhoto(),
+                entity.getID_Employee());
     }
 
     @Override
