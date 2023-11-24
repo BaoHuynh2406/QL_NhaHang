@@ -24,12 +24,14 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" attributes="0">
                       <Component id="txtSearch" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="button1" min="-2" pref="70" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnThem" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jScrollPane1" pref="620" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
           </Group>
@@ -46,12 +48,18 @@
               <EmptySpace min="-2" max="-2" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="txtSearch" alignment="3" pref="43" max="32767" attributes="0"/>
-                  <Component id="btnThem" alignment="3" pref="40" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                      <Component id="button1" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtSearch" alignment="3" pref="43" max="32767" attributes="0"/>
+                      <Component id="btnThem" alignment="3" pref="40" max="32767" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="297" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="296" max="32767" attributes="0"/>
               <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -128,6 +136,17 @@
         <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnThemMousePressed"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnThemActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="button.Button" name="button1">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/IMG/audio.png"/>
+        </Property>
+        <Property name="borderColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="33" green="33" red="33" type="rgb"/>
+        </Property>
+        <Property name="radius" type="int" value="30"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

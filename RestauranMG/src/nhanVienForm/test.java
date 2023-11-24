@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package hoa;
+package nhanVienForm;
 
 /**
  *
@@ -26,7 +26,7 @@ public class test extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        qLNV1 = new hoa.QLNV();
+        qLNV1 = new nhanVienForm.QLNV();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,6 +86,6 @@ public class test extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private hoa.QLNV qLNV1;
+    private nhanVienForm.QLNV qLNV1;
     // End of variables declaration//GEN-END:variables
 }
