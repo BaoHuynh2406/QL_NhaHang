@@ -45,19 +45,13 @@ public class QLNV extends javax.swing.JPanel {
             public void onPressed(EventCallBack call) {
                 try {
                     // Kiểm tra xem đã nhập thông tin tìm kiếm chưa
-                    if (txtSearch.getText().isEmpty()) {
-                        msg.Info("Vui lòng nhập thông tin tìm kiếm");
-                    } else {
-                        // Giả sử bạn muốn delay 2 giây để simulating loading
-                        Thread.sleep(2000);
 
-                        // Thực hiện tìm kiếm theo tên
-                        searchByName(txtSearch.getText());
+                    // Giả sử bạn muốn delay 2 giây để simulating loading
+                    Thread.sleep(500);
 
-                        if (table.getRowCount() == 0) {
-                            msg.Info("Không tìm thấy thông tin");
-                        }
-                    }
+                    // Thực hiện tìm kiếm theo tên
+                    
+                    fillTable(txtSearch.getText());
 
                     call.done();
                 } catch (InterruptedException e) {
@@ -96,17 +90,31 @@ public class QLNV extends javax.swing.JPanel {
             msg.Error("Có lỗi trong quá trình truy xuất dữ liệu!");
         }
     }
+    
+    // fill dữ liệu
+    public void fillTable(String key) {
+        model.setRowCount(0);
+        try {
+            List<Employees> list = dao.Search(key);
+            int i = 1;
+            for (Employees nv : list) {
+                Object[] row = {i,
+                    nv.getID_Employee(),
+                    nv.getFullName(),
+                    nv.getID_role(),
+                    nv.getPhoneNumber()};
+                model.addRow(row);
+                i++;
+            }
 
-    // search theo ten và ký 1 ký tự có trong đó
-    private void searchByName(String name) {
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-        table.setRowSorter(sorter);
-
-        // Thiết lập bộ lọc để tìm kiếm theo tên
-        RowFilter<DefaultTableModel, Object> filter = RowFilter.regexFilter("(?i)" + name, 2);
-        sorter.setRowFilter(filter);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            msg.Error("Có lỗi trong quá trình truy xuất dữ liệu!");
+        }
     }
+
+
+   
 
     // chọn ảnh
     public String selectAnh() {

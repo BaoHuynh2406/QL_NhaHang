@@ -63,6 +63,10 @@ public class EmployeesDao extends RestauranDao<Employees, Integer> {
                 entity.getID_Employee());
     }
 
+    public List<Employees> Search(String key){
+        String sql = "select * from Employees where ID_Employee like ? OR FullName like ?";
+        return selectBySql(sql, "%"+key+"%","%"+key+"%");
+    }
     public void updateNotPass(Employees entity) {
         jdbc.update(UPDATE_Not_Pass,
                 entity.getFullName(),
