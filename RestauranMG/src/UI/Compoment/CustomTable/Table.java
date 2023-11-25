@@ -51,8 +51,7 @@ public class Table extends JTable {
                 return com;
             }
         });
-
-        
+   
     }
 
     public void addRow(Object[] row) {
