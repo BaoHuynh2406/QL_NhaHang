@@ -10,6 +10,7 @@ import Utils.XDate;
 import Utils.msg;
 import button.EventCallBack;
 import button.EventTextField;
+import java.awt.Color;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
@@ -121,6 +122,9 @@ public class QLNV extends javax.swing.JPanel {
     // chọn ảnh
     public String selectAnh() {
         JFileChooser fileChooser = new JFileChooser();
+        // Đặt đường dẫn mặc định khi mở hộp thoại chọn tệp
+        File defaultDirectory = new File("D:/Photos");
+        fileChooser.setCurrentDirectory(defaultDirectory);
         //Bộ lọc
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Hình ảnh", "png", "jpg");
         fileChooser.setFileFilter(filter);
@@ -136,6 +140,7 @@ public class QLNV extends javax.swing.JPanel {
             return null;
         }
     }
+
 
     //fill comboBox
     public void fillComboBox() {
@@ -229,12 +234,16 @@ public class QLNV extends javax.swing.JPanel {
     }
 
     public void insert() {
+         if(Validate()){
+            return;
+        }
         Employees employees = getForm();
         try {
             dao.insert(employees);
             clear();
             row = -1; // Cập nhật giá trị của row
             msg.Info("Thêm mới thành công!");
+            fillTable();
         } catch (Exception e) {
             System.out.println("-> "+e.getMessage());
             msg.Error("Có lỗi trong quá trình thêm mới nhân viên!");
@@ -248,15 +257,18 @@ public class QLNV extends javax.swing.JPanel {
                 && Validate.isPhoneNumber(txtSDT, txtSDT.getText())
                 && Validate.isEmail(txtEmail, txtEmail.getText()))
                  {
-            return true;
+            return false;
         } if(!new String(txtPass.getPassword()).isEmpty()) {
             if (Validate.isLength(txtPass, new String(txtPass.getPassword()), 6, "Mật khẩu")) {  
+                return false;
             }
         }
-        return false;
+        return true;
     }
     public void update() {
-
+        if(Validate()){
+            return;
+        }
         Employees employees = getForm();
         try {
             if (employees.getPassword().isEmpty()) {
@@ -408,11 +420,11 @@ public class QLNV extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1400, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtSearch, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE)
-                        .addGap(442, 442, 442)
+                        .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(17, 17, 17))
         );
@@ -440,6 +452,11 @@ public class QLNV extends javax.swing.JPanel {
         jLabel3.setText("Mã nhân viên");
 
         txtEmail.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtEmail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtEmailMousePressed(evt);
+            }
+        });
         txtEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEmailActionPerformed(evt);
@@ -451,6 +468,11 @@ public class QLNV extends javax.swing.JPanel {
 
         txtTenNV.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtTenNV.setForeground(new java.awt.Color(255, 102, 0));
+        txtTenNV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtTenNVMousePressed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setText("Mật khẩu");
@@ -469,11 +491,21 @@ public class QLNV extends javax.swing.JPanel {
         jLabel7.setText("Email");
 
         txtNgaySinh.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNgaySinh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtNgaySinhMousePressed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Địa chỉ");
 
         txtSDT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtSDT.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtSDTMousePressed(evt);
+            }
+        });
         txtSDT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSDTActionPerformed(evt);
@@ -493,6 +525,11 @@ public class QLNV extends javax.swing.JPanel {
         });
 
         txtPass.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtPass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtPassMousePressed(evt);
+            }
+        });
 
         cbbChuVu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cbbChuVu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -844,6 +881,30 @@ public class QLNV extends javax.swing.JPanel {
     private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaNVActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMaNVActionPerformed
+
+    private void txtTenNVMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTenNVMousePressed
+       txtTenNV.setBackground(Color.white);
+    }//GEN-LAST:event_txtTenNVMousePressed
+
+    private void txtPassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPassMousePressed
+        txtPass.setBackground(Color.white);
+
+    }//GEN-LAST:event_txtPassMousePressed
+
+    private void txtNgaySinhMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNgaySinhMousePressed
+        txtNgaySinh.setBackground(Color.white);
+
+    }//GEN-LAST:event_txtNgaySinhMousePressed
+
+    private void txtSDTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtSDTMousePressed
+        txtSDT.setBackground(Color.white);
+
+    }//GEN-LAST:event_txtSDTMousePressed
+
+    private void txtEmailMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtEmailMousePressed
+       txtEmail.setBackground(Color.white);
+
+    }//GEN-LAST:event_txtEmailMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
