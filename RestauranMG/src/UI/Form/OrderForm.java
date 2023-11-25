@@ -79,7 +79,7 @@ public class OrderForm extends javax.swing.JPanel {
         int numRows = t.size() / 3; // Số hàng cần thiết
         int remainder = t.size() % 3; // Số item còn lại sau khi chia hết cho 3
         int canThiet = numRows + (remainder > 0 ? 1 : 0);
-        PanelTable.setLayout(new GridLayout((canThiet > 3 ? canThiet : 3), 4, 20, 20)); // GridLayout với số hàng tính được, có thể cộng thêm 1 hàng nếu còn item thừa
+        PanelTable.setLayout(new GridLayout((canThiet > 3 ? canThiet : 3), 4, 30, 30)); // GridLayout với số hàng tính được, có thể cộng thêm 1 hàng nếu còn item thừa
         for (MenuItems row : t) {
             MonAnItem item;
             if(row.isAvailable()){
