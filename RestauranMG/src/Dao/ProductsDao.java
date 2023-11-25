@@ -44,7 +44,12 @@ public class ProductsDao extends RestauranDao<Products, String>{
     public List<Products> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
     }
-
+    
+    public List<Products> Search(String key){
+        String sql = "select * from Products where ID_product like ? OR Name like ?";
+        return selectBySql(sql, "%"+key+"%","%"+key+"%");
+    }
+    
     @Override
     public Products selectById(String id) {
         List<Products> list = selectBySql(SELECT_BY_ID_SQL, id);
