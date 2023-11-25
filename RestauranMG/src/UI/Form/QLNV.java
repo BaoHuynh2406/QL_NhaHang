@@ -5,6 +5,7 @@ import Dao.RoleDao;
 import Entity.Employees;
 import Entity.Role;
 import Utils.IMG;
+import Utils.Validate;
 import Utils.XDate;
 import Utils.msg;
 import button.EventCallBack;
@@ -15,6 +16,7 @@ import java.util.List;
 import javax.naming.ldap.Rdn;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -239,6 +241,20 @@ public class QLNV extends javax.swing.JPanel {
         }
     }
 
+    // Bắt lỗi
+    private boolean Validate() {
+        if (Validate.isNotEmpty(txtTenNV, txtTenNV.getText(), "Tên Nhân Viên")
+                && Validate.isDateDDMMYYYY(txtNgaySinh, txtNgaySinh.getText())
+                && Validate.isPhoneNumber(txtSDT, txtSDT.getText())
+                && Validate.isEmail(txtEmail, txtEmail.getText()))
+                 {
+            return true;
+        } if(!new String(txtPass.getPassword()).isEmpty()) {
+            if (Validate.isLength(txtPass, new String(txtPass.getPassword()), 6, "Mật khẩu")) {  
+            }
+        }
+        return false;
+    }
     public void update() {
 
         Employees employees = getForm();
@@ -259,6 +275,7 @@ public class QLNV extends javax.swing.JPanel {
 
     // xoa
     public void delete() {
+        
        int manv;
         try {
             manv = Integer.parseInt(txtMaNV.getText());
@@ -442,6 +459,11 @@ public class QLNV extends javax.swing.JPanel {
         jLabel6.setText("SĐT");
 
         txtMaNV.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtMaNV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaNVActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Email");
@@ -818,6 +840,10 @@ public class QLNV extends javax.swing.JPanel {
     private void txtSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSearchActionPerformed
+
+    private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaNVActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtMaNVActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
