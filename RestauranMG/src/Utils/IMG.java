@@ -63,10 +63,11 @@ public class IMG {
      * @param name Tên tệp ảnh đại diện.
      * @return Biểu tượng ảnh đại diện đã được điều chỉnh kích thước.
      */
-   public static ImageIcon setAvatar(String name){
-       String path = "src/IMG/Avatar/"+name;
-       return resize(path,"src/IMG/Avatar/Avatar.png", 130, 150);
-   }
+    public static ImageIcon setAvatar(String name) {
+            String path = "src/IMG/" + name;
+            return resize(path, "src/IMG/Avatar.png", 200, 250);
+    }
+
    
    
    /**
@@ -144,6 +145,7 @@ public class IMG {
             return scaledIcon;
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println(e.getMessage());
             return null; // Trả về null nếu có lỗi
         }
     }

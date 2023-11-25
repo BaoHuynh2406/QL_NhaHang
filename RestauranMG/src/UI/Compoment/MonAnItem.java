@@ -41,7 +41,12 @@ public class MonAnItem extends javax.swing.JPanel {
          lbCoast.setText(data.getCoast()+"đ");
          this.setName(data.getID()+"");
          
-         imageIcon = IMG.resize("src/IMG/Food/"+data.getPath(), 300, 200);
+         try {
+            imageIcon = IMG.resize("src/IMG/Food/"+data.getPath(), 300, 200);
+        } catch (Exception e) {
+            imageIcon = null;
+        }
+         
         
         
     }
@@ -170,7 +175,7 @@ public class MonAnItem extends javax.swing.JPanel {
             g2.drawImage(imageIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
         } else {
             // Nếu không tìm thấy hình ảnh, vẽ một màu đơn để thay thế
-            g2.setColor(Color.WHITE);
+            g2.setColor(Color.YELLOW);
             g2.fill(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
         }
        

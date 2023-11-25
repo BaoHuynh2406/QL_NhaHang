@@ -29,7 +29,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import Utils.IMG;
 import Utils.msg;
-import nhanVienForm.QLNV;
+import UI.Form.QLNV;
 import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
