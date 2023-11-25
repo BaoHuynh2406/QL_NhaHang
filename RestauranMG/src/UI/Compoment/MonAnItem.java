@@ -40,12 +40,9 @@ public class MonAnItem extends javax.swing.JPanel {
          lbName.setText(data.getName());
          lbCoast.setText(data.getCoast()+"đ");
          this.setName(data.getID()+"");
-         
-         try {
-            imageIcon = IMG.resize("src/IMG/Food/"+data.getPath(), 300, 200);
-        } catch (Exception e) {
-            imageIcon = null;
-        }
+        
+            imageIcon = IMG.resize("src/IMG/Food/"+data.getPath(),"src/IMG/cook.png", 300, 200);
+       
          
         
         
@@ -165,22 +162,45 @@ public class MonAnItem extends javax.swing.JPanel {
     protected void paintComponent(Graphics grphcs) {
         super.paintComponent(grphcs);
         Graphics2D g2 = (Graphics2D) grphcs.create();
-         
+
+        // Vẽ đường viền bo góc
+        int borderThickness = 3; // Độ dày của đường viền
+        g2.setColor(Color.GRAY); // Màu sắc của đường viền
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Tạo hình chữ nhật cong để làm đường viền
+        RoundRectangle2D borderRect = new RoundRectangle2D.Double(
+                borderThickness / 2.0, // Độ dày của viền sẽ là một nửa
+                borderThickness / 2.0,
+                getWidth() - borderThickness,
+                getHeight() - borderThickness,
+                20, // Bán kính cong của góc
+                20 // Bán kính cong của góc
+        );
+        Stroke oldStroke = g2.getStroke();
+        g2.setStroke(new BasicStroke(borderThickness));
+        g2.draw(borderRect);
+        g2.setStroke(oldStroke);
+
         if (imageIcon != null) {
             // Vẽ hình chữ nhật cong để làm nền có border radius
-            RoundRectangle2D roundedRect = new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20);
+            RoundRectangle2D roundedRect = new RoundRectangle2D.Double(
+                    borderThickness, // Để làm cho hình ảnh không bị che khuất bởi đường viền
+                    borderThickness,
+                    getWidth() - 2 * borderThickness,
+                    getHeight() - 2 * borderThickness,
+                    20, 20);
             g2.setClip(roundedRect);
 
             // Vẽ hình ảnh bên trong hình chữ nhật cong
-            g2.drawImage(imageIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
+            g2.drawImage(imageIcon.getImage(), borderThickness, borderThickness, getWidth() - 2 * borderThickness, getHeight() - 2 * borderThickness, this);
         } else {
             // Nếu không tìm thấy hình ảnh, vẽ một màu đơn để thay thế
             g2.setColor(Color.YELLOW);
-            g2.fill(new RoundRectangle2D.Double(0, 0, getWidth(), getHeight(), 20, 20));
+            g2.fill(new RoundRectangle2D.Double(borderThickness, borderThickness, getWidth() - 2 * borderThickness, getHeight() - 2 * borderThickness, 20, 20));
         }
-       
+
         super.paintComponent(grphcs);
     }
-
 
 }
