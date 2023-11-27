@@ -24,7 +24,7 @@ import javax.swing.ImageIcon;
 public class MonAnItem extends javax.swing.JPanel {
     private ImageIcon imageIcon;
     private Color color;
-    
+    private String path;
     
     
     public MonAnItem(Model_Item_Menu data) {
@@ -40,9 +40,8 @@ public class MonAnItem extends javax.swing.JPanel {
          lbName.setText(data.getName());
          lbCoast.setText(data.getCoast()+"đ");
          this.setName(data.getID()+"");
+        path = data.getPath();
         
-            imageIcon = IMG.resize("src/IMG/Food/"+data.getPath(),"src/IMG/cook.png", 300, 200);
-       
          
         
         
@@ -58,9 +57,13 @@ public class MonAnItem extends javax.swing.JPanel {
     }
 
     public void setIcon(String path){
-        ic.setIcon(new ImageIcon(path));
+        ic.setIcon(new ImageIcon(path)); 
     }
 
+    public void setIMG(){
+        imageIcon = IMG.resize("src/IMG/Food/"+this.path,null, 300, 200);
+        this.repaint();
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -196,7 +199,7 @@ public class MonAnItem extends javax.swing.JPanel {
             g2.drawImage(imageIcon.getImage(), borderThickness, borderThickness, getWidth() - 2 * borderThickness, getHeight() - 2 * borderThickness, this);
         } else {
             // Nếu không tìm thấy hình ảnh, vẽ một màu đơn để thay thế
-            g2.setColor(Color.YELLOW);
+            g2.setColor(Color.GRAY);
             g2.fill(new RoundRectangle2D.Double(borderThickness, borderThickness, getWidth() - 2 * borderThickness, getHeight() - 2 * borderThickness, 20, 20));
         }
 
