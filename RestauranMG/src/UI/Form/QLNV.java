@@ -244,6 +244,7 @@ public class QLNV extends javax.swing.JPanel {
             row = -1; // Cập nhật giá trị của row
             msg.Info("Thêm mới thành công!");
             fillTable();
+            jTabbedPane1.setSelectedIndex(0);
         } catch (Exception e) {
             System.out.println("-> "+e.getMessage());
             msg.Error("Có lỗi trong quá trình thêm mới nhân viên!");
@@ -278,6 +279,7 @@ public class QLNV extends javax.swing.JPanel {
 
             }
             row = -1; // Cập nhật giá trị của row
+            fillTable();
             jTabbedPane1.setSelectedIndex(0);
             msg.Info("Cập nhật thành công!");
         } catch (Exception e) {
