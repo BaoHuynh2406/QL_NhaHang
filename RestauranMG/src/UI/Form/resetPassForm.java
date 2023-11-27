@@ -63,6 +63,10 @@ public class resetPassForm extends javax.swing.JPanel {
         
         if(!Validate.isLength(txtPass, new String(txtPass.getPassword()), 6)) return false;
         
+        if(!new String(txtNhapLai.getPassword()).equals(new String(txtPass.getPassword()))){
+            msg.Error("Mật khẩu nhập lại không chính xác");
+            return false;
+        }
         
         if(!code.equals(txtCode.getText())){
             msg.Error("Mã xác nhận không chính xác!. Vui lòng thử lại");
@@ -84,6 +88,8 @@ public class resetPassForm extends javax.swing.JPanel {
         lbUser = new javax.swing.JLabel();
         btnBack = new javax.swing.JLabel();
         btnClose = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        txtNhapLai = new javax.swing.JPasswordField();
 
         setBackground(new java.awt.Color(0, 102, 102));
 
@@ -176,6 +182,32 @@ public class resetPassForm extends javax.swing.JPanel {
             }
         });
 
+        jPanel4.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhập lại mật khẩu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 12), new java.awt.Color(255, 255, 255))); // NOI18N
+
+        txtNhapLai.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtNhapLai.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtNhapLaiMousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(txtNhapLai, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(txtNhapLai)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -196,8 +228,12 @@ public class resetPassForm extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(72, 72, 72)
                                 .addComponent(lbUser, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnSupmit, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(90, 90, 90))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnSupmit, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,9 +248,11 @@ public class resetPassForm extends javax.swing.JPanel {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
                 .addComponent(btnSupmit, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -255,6 +293,10 @@ public class resetPassForm extends javax.swing.JPanel {
          txtPass.setBackground(Color.white);
     }//GEN-LAST:event_txtPassMousePressed
 
+    private void txtNhapLaiMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNhapLaiMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNhapLaiMousePressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel btnBack;
@@ -262,8 +304,10 @@ public class resetPassForm extends javax.swing.JPanel {
     private javax.swing.JButton btnSupmit;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel lbUser;
     private javax.swing.JTextField txtCode;
+    private javax.swing.JPasswordField txtNhapLai;
     private javax.swing.JPasswordField txtPass;
     // End of variables declaration//GEN-END:variables
 }
