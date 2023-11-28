@@ -41,7 +41,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="HangHoa.Thit" name="thit1">
+    <Component class="HangHoa.KhoHang" name="thit1">
     </Component>
   </SubComponents>
 </Form>
