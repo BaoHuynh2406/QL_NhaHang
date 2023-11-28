@@ -111,7 +111,7 @@ public class IMG {
 
             return scaledIcon;
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return null; // Trả về null nếu có lỗi
         }
     }

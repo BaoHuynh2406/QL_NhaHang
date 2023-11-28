@@ -17,6 +17,7 @@ import UI.Compoment.MonAnDaOrder;
 import UI.Compoment.MonAnItem;
 import UI.Model.Model_Item_Menu;
 import UI.Model.Model_Mon_Da_Goi;
+import Utils.fNum;
 import Utils.msg;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -197,6 +198,30 @@ public class OrderForm extends javax.swing.JPanel {
     
     private LinkedList<Model_Mon_Da_Goi> dsMonDangGoi = new LinkedList<>();
     
+    private void fillDanhSachGoiMon(Model_Mon_Da_Goi data) {
+        int idItem = data.getId();
+
+        boolean existed = false;
+        for (Model_Mon_Da_Goi existingData : dsMonDangGoi) {
+            if (existingData.getId() == idItem) {
+                // Nếu món đã tồn tại trong danh sách, tăng quantity và đặt lại vị trí cuối cùng
+                existingData.setSl(existingData.getSl() + 1);
+                dsMonDangGoi.remove(existingData);
+                dsMonDangGoi.addLast(existingData);
+                existed = true;
+                break;
+            }
+        }
+
+        if (!existed) {
+            // Nếu món chưa tồn tại trong danh sách, thêm mới vào cuối danh sách
+            dsMonDangGoi.addLast(data);
+        }
+
+        // Refresh danh sách hiển thị
+        refreshMonAnOrder();
+    }
+    
     private void adjustQuantity(int idItem, int quantityAdjustment) {
         for (Model_Mon_Da_Goi data : dsMonDangGoi) {
             if (data.getId() == idItem) {
@@ -225,29 +250,7 @@ public class OrderForm extends javax.swing.JPanel {
     }
     
 
-    private void fillDanhSachGoiMon(Model_Mon_Da_Goi data) {
-        int idItem = data.getId();
-
-        boolean existed = false;
-        for (Model_Mon_Da_Goi existingData : dsMonDangGoi) {
-            if (existingData.getId() == idItem) {
-                // Nếu món đã tồn tại trong danh sách, tăng quantity và đặt lại vị trí cuối cùng
-                existingData.setSl(existingData.getSl() + 1);
-                dsMonDangGoi.remove(existingData);
-                dsMonDangGoi.addLast(existingData);
-                existed = true;
-                break;
-            }
-        }
-
-        if (!existed) {
-            // Nếu món chưa tồn tại trong danh sách, thêm mới vào cuối danh sách
-            dsMonDangGoi.addLast(data);
-        }
-
-        // Refresh danh sách hiển thị
-        refreshMonAnOrder();
-    }
+    
 
     private void refreshMonAnOrder() {
         pnMonAnOrder.removeAll();
@@ -272,7 +275,7 @@ public class OrderForm extends javax.swing.JPanel {
                 }
             });
             
-            lblTotal.setText(total+"đ");
+            lblTotal.setText(fNum.parseString(total)+"đ");
             pnMonAnOrder.add(item);
         }
         

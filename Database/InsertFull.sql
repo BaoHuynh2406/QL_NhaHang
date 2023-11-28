@@ -7,14 +7,14 @@ insert into Role VALUES ('CS', N'Thu ngân');
 insert into Role VALUES ('KS', N'Bếp');
 go
 
-
+select * from Employees where ID_Employee = 1000%
 select * FROM Employees where ID_Employee = 100000
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Admin', 'admin123', 'huynhbaomts2004@gmail.com', 'MG',1,'2004-06-24','0388319013');
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Bé Hoa', 'admin123', 'huynhbaomts2004@gmail.com', 'SV',1,'2004-06-24','0388319013');
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Bé Bò', 'admin123', 'huynhbaomts2004@gmail.com', 'KS',1,'2004-06-24','0388319013');
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Bé Bé', 'admin123', 'huynhbaomts2004@gmail.com', 'CS',1,'2004-06-24','0388319013');
 
-update Employees set Password = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9' where Password = 'admin123'
+update Employees set Password = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
 
 -- Thêm dữ liệu mẫu cho bảng Products
 select * from Products

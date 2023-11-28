@@ -2,6 +2,7 @@
 package UI.Compoment;
 
 import UI.Model.Model_Mon_Da_Goi;
+import Utils.fNum;
 import java.awt.Dimension;
 
 
@@ -13,14 +14,14 @@ public class MonAnDaOrder extends javax.swing.JPanel {
         
         if(data.getType() == Model_Mon_Da_Goi.ItemType.ChuaGoi){
             Name.setText(data.getName());
-            Price.setText(data.getPrice()+"đ");
+            Price.setText(fNum.parseString(data.getPrice())+"đ");
             SL.setText(data.getSl()+"");
             
         }else if(data.getType() == Model_Mon_Da_Goi.ItemType.DaGoi){
             Tang.setVisible(false);
             Giam.setVisible(false);
             Name.setText(data.getName());
-            Price.setText(data.getPrice()+"đ");
+            Price.setText(fNum.parseString(data.getPrice())+"đ");
             SL.setText(""+data.getSl());
             
             

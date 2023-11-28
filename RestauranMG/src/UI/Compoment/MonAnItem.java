@@ -3,6 +3,7 @@ package UI.Compoment;
 
 import UI.Model.Model_Item_Menu;
 import Utils.IMG;
+import Utils.fNum;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,7 +39,7 @@ public class MonAnItem extends javax.swing.JPanel {
          }
          
          lbName.setText(data.getName());
-         lbCoast.setText(data.getCoast()+"đ");
+         lbCoast.setText(fNum.parseString(data.getCoast())+"đ");
          this.setName(data.getID()+"");
         path = data.getPath();
         
@@ -61,8 +62,13 @@ public class MonAnItem extends javax.swing.JPanel {
     }
 
     public void setIMG(){
-        imageIcon = IMG.resize("src/IMG/Food/"+this.path,null, 300, 200);
-        this.repaint();
+        try {
+            imageIcon = IMG.resize("src/IMG/Food/" + this.path, 300, 200);
+            this.repaint();
+        } catch (Exception e) {
+            imageIcon = null;
+            return;
+        } 
     }
     
     @SuppressWarnings("unchecked")
