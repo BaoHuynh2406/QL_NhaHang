@@ -46,6 +46,7 @@ public class OrderForm extends javax.swing.JPanel {
 
     public void addEventOrder(EventOrder event) {
         this.event = event;
+        //abc
     }
 
     //Các DAO
