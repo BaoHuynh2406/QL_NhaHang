@@ -31,7 +31,7 @@ public class MonAnItem extends javax.swing.JPanel {
     public MonAnItem(Model_Item_Menu data) {
         initComponents();
          setOpaque(false);
-         this.setPreferredSize(new Dimension(300,200));
+         this.setPreferredSize(new Dimension(0,200));
          if(data.getType() == Model_Item_Menu.MenuType.AVAiLABLE){
              hetMon.setVisible(false);
          }else{

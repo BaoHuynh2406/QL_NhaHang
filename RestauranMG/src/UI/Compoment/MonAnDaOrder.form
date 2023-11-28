@@ -21,9 +21,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace pref="17" max="32767" attributes="0"/>
-              <Component id="Name" min="-2" pref="147" max="-2" attributes="0"/>
+              <Component id="Name" min="-2" pref="135" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="Price" min="-2" pref="101" max="-2" attributes="0"/>
+              <Component id="Price" min="-2" pref="113" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="Tang" min="-2" pref="17" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
