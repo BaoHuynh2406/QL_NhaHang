@@ -1,4 +1,3 @@
-
 package Dao;
 
 import Entity.Products;
@@ -7,7 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductsDao extends RestauranDao<Products, String>{
+public class ProductsDao extends RestauranDao<Products, String> {
+
     final String INSERT_SQL = "INSERT INTO Products (ID_product, Name, Quantity, Unit, Price) "
             + "VALUES (?, ?, ?, ?, ?)";
     final String UPDATE_ALL = "UPDATE Products SET "
@@ -15,6 +15,7 @@ public class ProductsDao extends RestauranDao<Products, String>{
     final String DELETE_SQL = "DELETE FROM Products WHERE ID_product = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Products";
     final String SELECT_BY_ID_SQL = "SELECT *  FROM Products WHERE ID_product = ?";
+
     @Override
     public void insert(Products entity) {
         jdbc.update(INSERT_SQL,
@@ -28,11 +29,11 @@ public class ProductsDao extends RestauranDao<Products, String>{
     @Override
     public void update(Products entity) {
         jdbc.update(UPDATE_ALL,
-                entity.getID_product(),
                 entity.getName(),
                 entity.getQuantity(),
                 entity.getUnit(),
-                entity.getUnit());
+                entity.getPrice(),
+                entity.getID_product());
     }
 
     @Override
@@ -44,19 +45,19 @@ public class ProductsDao extends RestauranDao<Products, String>{
     public List<Products> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
     }
-    
-    public List<Products> Search(String key){
+
+    public List<Products> Search(String key) {
         String sql = "select * from Products where ID_product like ? OR Name like ?";
-        return selectBySql(sql, "%"+key+"%","%"+key+"%");
+        return selectBySql(sql, "%" + key + "%", "%" + key + "%");
     }
-    
+
     @Override
     public Products selectById(String id) {
         List<Products> list = selectBySql(SELECT_BY_ID_SQL, id);
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             return null;
         }
-        return list.get(0);    
+        return list.get(0);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class ProductsDao extends RestauranDao<Products, String>{
         List<Products> list = new ArrayList<>();
         try {
             ResultSet rs = jdbc.query(sql, args);
-            while(rs.next()) {
+            while (rs.next()) {
                 Products entity = new Products();
                 entity.setID_product(rs.getString("ID_product"));
                 entity.setName(rs.getString("Name"));
@@ -76,7 +77,7 @@ public class ProductsDao extends RestauranDao<Products, String>{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return  list;
+        return list;
     }
-    
+
 }
