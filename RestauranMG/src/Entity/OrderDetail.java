@@ -63,11 +63,11 @@ public class OrderDetail {
     }
 
     public double getTotalPrice() {
-        return TotalPrice;
+        return Quantity*Price;
     }
 
-    public void setTotalPrice(double TotalPrice) {
-        this.TotalPrice = TotalPrice;
+    public void setTotalPrice() {
+        this.TotalPrice = Quantity*Price;
     }
     @Override
     public String toString() {

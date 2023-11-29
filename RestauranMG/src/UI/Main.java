@@ -4,6 +4,7 @@ package UI;
 import Controller.EventMenuSelected;
 import Controller.EventOrder;
 import Controller.EventTableSelected;
+import Dao.procDao;
 import UI.Compoment.MainMenu.MainMenu;
 import UI.Form.Login;
 import UI.Form.OrderForm;
@@ -195,6 +196,7 @@ public class Main extends javax.swing.JFrame {
     
     //Form Table
     public void formTable(){
+        procDao.DeleteOrdersWithoutDetails();
         TableForm tableForm = new TableForm(); //Form Hiển thị các danh sách bàn
 
         pnDashboard.removeAll();

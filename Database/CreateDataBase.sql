@@ -187,21 +187,12 @@ END
 EXEC GetOccupiedTablesInfo;
 
 -- -----------
-SELECT 
-    T.ID_Table AS MaBan,
-    T.TableName AS TenBan,
-    O.NumberOfGuests AS SoKhach
-FROM 
-    Tables T
-LEFT JOIN 
-    (SELECT ID_Table, NumberOfGuests
-     FROM Orders
-     WHERE IsPaid = 0) O ON T.ID_Table = O.ID_Table
 
 
 
 
--- Cập nhật stored procedure để lấy thông tin bàn dựa trên mã khu vực
+
+--  stored procedure để lấy thông tin bàn dựa trên mã khu vực
 
 CREATE PROCEDURE GetTableSummary
     @AreaID INT = NULL
@@ -258,3 +249,5 @@ BEGIN
                     END
     WHERE ID_Table = @TableID;
 END;
+
+

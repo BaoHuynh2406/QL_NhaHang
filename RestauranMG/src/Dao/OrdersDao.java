@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrdersDao extends RestauranDao<Orders, String>{
+public class OrdersDao extends RestauranDao<Orders, Integer>{
     final String INSERT_SQL = "INSERT INTO Orders (ID_Table, ID_Employee, OrderDate, NumberOfGuests, IsPaid)" +
                 "	VALUES (?, ?, ?, ?, ?)";
     final String UPDATE_ALL = "UPDATE Orders SET "
@@ -15,10 +15,27 @@ public class OrdersDao extends RestauranDao<Orders, String>{
     final String DELETE_SQL = "DELETE FROM Orders WHERE ID_Order = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Orders";
     final String SELECT_BY_ID_SQL = "SELECT * FROM Orders WHERE ID_Order = ?";
-    @Override
+
+    public int GetID() {
+        try {
+            String sql = "Select MAX(ID_Order) ID From Orders";
+            ResultSet r = jdbc.query(sql);
+            int id = 0;
+            while (r.next()) {
+                id = r.getInt("ID");
+            }
+            return id;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return -1;
+        }
+
+    }
+    
+    
+     @Override
     public void insert(Orders entity) {
         jdbc.update(INSERT_SQL,
-                entity.getID_Order(),
                 entity.getID_Table(),
                 entity.getID_Employee(),
                 entity.getOrderDate(),
@@ -29,16 +46,16 @@ public class OrdersDao extends RestauranDao<Orders, String>{
     @Override
     public void update(Orders entity) {
         jdbc.update(UPDATE_ALL,
-                entity.getID_Order(),
                 entity.getID_Table(),
                 entity.getID_Employee(),
                 entity.getOrderDate(),
                 entity.getNumberOfGuests(),
-                entity.isIsPaid());
+                entity.isIsPaid(),
+                entity.getID_Order());
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
     }
 
@@ -48,7 +65,7 @@ public class OrdersDao extends RestauranDao<Orders, String>{
     }
 
     @Override
-    public Orders selectById(String id) {
+    public Orders selectById(Integer id) {
         List<Orders> list = selectBySql(SELECT_BY_ID_SQL, id);
         if(list.isEmpty()){
             return null;

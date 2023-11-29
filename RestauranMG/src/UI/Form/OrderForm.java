@@ -12,11 +12,16 @@ import Entity.MenuCategories;
 import Entity.Tables;
 import Controller.EventOrder;
 import Dao.MenuItemsDao;
+import Dao.OrderDetailDao;
+import Dao.OrdersDao;
 import Entity.MenuItems;
+import Entity.OrderDetail;
+import Entity.Orders;
 import UI.Compoment.MonAnDaOrder;
 import UI.Compoment.MonAnItem;
 import UI.Model.Model_Item_Menu;
 import UI.Model.Model_Mon_Da_Goi;
+import Utils.Auth;
 import Utils.fNum;
 import Utils.msg;
 import java.awt.Color;
@@ -26,14 +31,19 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -42,7 +52,6 @@ import javax.swing.SwingWorker;
 public class OrderForm extends javax.swing.JPanel {
 
     private EventOrder event;
-
 
     public void addEventOrder(EventOrder event) {
         this.event = event;
@@ -62,232 +71,225 @@ public class OrderForm extends javax.swing.JPanel {
         ScroolTable.getVerticalScrollBar().setUnitIncrement(20);
 
     }
-    
-   
+
+    private Orders DonHang = new Orders();
+
+    private void updateThongTinDonHang() {
+        DonHang.setID_Employee(Auth.user.getID_Employee());
+        DonHang.setIsPaid(false);
+        DonHang.setNumberOfGuests(Integer.valueOf(txtGustNum.getText()));
+        DonHang.setOrderDate(new Date());
+    }
 
     public void setTable(int ID_table) {
         try {
+            DonHang.setID_Table(ID_table);
             tableSelected = table_DAO.selectById(ID_table);
             txtTableName.setText("Bàn: " + tableSelected.getTableName());
             fillLoaiMenu();
+            fillDsDaGoi(ID_table);
+
+            //Nếu có đơn hàng
+            if (!dsDaGoiMap.isEmpty()) {
+                Iterator<Model_Mon_Da_Goi> iterator = dsDaGoiMap.values().iterator();
+                if (iterator.hasNext()) {
+                    DonHang.setID_Order(iterator.next().ID_Order);
+                    OrdersDao dt = new OrdersDao();
+                    Orders d = dt.selectById(DonHang.getID_Order());
+                    txtGustNum.setText(d.getNumberOfGuests()+"");
+                }
+                updateThongTinDonHang();
+            } else {
+                DonHang.setID_Order(-1);
+                updateThongTinDonHang();
+            }
+
         } catch (Exception e) {
             msg.Error("Bàn không hợp lệ");
         }
 
     }
-    public List<MonAnItem> dsMonAn = new ArrayList<>();
-    
-    private void fillItem(int ID_area) {
-        dsMonAn.clear();
-        PanelTable.removeAll();
-        
-        //Lấy toàn bộ menu
-        List<MenuItems> dsItem = menu_Dao.selectCatory(ID_area);
-        if (dsItem == null || dsItem.isEmpty()) {
-            return;
-        }
 
-        int numRows = dsItem.size() / 3; // Số hàng cần thiết
-        int remainder = dsItem.size() % 3; // Số item còn lại sau khi chia hết cho 3
-        int canThiet = numRows + (remainder > 0 ? 1 : 0);
-        PanelTable.setLayout(new GridLayout((canThiet > 3 ? canThiet : 3), 3, 15, 15)); // GridLayout với số hàng tính được, có thể cộng thêm 1 hàng nếu còn item thừa
-        for (MenuItems row : dsItem) {
-            MonAnItem item;
-            if (row.isAvailable()) {
-                item = new MonAnItem(new Model_Item_Menu(row.getItemName(), row.getID_Item(),
-                         row.getPrice(), row.getPhoto(), Model_Item_Menu.MenuType.AVAiLABLE));
-            } else {
-                item = new MonAnItem(new Model_Item_Menu(row.getItemName(), row.getID_Item(),
-                         row.getPrice(), row.getPhoto(), Model_Item_Menu.MenuType.UNAVAiLABLE));
-            }
-            // Bắt sự kiện
-
-            item.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    item.setColor(new Color(245, 255, 135, 200));
-                    item.setIcon("src/IMG/plus.png");
-                    PanelTable.repaint();
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    item.setColor(new Color(228, 253, 255, 200));
-                    item.setIcon("src/IMG/plus1.png");
-                    PanelTable.repaint();
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    Model_Mon_Da_Goi data = new Model_Mon_Da_Goi(row.getID_Item(), row.getItemName(),
-                            row.getPrice(), 1, Model_Mon_Da_Goi.ItemType.ChuaGoi);
-                    fillDanhSachGoiMon(data);
-                }
-
-            });
-           PanelTable.add(item);
-           PanelTable.revalidate();
-           dsMonAn.add(item);
-        }
-
-        // Thêm các ô trống nếu còn dư item
-        if (dsItem.size() < 12) {
-            for (int i = 0; i < 12 - dsItem.size(); i++) {
-                PanelTable.add(new JLabel());
-            }
-        }
-    }
-
-    private List<JButton> buttons = new ArrayList<>();
-
-    private void fillLoaiMenu() {
-
-        pnLoaiMenu.removeAll();
-        //Loại menu
-        buttons.clear();
-        List<MenuCategories> k = loaiMenuDao.selectAll();
-        if (k == null) {
-            return;
-        }
-        JButton b = new JButton("Tất cả");
-        b.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        b.setName("0");
-        buttons.add(b);
-        pnLoaiMenu.add(b);
-        b.addActionListener(e -> {
-            selectedLoai = 0;
-            refereshItem();
-        });
-
-        for (MenuCategories lMenu : k) {
-            JButton button = new JButton(lMenu.getCategoryName());
-            button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            button.setName(lMenu.getID_Category() + "");
-            buttons.add(button); // Thêm JButton vào danh sách
-            button.addActionListener(e -> {
-                selectedLoai = lMenu.getID_Category();
-                refereshItem();
-            });
-            pnLoaiMenu.add(button);
-        }
-
-        selectedLoai = 0;
-        refereshItem();
-    }
-
-    private void refereshItem() {
-        for (JButton button : buttons) {
-            if (button.getName().equals(String.valueOf(selectedLoai))) {
-                button.setFont(new Font("Segoe UI", Font.BOLD, 14));
-                button.setForeground(new Color(22, 72, 99));
-
-                fillItemInBackground(selectedLoai);
-
-            } else {
-                button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-                button.setForeground(Color.BLACK);
-
-            }
-        }
-    }
-
-    
-    
     //Nhóm chức năng cho phần món đã gọi
-    
-    
-    
-    private LinkedList<Model_Mon_Da_Goi> dsMonDangGoi = new LinkedList<>();
-    
-    private void fillDanhSachGoiMon(Model_Mon_Da_Goi data) {
+    private Map<Integer, Model_Mon_Da_Goi> dsDaGoiMap = new HashMap<>();
+    private Map<Integer, Model_Mon_Da_Goi> dsMonDangGoiMap = new HashMap<>();
+
+    //Lấy dữ liệu đã gọi từ database nếu có
+//    private LinkedList<Model_Mon_Da_Goi> dsDaGoi;
+    private void fillDsDaGoi(int ID_table) {
+        dsDaGoiMap = proDao.GetGetItemsByTableID(ID_table);
+        if (!dsDaGoiMap.isEmpty()) {
+            refreshMonAnOrder();
+        }
+
+    }
+
+//    private LinkedList<Model_Mon_Da_Goi> dsMonDangGoi = new LinkedList<>();
+    // Các phương thức để thêm sản phẩm vào dsDaGoiMap và dsMonDangGoiMap
+    private void addDanhSachGoiMon(Model_Mon_Da_Goi data, Map<Integer, Model_Mon_Da_Goi> map) {
         int idItem = data.getId();
 
-        boolean existed = false;
-        for (Model_Mon_Da_Goi existingData : dsMonDangGoi) {
-            if (existingData.getId() == idItem) {
-                // Nếu món đã tồn tại trong danh sách, tăng quantity và đặt lại vị trí cuối cùng
-                existingData.setSl(existingData.getSl() + 1);
-                dsMonDangGoi.remove(existingData);
-                dsMonDangGoi.addLast(existingData);
-                existed = true;
-                break;
-            }
-        }
-
-        if (!existed) {
-            // Nếu món chưa tồn tại trong danh sách, thêm mới vào cuối danh sách
-            dsMonDangGoi.addLast(data);
+        if (map.containsKey(idItem)) {
+            // Nếu sản phẩm đã tồn tại trong map, cập nhật số lượng
+            Model_Mon_Da_Goi existingData = map.get(idItem);
+            existingData.setSl(existingData.getSl() + 1);
+        } else {
+            // Nếu sản phẩm chưa tồn tại trong map, thêm mới vào map
+            map.put(idItem, data);
         }
 
         // Refresh danh sách hiển thị
         refreshMonAnOrder();
     }
-    
-    private void adjustQuantity(int idItem, int quantityAdjustment) {
-        for (Model_Mon_Da_Goi data : dsMonDangGoi) {
-            if (data.getId() == idItem) {
-                int newQuantity = data.getSl() + quantityAdjustment;
-                if (newQuantity >= 0) { // Kiểm tra số lượng không âm
-                    data.setSl(newQuantity);
-                    refreshMonAnOrder();
-                    return; // Kết thúc việc điều chỉnh số lượng
-                } else {
-                    
-                    return; 
-                }
+
+    // Các phương thức để giảm và tăng số lượng sản phẩm trong dsDaGoiMap và dsMonDangGoiMap
+    private void adjustQuantity(int idItem, int quantityAdjustment, Map<Integer, Model_Mon_Da_Goi> map) {
+        if (map.containsKey(idItem)) {
+            Model_Mon_Da_Goi data = map.get(idItem);
+            int newQuantity = data.getSl() + quantityAdjustment;
+            if (newQuantity >= 0) { // Kiểm tra số lượng không âm
+                data.setSl(newQuantity);
+                refreshMonAnOrder();
+            } else {
+                // Xử lý khi số lượng âm (nếu cần)
             }
         }
-       
-    }
-    
-     // Phương thức để tăng số lượng món
-    public void increaseQuantity(int idItem) {
-        adjustQuantity(idItem, 1); // Tăng số lượng lên 1
     }
 
-    // Phương thức để giảm số lượng món
-    public void decreaseQuantity(int idItem) {
-        adjustQuantity(idItem, -1); // Giảm số lượng đi 1
+    // Các phương thức để tăng và giảm số lượng sản phẩm
+    public void increaseQuantity(int idItem, Map<Integer, Model_Mon_Da_Goi> map) {
+        adjustQuantity(idItem, 1, map); // Tăng số lượng lên 1
     }
-    
 
-    
+    public void decreaseQuantity(int idItem, Map<Integer, Model_Mon_Da_Goi> map) {
+        adjustQuantity(idItem, -1, map); // Giảm số lượng đi 1
+    }
 
     private void refreshMonAnOrder() {
         pnMonAnOrder.removeAll();
+        int total = 0;
+        if (dsDaGoiMap != null) {
+            total += fillToScreenDSMonDaGoi(dsDaGoiMap);
+            MonAnDaOrder item = new MonAnDaOrder(new Model_Mon_Da_Goi(Model_Mon_Da_Goi.ItemType.TieuDe));
+            pnMonAnOrder.add(item);
+        }
 
-        int width = dsMonDangGoi.size() * 50 + 40;
+        total += fillToScreenDSMonDaGoi(dsMonDangGoiMap);
+
+        lblTotal.setText(fNum.parseString(total) + "đ");
+    }
+
+    private int fillToScreenDSMonDaGoi(Map<Integer, Model_Mon_Da_Goi> map) {
+        int width = (dsDaGoiMap.size() + dsMonDangGoiMap.size()) * 50 + 40;
         pnMonAnOrder.setPreferredSize(new Dimension(370, width));
         int total = 0;
-        for (Model_Mon_Da_Goi data : dsMonDangGoi) {
-           total += data.getTotal();
+        for (Model_Mon_Da_Goi data : map.values()) {
+            total += data.getTotal();
             MonAnDaOrder item = new MonAnDaOrder(data);
             item.Giam.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    decreaseQuantity(data.getId());
+                    decreaseQuantity(data.getId(), map);
                 }
             });
-            
+
             item.Tang.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    increaseQuantity(data.getId());
+                    increaseQuantity(data.getId(), map);
                 }
             });
-            
-            lblTotal.setText(fNum.parseString(total)+"đ");
+
             pnMonAnOrder.add(item);
         }
-        
-        
 
         pnMonAnOrder.revalidate();
         pnMonAnOrder.repaint();
-       
+        return total;
     }
 
+    //Thuật toán so sánh hai mảng và thực hiện chức năng khi ấn submit
+    //So sánh 2 mảng nếu sản phẩm chưa tồn tại? đẩy lên database
+    //Nếu sản phẩm đã tồn tại cộng lại và update lên databse 
+    //Nếu số lượng sản phẩm là 0 thì xóa sản phẩm 
+    private void sync() {
+        for (Model_Mon_Da_Goi item1 : dsDaGoiMap.values()) {
+            for (Model_Mon_Da_Goi item2 : dsMonDangGoiMap.values()) {
+                if (item1.getId() == item2.getId()) {
+                    int newSL = item1.getSl() + item2.getSl();
+                    item1.setSl(newSL);
+                    item2.setSl(0);
+                }
+            }
+        }
 
+        Iterator<Model_Mon_Da_Goi> iterator = dsDaGoiMap.values().iterator();
+        while (iterator.hasNext()) {
+            Model_Mon_Da_Goi item = iterator.next();
+            if (item.getSl() == 0) {
+                iterator.remove();
+                OrderDetailDao dt = new OrderDetailDao();
+                dt.delete(item.getId(), item.ID_Order);
+            }
+        }
+
+        iterator = dsMonDangGoiMap.values().iterator();
+        while (iterator.hasNext()) {
+            Model_Mon_Da_Goi item = iterator.next();
+            if (item.getSl() == 0) {
+                iterator.remove();
+            }
+        }
+
+        if (DonHang.getID_Order() == -1) {
+            OrdersDao d = new OrdersDao();
+            updateThongTinDonHang();
+            d.insert(DonHang);
+            DonHang.setID_Order(d.GetID());
+        }
+        OrderDetailDao dt = new OrderDetailDao();
+        for (Model_Mon_Da_Goi item : dsDaGoiMap.values()) {
+            
+            OrderDetail e = new OrderDetail();
+            e.setID_Item(item.getId());
+            e.setID_Order(DonHang.getID_Order());
+            e.setPrice(item.getPrice());
+            e.setQuantity(item.getSl());
+            e.setTotalPrice();
+            dt.update(e);
+        }
+
+        for (Model_Mon_Da_Goi i : dsMonDangGoiMap.values()) {
+          
+            OrderDetail e = new OrderDetail();
+            e.setID_Item(i.getId());
+            e.setID_Order(DonHang.getID_Order());
+            e.setPrice(i.getPrice());
+            e.setQuantity(i.getSl());
+            e.setTotalPrice();
+            dt.insert(e);
+        }
+        
+        msg.Info("Gọi món thành công!");
+        dsMonDangGoiMap.clear();
+        fillDsDaGoi(DonHang.getID_Table());
+        updateDonHang();
+        refreshMonAnOrder();
+    }
+
+    
+    public void updateDonHang(){
+        OrdersDao od = new OrdersDao();
+        try {
+            DonHang.setNumberOfGuests(Integer.valueOf(txtGustNum.getText()));
+            od.update(DonHang);
+        } catch (Exception e) {
+            DonHang.setNumberOfGuests(0);
+            txtGustNum.setText(0+"");
+        }
+        
+        
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -353,6 +355,21 @@ public class OrderForm extends javax.swing.JPanel {
         txtGustNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtGustNum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtGustNum.setText("0");
+        txtGustNum.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                txtGustNumInputMethodTextChanged(evt);
+            }
+        });
+        txtGustNum.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtGustNumKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtGustNumKeyTyped(evt);
+            }
+        });
 
         jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jTextField2.setText("Tìm kiếm");
@@ -431,6 +448,11 @@ public class OrderForm extends javax.swing.JPanel {
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton2.setText("Gọi món");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(51, 0, 204));
@@ -570,6 +592,22 @@ public class OrderForm extends javax.swing.JPanel {
         event.GoBack();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        sync();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtGustNumInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtGustNumInputMethodTextChanged
+
+    }//GEN-LAST:event_txtGustNumInputMethodTextChanged
+
+    private void txtGustNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGustNumKeyTyped
+      
+    }//GEN-LAST:event_txtGustNumKeyTyped
+
+    private void txtGustNumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGustNumKeyPressed
+        
+    }//GEN-LAST:event_txtGustNumKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelTable;
@@ -598,6 +636,122 @@ public class OrderForm extends javax.swing.JPanel {
     private javax.swing.JButton txtTableName;
     // End of variables declaration//GEN-END:variables
 
+    public List<MonAnItem> dsMonAn = new ArrayList<>();
+
+    private void fillItem(int ID_area) {
+        dsMonAn.clear();
+        PanelTable.removeAll();
+
+        //Lấy toàn bộ menu
+        List<MenuItems> dsItem = menu_Dao.selectCatory(ID_area);
+        if (dsItem == null || dsItem.isEmpty()) {
+            return;
+        }
+
+        int numRows = dsItem.size() / 3; // Số hàng cần thiết
+        int remainder = dsItem.size() % 3; // Số item còn lại sau khi chia hết cho 3
+        int canThiet = numRows + (remainder > 0 ? 1 : 0);
+        PanelTable.setLayout(new GridLayout((canThiet > 3 ? canThiet : 3), 3, 15, 15)); // GridLayout với số hàng tính được, có thể cộng thêm 1 hàng nếu còn item thừa
+        for (MenuItems row : dsItem) {
+            MonAnItem item;
+            if (row.isAvailable()) {
+                item = new MonAnItem(new Model_Item_Menu(row.getItemName(), row.getID_Item(),
+                        row.getPrice(), row.getPhoto(), Model_Item_Menu.MenuType.AVAiLABLE));
+            } else {
+                item = new MonAnItem(new Model_Item_Menu(row.getItemName(), row.getID_Item(),
+                        row.getPrice(), row.getPhoto(), Model_Item_Menu.MenuType.UNAVAiLABLE));
+            }
+            // Bắt sự kiện
+
+            item.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    item.setColor(new Color(245, 255, 135, 200));
+                    item.setIcon("src/IMG/plus.png");
+                    PanelTable.repaint();
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    item.setColor(new Color(228, 253, 255, 200));
+                    item.setIcon("src/IMG/plus1.png");
+                    PanelTable.repaint();
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    Model_Mon_Da_Goi data = new Model_Mon_Da_Goi(row.getID_Item(), row.getItemName(),
+                            row.getPrice(), 1, Model_Mon_Da_Goi.ItemType.ChuaGoi);
+                    addDanhSachGoiMon(data, dsMonDangGoiMap);
+                }
+
+            });
+            PanelTable.add(item);
+            PanelTable.revalidate();
+            dsMonAn.add(item);
+        }
+
+        // Thêm các ô trống nếu còn dư item
+        if (dsItem.size() < 12) {
+            for (int i = 0; i < 12 - dsItem.size(); i++) {
+                PanelTable.add(new JLabel());
+            }
+        }
+    }
+
+    private List<JButton> buttons = new ArrayList<>();
+
+    private void fillLoaiMenu() {
+
+        pnLoaiMenu.removeAll();
+        //Loại menu
+        buttons.clear();
+        List<MenuCategories> k = loaiMenuDao.selectAll();
+        if (k == null) {
+            return;
+        }
+        JButton b = new JButton("Tất cả");
+        b.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        b.setName("0");
+        buttons.add(b);
+        pnLoaiMenu.add(b);
+        b.addActionListener(e -> {
+            selectedLoai = 0;
+            refereshItem();
+        });
+
+        for (MenuCategories lMenu : k) {
+            JButton button = new JButton(lMenu.getCategoryName());
+            button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            button.setName(lMenu.getID_Category() + "");
+            buttons.add(button); // Thêm JButton vào danh sách
+            button.addActionListener(e -> {
+                selectedLoai = lMenu.getID_Category();
+                refereshItem();
+            });
+            pnLoaiMenu.add(button);
+        }
+
+        selectedLoai = 0;
+        refereshItem();
+    }
+
+    private void refereshItem() {
+        for (JButton button : buttons) {
+            if (button.getName().equals(String.valueOf(selectedLoai))) {
+                button.setFont(new Font("Segoe UI", Font.BOLD, 14));
+                button.setForeground(new Color(22, 72, 99));
+
+                fillItemInBackground(selectedLoai);
+
+            } else {
+                button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                button.setForeground(Color.BLACK);
+
+            }
+        }
+    }
+
     private void fillItemInBackground(int ID_area) {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
             @Override
@@ -606,7 +760,7 @@ public class OrderForm extends javax.swing.JPanel {
                 // Gọi hàm fillItem từ SwingWorker
                 fillItem(ID_area);
                 PanelTable.revalidate();
-                for(MonAnItem i : dsMonAn){
+                for (MonAnItem i : dsMonAn) {
                     i.setIMG();
                 }
                 return null;
@@ -616,7 +770,7 @@ public class OrderForm extends javax.swing.JPanel {
             protected void done() {
                 // Cập nhật giao diện sau khi công việc hoàn thành
                 PanelTable.revalidate();
-                
+
             }
         };
 

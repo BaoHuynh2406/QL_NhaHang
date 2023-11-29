@@ -8,19 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class OrderDetailDao extends RestauranDao<OrderDetail, String>{
+public class OrderDetailDao extends RestauranDao<OrderDetail, Integer>{
     final String INSERT_SQL = "INSERT INTO OrderDetail (ID_Order, ID_Item, Quantity, Price, TotalPrice) "
             + "VALUES (?, ?, ?, ?, ?)";
     final String UPDATE_ALL = "UPDATE OrderDetail SET "
             + "ID_Order = ?, ID_Item = ?, Quantity = ?, Price = ?,"
-            + " TotalPrice = ? WHERE ID_OrderDetail = ?";
+            + " TotalPrice = ? WHERE ID_Order = ? and ID_Item = ?";
     final String DELETE_SQL = "DELETE FROM OrderDetail WHERE ID_OrderDetail = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM OrderDetail";
     final String SELECT_BY_ID_SQL = "SELECT * FROM OrderDetail WHERE ID_OrderDetail = ?";
     @Override   
     public void insert(OrderDetail entity) {
         jdbc.update(INSERT_SQL,
-                entity.getID_OrderDetail(),
                 entity.getID_Order(),
                 entity.getID_Item(),
                 entity.getQuantity(),
@@ -31,17 +30,23 @@ public class OrderDetailDao extends RestauranDao<OrderDetail, String>{
     @Override
     public void update(OrderDetail entity) {
         jdbc.update(UPDATE_ALL,
-                entity.getID_OrderDetail(),
                 entity.getID_Order(),
                 entity.getID_Item(),
                 entity.getQuantity(),
                 entity.getPrice(),
-                entity.getTotalPrice());
+                entity.getTotalPrice(),
+                entity.getID_Order(),
+                entity.getID_Item()
+        );
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
+    }
+    
+    public void delete(Integer ID_item, Integer ID_DonHang){
+        jdbc.update("DELETE FROM OrderDetail WHERE ID_Item = ? AND ID_Order = ?", ID_item, ID_DonHang);
     }
 
     @Override
@@ -50,7 +55,7 @@ public class OrderDetailDao extends RestauranDao<OrderDetail, String>{
     }
 
     @Override
-    public OrderDetail selectById(String id) {
+    public OrderDetail selectById(Integer id) {
         List<OrderDetail> list = selectBySql(SELECT_BY_ID_SQL, id);
         if(list.isEmpty()){
             return null;
@@ -70,7 +75,6 @@ public class OrderDetailDao extends RestauranDao<OrderDetail, String>{
                 entity.setID_Item(rs.getInt("ID_Item"));
                 entity.setQuantity(rs.getInt("Quantity"));
                 entity.setPrice(rs.getDouble("Price"));
-                entity.setTotalPrice(rs.getDouble("TotalPrice"));
                 list.add(entity);
             }
         } catch (Exception e) {
