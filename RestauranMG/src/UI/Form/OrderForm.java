@@ -24,6 +24,7 @@ import UI.Model.Model_Mon_Da_Goi;
 import Utils.Auth;
 import Utils.fNum;
 import Utils.msg;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -81,11 +82,13 @@ public class OrderForm extends javax.swing.JPanel {
         DonHang.setOrderDate(new Date());
     }
 
+    String tenBan;
     public void setTable(int ID_table) {
         try {
             DonHang.setID_Table(ID_table);
             tableSelected = table_DAO.selectById(ID_table);
-            txtTableName.setText("Bàn: " + tableSelected.getTableName());
+            tenBan = "Bàn: " + tableSelected.getTableName();
+            txtTableName.setText(tenBan);
             fillLoaiMenu();
             fillDsDaGoi();
 
@@ -286,9 +289,21 @@ public class OrderForm extends javax.swing.JPanel {
             DonHang.setNumberOfGuests(0);
             txtGustNum.setText(0+"");
         }
-        
-        
     }
+    
+    
+    private void callThanhToan(){
+        ThanhToanForm f = new ThanhToanForm(DonHang, tenBan);
+        this.removeAll();
+        this.repaint();
+        this.setLayout(new BorderLayout());
+        this.add(f,BorderLayout.CENTER);
+        this.repaint();
+        this.validate();
+    }
+    
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -456,6 +471,11 @@ public class OrderForm extends javax.swing.JPanel {
         jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jButton3.setForeground(new java.awt.Color(51, 0, 204));
         jButton3.setText("Thanh toán");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -606,6 +626,10 @@ public class OrderForm extends javax.swing.JPanel {
     private void txtGustNumKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGustNumKeyPressed
         
     }//GEN-LAST:event_txtGustNumKeyPressed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       callThanhToan();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -47,6 +47,8 @@ public class procDao {
     }
     
     
+    
+    
     public Map<Integer, Model_Mon_Da_Goi> GetGetItemsByTableID(int ID_table){
         try {
         Map<Integer, Model_Mon_Da_Goi> list = new HashMap<>();
@@ -67,5 +69,15 @@ public class procDao {
             System.out.println(e.getMessage());
             return null;
         }
+    }
+    
+    public List<Object[]> getDonHang(int ID_Order){
+        String sql = "select od.ID_Item,  m.ItemName, od.Quantity, od.price, od.totalPrice from OrderDetail od "
+                + "inner join Orders o ON o.ID_Order = od.ID_Order "
+                + "inner join tables t ON t.ID_Table = o.ID_table "
+                +"inner join MenuItems m ON od.ID_Item = m.ID_Item "
+                + "where od.ID_order = ?";
+        String cols[] = {"ID_Item","ItemName","Quantity","Price","TotalPrice"};
+        return getListOfArray(sql, cols, ID_Order);
     }
 }

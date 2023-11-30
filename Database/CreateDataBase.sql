@@ -189,9 +189,6 @@ EXEC GetOccupiedTablesInfo;
 -- -----------
 
 
-
-
-
 --  stored procedure để lấy thông tin bàn dựa trên mã khu vực
 
 CREATE PROCEDURE GetTableSummary
@@ -222,32 +219,43 @@ BEGIN
 END;
 
 
-EXEC GetTableSummary 2;
+EXEC GetTableSummary 1;
 
 
--- Tạo trigger tự động cập nhật trạng thái của bàn
-CREATE OR ALTER TRIGGER UpdateTableStatus
-ON Orders
-AFTER INSERT, UPDATE
+
+
+-- proc truy xuất ra ds món mà bàn x đang gọi 
+-- đầu vào mã bàn -> DS(ID món, tên món, số lượng, giá)
+Create PROCEDURE GetItemsByTableID
+    @TableID INT
 AS
 BEGIN
-    DECLARE @TableID INT;
-
-    -- Lấy ID của bàn từ hóa đơn được thêm hoặc cập nhật
-    SELECT @TableID = ID_Table
-    FROM inserted;
-
-    -- Cập nhật trạng thái của bàn
-    UPDATE Tables
-    SET IsOccupied = CASE
-                        WHEN EXISTS (
-                            SELECT 1
-                            FROM Orders O
-                            WHERE O.ID_Table = @TableID AND O.IsPaid = 0
-                        ) THEN 1 -- Bàn có hóa đơn chưa thanh toán, đặt trạng thái là có khách
-                        ELSE 0 -- Không có hóa đơn chưa thanh toán, đặt trạng thái là không có khách
-                    END
-    WHERE ID_Table = @TableID;
+    SELECT od.ID_Item AS 'ID_Item',
+           mi.ItemName AS 'ItemName',
+           mi.Price AS 'Price',
+           od.Quantity AS 'Quantity',
+		   o.ID_Order AS 'ID'
+    FROM OrderDetail od
+    INNER JOIN MenuItems mi ON od.ID_Item = mi.ID_Item
+    INNER JOIN Orders o ON od.ID_Order = o.ID_Order
+    WHERE o.ID_Table = @TableID
+      AND o.IsPaid = 0;
 END;
 
+exec GetItemsByTableID 2
 
+
+-- Tự động xóa đơn hàng không có chi tiết đơn hàng
+CREATE PROCEDURE DeleteOrdersWithoutDetails
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DELETE FROM Orders
+    WHERE ID_Order NOT IN (SELECT DISTINCT ID_Order FROM OrderDetail);
+END
+
+EXEC DeleteOrdersWithoutDetails;
+
+select * from OrderDetail
+select * from Orders
