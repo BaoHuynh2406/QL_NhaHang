@@ -1,4 +1,3 @@
-
 package Dao;
 
 import Entity.PurchaseOrders;
@@ -7,12 +6,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String>{
+public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String> {
+
     final String INSERT_SQL = "INSERT INTO Purchase (ID_PurchaseOrder, OrderDate, ID_Employee) VALUES (?, ?, ?)";
     final String UPDATE_ALL = "UPDATE PurchaseOrders SET OrderDate = ?, ID_Employee = ? WHERE ID_PurchaseOrder = ?";
     final String DELETE_SQL = "DELETE FROM PurchaseOrders WHERE ID_PurchaseOrder = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM PurchaseOrders";
     final String SELECT_BY_ID_SQL = "SELECT * FROM PurchaseOrders WHERE ID_PurchaseOrder = ?";
+
     @Override
     public void insert(PurchaseOrders entity) {
         jdbc.update(INSERT_SQL,
@@ -24,9 +25,9 @@ public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String>{
     @Override
     public void update(PurchaseOrders entity) {
         jdbc.update(UPDATE_ALL,
-                entity.getID_PurchaseOrder(),
                 entity.getOrderDate(),
-                entity.getID_Employee());
+                entity.getID_Employee(),
+                entity.getID_PurchaseOrder());
     }
 
     @Override
@@ -36,13 +37,13 @@ public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String>{
 
     @Override
     public List<PurchaseOrders> selectAll() {
-        return selectBySql(SELECT_ALL_SQL);    
+        return selectBySql(SELECT_ALL_SQL);
     }
 
     @Override
     public PurchaseOrders selectById(String id) {
         List<PurchaseOrders> list = selectBySql(SELECT_BY_ID_SQL, id);
-        if(list.isEmpty()){
+        if (list.isEmpty()) {
             return null;
         }
         return list.get(0);
@@ -53,7 +54,7 @@ public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String>{
         List<PurchaseOrders> list = new ArrayList<>();
         try {
             ResultSet rs = jdbc.query(sql, args);
-            while(rs.next()) {
+            while (rs.next()) {
                 PurchaseOrders entity = new PurchaseOrders();
                 entity.setID_PurchaseOrder(rs.getInt("ID_PurchaseOrder"));
                 entity.setOrderDate(rs.getDate("OrderDate"));
@@ -63,7 +64,7 @@ public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String>{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return  list;
+        return list;
     }
-    
+
 }
