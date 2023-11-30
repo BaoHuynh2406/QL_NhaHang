@@ -87,7 +87,7 @@ public class OrderForm extends javax.swing.JPanel {
             tableSelected = table_DAO.selectById(ID_table);
             txtTableName.setText("Bàn: " + tableSelected.getTableName());
             fillLoaiMenu();
-            fillDsDaGoi(ID_table);
+            fillDsDaGoi();
 
             //Nếu có đơn hàng
             if (!dsDaGoiMap.isEmpty()) {
@@ -115,8 +115,8 @@ public class OrderForm extends javax.swing.JPanel {
     private Map<Integer, Model_Mon_Da_Goi> dsMonDangGoiMap = new HashMap<>();
 
     //Lấy dữ liệu đã gọi từ database nếu có
-//    private LinkedList<Model_Mon_Da_Goi> dsDaGoi;
-    private void fillDsDaGoi(int ID_table) {
+    private void fillDsDaGoi() {
+        int ID_table = DonHang.getID_Table();
         dsDaGoiMap = proDao.GetGetItemsByTableID(ID_table);
         if (!dsDaGoiMap.isEmpty()) {
             refreshMonAnOrder();
@@ -124,7 +124,6 @@ public class OrderForm extends javax.swing.JPanel {
 
     }
 
-//    private LinkedList<Model_Mon_Da_Goi> dsMonDangGoi = new LinkedList<>();
     // Các phương thức để thêm sản phẩm vào dsDaGoiMap và dsMonDangGoiMap
     private void addDanhSachGoiMon(Model_Mon_Da_Goi data, Map<Integer, Model_Mon_Da_Goi> map) {
         int idItem = data.getId();
@@ -272,7 +271,7 @@ public class OrderForm extends javax.swing.JPanel {
         
         msg.Info("Gọi món thành công!");
         dsMonDangGoiMap.clear();
-        fillDsDaGoi(DonHang.getID_Table());
+        fillDsDaGoi();
         updateDonHang();
         refreshMonAnOrder();
     }
