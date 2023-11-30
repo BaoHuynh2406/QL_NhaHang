@@ -50,6 +50,15 @@ public class ProductsDao extends RestauranDao<Products, String> {
         String sql = "select * from Products where ID_product like ? OR Name like ?";
         return selectBySql(sql, "%" + key + "%", "%" + key + "%");
     }
+    
+//    public Products SearchFirst(String maHang, String tenHang) {
+//        String sql = "select * from Products where ID_product like ?  OR Name like ?";
+//        List<Products> l = selectBySql(sql, "%" + maHang + "%", "%" + tenHang + "%");
+//        if(l.isEmpty()){
+//            return null;
+//        }
+//        return l.get(0);
+//    }
 
     @Override
     public Products selectById(String id) {
