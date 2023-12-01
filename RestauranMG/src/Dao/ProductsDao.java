@@ -50,6 +50,10 @@ public class ProductsDao extends RestauranDao<Products, String> {
         String sql = "select * from Products where ID_product like ? OR Name like ?";
         return selectBySql(sql, "%" + key + "%", "%" + key + "%");
     }
+    public int updateQuantity(String idProduct, int newQuantity) {
+        String UPDATE_QUANTITY_SQL = "UPDATE Products SET Quantity = ? WHERE ID_product = ?";
+        return jdbc.update(UPDATE_QUANTITY_SQL, newQuantity, idProduct);
+    }
     
 //    public Products SearchFirst(String maHang, String tenHang) {
 //        String sql = "select * from Products where ID_product like ?  OR Name like ?";
