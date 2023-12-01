@@ -32,6 +32,10 @@ public class OrdersDao extends RestauranDao<Orders, Integer>{
 
     }
     
+    public void updateStatus(int ID_Order, boolean paid){
+        String sql = "Update Orders set IsPaid = ? where ID_Order = ?";
+        jdbc.update(sql, paid,ID_Order);
+    }
     
      @Override
     public void insert(Orders entity) {

@@ -1,12 +1,18 @@
 
 package UI.Form;
 
+import Dao.InvoicesDao;
+import Dao.OrdersDao;
 import Dao.procDao;
+import Entity.Invoices;
 import Entity.Orders;
 import UI.Compoment.HoaDonItem;
+import UI.Main;
 import UI.Model.Model_Mon_Da_Goi;
+import Utils.Auth;
 import Utils.fNum;
 import Utils.msg;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -17,21 +23,28 @@ import javax.swing.JFrame;
 public class ThanhToanForm extends javax.swing.JPanel {
 
     int ID_Order = -1;
-    public ThanhToanForm(Orders donHang, String tenBan) {
+    private Main main;
+    public ThanhToanForm(Orders donHang, String tenBan, Main main) {
+        this.main = main;
         this.ID_Order = donHang.getID_Order();
         initComponents();
         fillSc();
         txtSoKhach.setText("Số khách: "+donHang.getNumberOfGuests());
         txtTenBan.setText(tenBan);
+        taoHoaDon();
     }
     
+    
+    
+    
+    int total = 0;
     public void fillSc(){
         procDao dao = new procDao();
         List<Object[]> l = dao.getDonHang(ID_Order);
         pn.removeAll();
         int width = l.size() * 50 + 40;
         pn.setPreferredSize(new Dimension(370, width));
-        int total = 0;
+        
         for(Object[] ob : l){
             Model_Mon_Da_Goi item = new Model_Mon_Da_Goi();
             item.setId((int) ob[0]);
@@ -46,7 +59,46 @@ public class ThanhToanForm extends javax.swing.JPanel {
                 
     }
 
+    int ID_Invoice = -1;
+    //Tạo hóa đơn
+    private void taoHoaDon(){
+        //Kiễm tra nếu đã có háo đơn thì không tạo
+        InvoicesDao d = new InvoicesDao();
+        Invoices e = new Invoices();
+        ID_Invoice = d.getID(ID_Order);
+        if(ID_Invoice != -1){
+            return;
+        }
+        
+        
+        e.setID_Employee(Auth.user.getID_Employee());
+        e.setID_Order(ID_Order);
+        e.setPaid(false);
+        e.setID_Tax(1);
+        e.setID_Method(1);
+        e.setTaxAmount(0);
+        e.setTotalAmount(0);
+        d.insert(e);
+        ID_Invoice = d.getNewID();
+    }
 
+    //Hàm cập nhật đơn hàng thành trạng thái đã thanh toán
+    public void chuyenTrangThaiDonHangThanhDaThanhToan(int ID_Order){
+        //Kiễm tra xem Hóa đơn thanh toán thành công chưa
+        InvoicesDao d = new InvoicesDao();
+        if(d.getID(ID_Order) != -1){
+            return;
+        }
+        OrdersDao od = new OrdersDao();
+        od.updateStatus(ID_Order, true);
+        this.removeAll();
+        ThanhToanThanhCong p = new ThanhToanThanhCong(main);
+        this.setLayout(new BorderLayout());
+        this.add(p, BorderLayout.CENTER);
+        this.revalidate();
+    }
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -84,6 +136,7 @@ public class ThanhToanForm extends javax.swing.JPanel {
         pn.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(pn);
 
+        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jButton1.setText("Chuyển khoản");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,7 +144,13 @@ public class ThanhToanForm extends javax.swing.JPanel {
             }
         });
 
+        btnTienMat.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnTienMat.setText("Tiền mặt");
+        btnTienMat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTienMatActionPerformed(evt);
+            }
+        });
 
         txtTotal.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         txtTotal.setForeground(new java.awt.Color(255, 0, 0));
@@ -219,6 +278,15 @@ public class ThanhToanForm extends javax.swing.JPanel {
         ThanhToanQR f = new ThanhToanQR(new javax.swing.JFrame(), true);
         f.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnTienMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTienMatActionPerformed
+        ThanhToanTienMat f = new ThanhToanTienMat(new javax.swing.JFrame(), true);
+        f.tongTien = total;
+        f.ID_Invoice = ID_Invoice;
+        f.capNhatTienThua();
+        f.setVisible(true);
+        chuyenTrangThaiDonHangThanhDaThanhToan(ID_Order);
+    }//GEN-LAST:event_btnTienMatActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -257,5 +257,13 @@ END
 
 EXEC DeleteOrdersWithoutDetails;
 
-select * from OrderDetail
+select od.ID_Item, m.ItemName,  od.Quantity, od.price, od.totalPrice, o.ID_order from OrderDetail  od
+inner join Orders o ON o.ID_Order = od.ID_Order
+inner join tables t ON t.ID_Table = o.ID_table
+inner join MenuItems m ON od.ID_Item = m.ID_Item
+where od.ID_order = 33
+
+
+select * from tables
 select * from Orders
+select * from OrderDetail

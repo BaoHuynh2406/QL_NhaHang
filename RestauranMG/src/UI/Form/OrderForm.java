@@ -11,6 +11,7 @@ import Entity.Areas;
 import Entity.MenuCategories;
 import Entity.Tables;
 import Controller.EventOrder;
+import Dao.InvoicesDao;
 import Dao.MenuItemsDao;
 import Dao.OrderDetailDao;
 import Dao.OrdersDao;
@@ -19,6 +20,7 @@ import Entity.OrderDetail;
 import Entity.Orders;
 import UI.Compoment.MonAnDaOrder;
 import UI.Compoment.MonAnItem;
+import UI.Main;
 import UI.Model.Model_Item_Menu;
 import UI.Model.Model_Mon_Da_Goi;
 import Utils.Auth;
@@ -66,13 +68,30 @@ public class OrderForm extends javax.swing.JPanel {
     procDao proDao = new procDao();
     MenuCategoriesDao loaiMenuDao = new MenuCategoriesDao();
     int selectedLoai;
-
-    public OrderForm() {
+    
+    private Main main;
+    public OrderForm(Main main) {
+        this.main = main;
         initComponents();
         ScroolTable.getVerticalScrollBar().setUnitIncrement(20);
+        updateStatus();
 
     }
 
+    private void updateStatus(){
+        if(dsDaGoiMap.isEmpty()){
+            btnThanhToan.setEnabled(false);
+        }else{
+            btnThanhToan.setEnabled(true);
+        }
+        
+        if(dsMonDangGoiMap.isEmpty()){
+            btnGoiMon.setEnabled(false);
+        }else{
+            btnGoiMon.setEnabled(true);
+        } 
+    }
+    
     private Orders DonHang = new Orders();
 
     private void updateThongTinDonHang() {
@@ -102,6 +121,13 @@ public class OrderForm extends javax.swing.JPanel {
                     txtGustNum.setText(d.getNumberOfGuests()+"");
                 }
                 updateThongTinDonHang();
+                //Nếu đơn hàng đang được thanh toán -> chuyển qua màn hình thanh toán
+                InvoicesDao d = new InvoicesDao();
+                if(d.getID(DonHang.getID_Order())!=-1){
+                    callThanhToan();
+                }
+                
+                
             } else {
                 DonHang.setID_Order(-1);
                 updateThongTinDonHang();
@@ -168,6 +194,7 @@ public class OrderForm extends javax.swing.JPanel {
     }
 
     private void refreshMonAnOrder() {
+        updateStatus();
         pnMonAnOrder.removeAll();
         int total = 0;
         if (dsDaGoiMap != null) {
@@ -293,7 +320,8 @@ public class OrderForm extends javax.swing.JPanel {
     
     
     private void callThanhToan(){
-        ThanhToanForm f = new ThanhToanForm(DonHang, tenBan);
+        
+        ThanhToanForm f = new ThanhToanForm(DonHang, tenBan, main);
         this.removeAll();
         this.repaint();
         this.setLayout(new BorderLayout());
@@ -325,8 +353,8 @@ public class OrderForm extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         lblTotal = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnGoiMon = new javax.swing.JButton();
+        btnThanhToan = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -369,6 +397,11 @@ public class OrderForm extends javax.swing.JPanel {
         txtGustNum.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtGustNum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtGustNum.setText("0");
+        txtGustNum.addCaretListener(new javax.swing.event.CaretListener() {
+            public void caretUpdate(javax.swing.event.CaretEvent evt) {
+                txtGustNumCaretUpdate(evt);
+            }
+        });
         txtGustNum.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
@@ -460,20 +493,20 @@ public class OrderForm extends javax.swing.JPanel {
         lblTotal.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTotal.setText("0đ");
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton2.setText("Gọi món");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnGoiMon.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnGoiMon.setText("Gọi món");
+        btnGoiMon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnGoiMonActionPerformed(evt);
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(51, 0, 204));
-        jButton3.setText("Thanh toán");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnThanhToan.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        btnThanhToan.setForeground(new java.awt.Color(51, 0, 204));
+        btnThanhToan.setText("Thanh toán");
+        btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnThanhToanActionPerformed(evt);
             }
         });
 
@@ -485,9 +518,9 @@ public class OrderForm extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnGoiMon, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -503,8 +536,8 @@ public class OrderForm extends javax.swing.JPanel {
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE))
+                    .addComponent(btnThanhToan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnGoiMon, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -611,9 +644,9 @@ public class OrderForm extends javax.swing.JPanel {
         event.GoBack();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnGoiMonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGoiMonActionPerformed
         sync();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnGoiMonActionPerformed
 
     private void txtGustNumInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtGustNumInputMethodTextChanged
 
@@ -627,17 +660,31 @@ public class OrderForm extends javax.swing.JPanel {
         
     }//GEN-LAST:event_txtGustNumKeyPressed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       callThanhToan();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
+      if(!dsMonDangGoiMap.isEmpty()){
+            if(
+            !msg.Yes_no("Bạn chưa ấn order món mới bạn có muốn tiếp tục thanh toán không?")){
+                return;
+            }
+        }
+        if(!msg.Yes_no("Khi ấn thanh toán sẽ không thể quay lại bước này!")){
+            return;
+        }
+        
+        callThanhToan();
+    }//GEN-LAST:event_btnThanhToanActionPerformed
+
+    private void txtGustNumCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txtGustNumCaretUpdate
+        
+    }//GEN-LAST:event_txtGustNumCaretUpdate
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelTable;
     private javax.swing.JScrollPane ScroolTable;
+    private javax.swing.JButton btnGoiMon;
+    private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

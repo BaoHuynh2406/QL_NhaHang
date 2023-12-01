@@ -36,10 +36,7 @@ import javax.swing.ImageIcon;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 
-/**
- *
- * @author mtsst
- */
+ 
 public class Main extends javax.swing.JFrame {
 
     
@@ -197,7 +194,7 @@ public class Main extends javax.swing.JFrame {
     //Form Table
     public void formTable(){
         procDao.DeleteOrdersWithoutDetails();
-        TableForm tableForm = new TableForm(); //Form Hiển thị các danh sách bàn
+        TableForm tableForm = new TableForm(this); //Form Hiển thị các danh sách bàn
 
         pnDashboard.removeAll();
         pnDashboard.add(tableForm, BorderLayout.CENTER);
@@ -215,7 +212,7 @@ public class Main extends javax.swing.JFrame {
     
     //Form order
     private void setFormOrder(int ID){
-        OrderForm orderForm = new OrderForm(); //Form order
+        OrderForm orderForm = new OrderForm(this); //Form order
         pnDashboard.removeAll();
         orderForm.setTable(ID);
         pnDashboard.add(orderForm,BorderLayout.CENTER);

@@ -17,10 +17,10 @@ public class InvoicesDao extends RestauranDao<Invoices, String>{
     final String DELETE_SQL = "DELETE FROM Invoices WHERE ID_Invoice = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Invoices";
     final String SELECT_BY_ID_SQL = "SELECT * FROM Invoices WHERE ID_Invoice = ?";
+    final String UpdateThanhToan = "UPDATE Invoices set ID_Method = ?, InvoiceDate = ?, IsPaid = ? where ID_Invoice = ?";
     @Override
     public void insert(Invoices entity) {
         jdbc.update(INSERT_SQL,
-                entity.getID_Invoice(),
                 entity.getID_Order(),
                 entity.getID_Method(),
                 entity.getID_Employee(),
@@ -31,6 +31,34 @@ public class InvoicesDao extends RestauranDao<Invoices, String>{
                 entity.isPaid());
     }
 
+    public int getID(int ID_order){
+        try {
+            String sql = "select ID_Invoice from Invoices where ID_Order = ? and IsPaid = 0";
+            ResultSet r = jdbc.query(sql, ID_order);
+            int id = -1;
+            while (r.next()) {
+                id = r.getInt("ID_Invoice");
+            }
+            return id;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+    
+    public int getNewID(){
+        try {
+            String sql = "Select MAX(ID_Invoice) ID From Invoices";
+            ResultSet r = jdbc.query(sql);
+            int id = 0;
+            while (r.next()) {
+                id = r.getInt("ID");
+            }
+            return id;
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+    
     @Override
     public void update(Invoices entity) {
         jdbc.update(UPDATE_ALL,
@@ -45,6 +73,14 @@ public class InvoicesDao extends RestauranDao<Invoices, String>{
                 entity.isPaid());
     }
 
+    public void updateThanhToan(Invoices e){
+        jdbc.update(UpdateThanhToan, 
+                        e.getID_Method(),
+                        e.getInvoiceDate(),
+                        e.isPaid(),
+                        e.getID_Invoice()
+                );
+    }
     @Override
     public void delete(String id) {
         jdbc.update(DELETE_SQL, id);

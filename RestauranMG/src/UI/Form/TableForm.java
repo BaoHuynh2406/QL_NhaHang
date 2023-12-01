@@ -10,6 +10,7 @@ import Dao.procDao;
 import Entity.Areas;
 import Entity.Tables;
 import Controller.EventTableSelected;
+import UI.Main;
 import Utils.msg;
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -40,7 +41,9 @@ public class TableForm extends javax.swing.JPanel {
    procDao proDao = new procDao();
    AreasDao areas_DAO = new AreasDao();
    int selectedArea;
-    public TableForm() {
+   private Main main;
+    public TableForm(Main main) {
+        this.main = main;
         initComponents();
         fillKhuVuc();
         
