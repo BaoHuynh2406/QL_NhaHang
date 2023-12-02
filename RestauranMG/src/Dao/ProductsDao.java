@@ -59,6 +59,8 @@ public class ProductsDao extends RestauranDao<Products, String> {
     }
     
     public Products SearchFirst(String maHang, String tenHang) {
+        if(maHang.isBlank()) maHang = "NULL";
+        if(tenHang.isBlank()) tenHang = "NULL";
         List<Products> l = selectBySql(FIND_BY_ID_OR_NAME, "%" + maHang + "%", "%" + tenHang + "%");
         if(l.isEmpty()){
             return null;

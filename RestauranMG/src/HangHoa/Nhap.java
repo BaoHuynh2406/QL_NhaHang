@@ -399,9 +399,16 @@ public class Nhap extends javax.swing.JPanel {
 
         // Kiểm tra xem có cung cấp mã sản phẩm hoặc tên sản phẩm không
         if (!maHang.isEmpty() || !tenHang.isEmpty()) {
-            dao.
-            txtsoLuong.setEditable(true);
-            btnOK.setEnabled(true);
+            //đây là sản phẩm trả về làm gì với nó thì làm
+            Products p = dao.SearchFirst(maHang, tenHang);
+            if(p != null){
+                txtsoLuong.setEditable(true);
+                btnOK.setEnabled(true);
+                txtmaHang.setText(p.getID_product());
+                txttenHang.setText(p.getName());
+            }else{
+                msg.Warning("Không tìm thấy mặt hàng!");
+            }
         } else {
             msg.Warning("Vui lòng nhập mã hàng hoặc tên hàng!");
         }
