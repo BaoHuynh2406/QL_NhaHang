@@ -31,9 +31,6 @@ public class Areas {
     
     @Override
     public String toString() {
-        return "Area{" +
-                "idArea=" + ID_Area +
-                ", areaName='" + AreaName + '\'' +
-                '}';
+        return this.AreaName;
     }
 }
