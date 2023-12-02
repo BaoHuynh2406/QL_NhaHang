@@ -15,6 +15,9 @@ public class ProductsDao extends RestauranDao<Products, String> {
     final String DELETE_SQL = "DELETE FROM Products WHERE ID_product = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Products";
     final String SELECT_BY_ID_SQL = "SELECT *  FROM Products WHERE ID_product = ?";
+    final String FIND_BY_ID_OR_NAME = "SELECT TOP 1 * " +
+                                        "FROM Products " +
+                                        "WHERE ID_product LIKE ? OR Name LIKE ?";
 
     @Override
     public void insert(Products entity) {
@@ -46,7 +49,7 @@ public class ProductsDao extends RestauranDao<Products, String> {
         return selectBySql(SELECT_ALL_SQL);
     }
 
-    public List<Products> Search(String key) {
+    public List<Products>Search(String key) {
         String sql = "select * from Products where ID_product like ? OR Name like ?";
         return selectBySql(sql, "%" + key + "%", "%" + key + "%");
     }
@@ -55,14 +58,13 @@ public class ProductsDao extends RestauranDao<Products, String> {
         return jdbc.update(UPDATE_QUANTITY_SQL, newQuantity, idProduct);
     }
     
-//    public Products SearchFirst(String maHang, String tenHang) {
-//        String sql = "select * from Products where ID_product like ?  OR Name like ?";
-//        List<Products> l = selectBySql(sql, "%" + maHang + "%", "%" + tenHang + "%");
-//        if(l.isEmpty()){
-//            return null;
-//        }
-//        return l.get(0);
-//    }
+    public Products SearchFirst(String maHang, String tenHang) {
+        List<Products> l = selectBySql(FIND_BY_ID_OR_NAME, "%" + maHang + "%", "%" + tenHang + "%");
+        if(l.isEmpty()){
+            return null;
+        }
+        return l.get(0);
+    }
 
     @Override
     public Products selectById(String id) {

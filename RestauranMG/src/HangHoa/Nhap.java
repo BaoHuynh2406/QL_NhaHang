@@ -1,4 +1,3 @@
-
 package HangHoa;
 
 import Dao.ProductsDao;
@@ -11,7 +10,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.swing.table.DefaultTableModel;
 
-
 public class Nhap extends javax.swing.JPanel {
 
     int row = 0;
@@ -20,13 +18,14 @@ public class Nhap extends javax.swing.JPanel {
 
     PurchaseOrders po = new PurchaseOrders();
     private int soLuong = 0;
+    private boolean hasSearched = false;
+
     public Nhap() {
         initComponents();
         model = (DefaultTableModel) table.getModel();
         txtsoLuong.setEditable(false);
         btnOK.setEnabled(false);
         date();
-//        nv();
         txtmaNV.setEditable(false);
     }
 
@@ -43,29 +42,39 @@ public class Nhap extends javax.swing.JPanel {
         txtDate.setEditable(false);
     }
 
-    // hiện thị mã nv
-//    private void nv() {
-//        if (Auth.user != null) {
-//            System.out.println(txtmaNV);
-//            txtmaNV.setText(Auth.user.getID_Employee() + "");
-//        }
-//        System.out.println("Lỗi");
-//    }
-
     // fill dữ liệu theo tên hoặc mã
     public void fillTable(String key) {
+    model.setRowCount(0);
+    try {
+        System.out.println("Key: " + key);
+        int i = 1;
+        for (Products p : dao.Search(key)) {
+            model.addRow(new Object[]{i++,
+                p.getID_product(),
+                p.getName(),
+                p.getUnit(),
+                p.getPrice(),
+                p.getQuantity()});
+        }
+
+        // Lấy dữ liệu từ hàng đầu tiên (nếu có) và đặt vào ô mã và tên
+        if (model.getRowCount() > 0) {
+            txtmaHang.setText(model.getValueAt(0, 1).toString());
+            txttenHang.setText(model.getValueAt(0, 2).toString());
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println(e.getMessage());
+        msg.Error("Có lỗi trong quá trình truy xuất dữ liệu!");
+    }
+}
+
+
+    // nhấn tìm thì hiện thị tên với mã
+    public void fill(String key) {
         model.setRowCount(0);
         try {
-            System.out.println("Key: " + key);
-            int i = 1;
-            for (Products p : dao.Search(key)) {
-                model.addRow(new Object[]{i++,
-                    p.getID_product(),
-                    p.getName(),
-                    p.getUnit(),
-                    p.getPrice(),
-                    p.getQuantity()});
-            }
+            System.out.println("key : " + key);
             if (model.getRowCount() > 0) {
                 txtmaHang.setText(model.getValueAt(0, 1).toString());
                 txttenHang.setText(model.getValueAt(0, 2).toString());
@@ -93,67 +102,56 @@ public class Nhap extends javax.swing.JPanel {
         int rowToUse = (selectRow >= 0) ? selectRow : 0;
 
         String maHang = table.getValueAt(rowToUse, 1).toString();
-
-        // Kiểm tra kiểu dữ liệu của cột số lượng
-        Object soLuongHienTaiObj = table.getValueAt(rowToUse, 5);
-        if (soLuongHienTaiObj instanceof Integer) {
-            int soLuongHienTai = (int) soLuongHienTaiObj;
-            int tongSL = soLuongHienTai + soLuong;
-            table.setValueAt(tongSL, rowToUse, 5);
-            Products product = dao.selectById(maHang);
-            if (product != null) {
-                product.setQuantity(tongSL);
-            }
-        } else {
-            System.out.println("Kiểu dữ liệu không phải là Integer");
-        }
+        table.setValueAt(txtsoLuong.getText(), rowToUse, 6);
     }
 
     public void luu() {
-    try {
-        // Kiểm tra xem đã nhập đủ thông tin chưa
-        String maNH = txtmaNH.getText().trim();
-        String maNV = txtmaNV.getText().trim();
+        try {
+            // Kiểm tra xem đã nhập đủ thông tin chưa
+            String maNH = txtmaNH.getText().trim();
+//        String maNV = Auth.user.getID_Employee()+"";
+            String maNV = "1000000";
 
-        if (maNH.isEmpty() || maNV.isEmpty()) {
-            msg.Warning("Vui lòng nhập đủ thông tin!");
-            return;
-        }
-
-        // Bước 1: Thêm thông tin mới vào bảng PurchaseOrders
-        int idNhanVien = Integer.parseInt(maNV);
-        PurchaseOrdersDao purchaseOrdersDao = new PurchaseOrdersDao();
-        PurchaseOrders newPurchaseOrder = new PurchaseOrders();
-        newPurchaseOrder.setID_Employee(idNhanVien);
-        purchaseOrdersDao.insert(newPurchaseOrder);
-
-        // Bước 2: Cập nhật số lượng trong bảng Products
-        for (int i = 0; i < model.getRowCount(); i++) {
-            String maHang = model.getValueAt(i, 1).toString();
-            int soLuongNhap;
-            try {
-                soLuongNhap = Integer.parseInt(model.getValueAt(i, 5).toString());
-            } catch (NumberFormatException e) {
-                msg.Error("Vui lòng nhập số lượng là số nguyên !");
+            if (maNH.isEmpty() || maNV.isEmpty()) {
+                msg.Warning("Vui lòng nhập đủ thông tin!");
                 return;
             }
 
-            // Cập nhật số lượng trong bảng Products
-            int updatedQuantity = dao.updateQuantity(maHang, soLuongNhap);
-            if (updatedQuantity < 0) {
-                msg.Error("Có lỗi khi cập nhật số lượng trong bảng Products!");
-                return;
-            }
-        }
+            // Bước 1: Thêm thông tin mới vào bảng PurchaseOrders
+            int idNhanVien = Integer.parseInt(maNV);
+            PurchaseOrdersDao purchaseOrdersDao = new PurchaseOrdersDao();
+            PurchaseOrders newPurchaseOrder = new PurchaseOrders();
+            newPurchaseOrder.setID_Employee(idNhanVien);
+            purchaseOrdersDao.insert(newPurchaseOrder);
 
-        msg.Info("Nhập hàng thành công!");
-        // Sau khi thêm, bạn có thể làm một số công việc khác nếu cần.
-    } catch (NumberFormatException e) {
-        msg.Error("Lỗi định dạng số nguyên: " + e.getMessage());
-    } catch (Exception e) {
-        msg.Error("Lỗi xảy ra: " + e.getMessage());
+            // Bước 2: Cập nhật số lượng trong bảng Products
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String maHang = model.getValueAt(i, 1).toString();
+                int soLuongNhap;
+                try {
+                    soLuongNhap = Integer.parseInt(model.getValueAt(i, 5).toString());
+                } catch (NumberFormatException e) {
+                    msg.Error("Vui lòng nhập số lượng là số nguyên !");
+                    return;
+                }
+
+                // Cập nhật số lượng trong bảng Products
+                int updatedQuantity = dao.updateQuantity(maHang, soLuongNhap);
+                if (updatedQuantity < 0) {
+                    msg.Error("Có lỗi khi cập nhật số lượng trong bảng Products!");
+                    return;
+                }
+            }
+
+            msg.Info("Nhập hàng thành công!");
+            // Sau khi thêm, bạn có thể làm một số công việc khác nếu cần.
+        } catch (NumberFormatException e) {
+            msg.Error("Lỗi định dạng số nguyên: " + e.getMessage());
+        } catch (Exception e) {
+            msg.Error("Lỗi xảy ra: " + e.getMessage());
+        }
     }
-}
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -214,7 +212,7 @@ public class Nhap extends javax.swing.JPanel {
                     .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtmaNH, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                    .addComponent(txtmaNH, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
                     .addComponent(txtmaNV)
                     .addComponent(txtDate))
                 .addGap(30, 30, 30))
@@ -298,7 +296,7 @@ public class Nhap extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(txtsoLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnOK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(btnOK, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)))
                 .addGap(30, 30, 30))
         );
         jPanel2Layout.setVerticalGroup(
@@ -327,11 +325,11 @@ public class Nhap extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Mã hàng", "Tên hàng", "Đơn vị", "Giá", "Số lượng"
+                "STT", "Mã hàng", "Tên hàng", "Đơn vị", "Giá", "Số lượng", "Nhập vào"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -349,6 +347,11 @@ public class Nhap extends javax.swing.JPanel {
                 button1MousePressed(evt);
             }
         });
+        button1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -359,18 +362,19 @@ public class Nhap extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 815, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(50, 50, 50)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 953, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(8, 8, 8))))
+                                .addGap(8, 8, 8))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(285, 285, 285)
                         .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,22 +386,20 @@ public class Nhap extends javax.swing.JPanel {
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimActionPerformed
-        // TODO add your handling code here:
         String maHang = txtmaHang.getText().trim();
         String tenHang = txttenHang.getText().trim();
 
         // Kiểm tra xem có cung cấp mã sản phẩm hoặc tên sản phẩm không
         if (!maHang.isEmpty() || !tenHang.isEmpty()) {
-            // Sử dụng khóa cung cấp (mã sản phẩm hoặc tên sản phẩm) để tìm kiếm
-            fillTable(maHang.isEmpty() ? tenHang : maHang);
+            dao.
             txtsoLuong.setEditable(true);
             btnOK.setEnabled(true);
         } else {
@@ -418,6 +420,10 @@ public class Nhap extends javax.swing.JPanel {
         // TODO add your handling code here:
         luu();
     }//GEN-LAST:event_button1MousePressed
+
+    private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_button1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
