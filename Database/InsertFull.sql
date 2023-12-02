@@ -19,9 +19,9 @@ update Employees set Password = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8
 -- Thêm dữ liệu mẫu cho bảng Products
 select * from Products
 INSERT INTO Products (ID_product, Name, Quantity, Unit, Price) VALUES 
-('P00001', N'Bánh', 50, N'cái', 10.99),
-('P00002', N'Bia SG', 100, 'lon', 5.49),
-('P00003', N'Thịt bò', 30, 'kg', 20.00);
+('P00001', N'Bánh gạo', 50, N'cái', 15000),
+('P00002', N'Bia Sài Gòn', 100, 'lon', 13000),
+('P00003', N'Thịt bò', 30, 'kg', 200000);
 
 -- Thêm dữ liệu mẫu cho bảng PurchaseOrders
 select * from PurchaseOrders
@@ -38,18 +38,55 @@ INSERT INTO PurchaseOrdersDetail (ID_PurchaseOrder, ID_product, Quantity, Price)
 
 -- Thêm dữ liệu mẫu cho bảng MenuCategories
 INSERT INTO MenuCategories (CategoryName) VALUES 
-('Appetizers'),
-('Main Course'),
-('Desserts');
+('Khai vị'),
+('Món chính'),
+('Tráng miệng');
 
 -- Thêm dữ liệu mẫu cho bảng MenuItems
 INSERT INTO MenuItems (ItemName, ID_Category, Price, Photo) VALUES 
-(N'Test', 1, 899, 'lau-bo.jpg'),
-('Test', 2, 1599, 'lau-bo.jpg'),
-(N'Test', 3, 699, 'lau-bo.jpg');
 
-Select * from MenuItems
+-- khai vị
+(N'Salad', 1, 99000, 'salad.jpg'),
+(N'Bánh mỳ chấm sửa', 1, 15000, 'banhmy.jpg'),
+(N'Canapé', 1, 99000, 'canapes.jpg'),
+(N'Gỏi cuốn', 1, 49000, 'goicuon.jpg'),
+(N'Chả giò', 1, 25000, 'chagio.jpg'),
+(N'Caprese Salad', 1, 35000, 'bruschetta-caprese.jpg'),
+(N'Humus và bánh pita', 1, 29000, 'Hummus.jpg'),
+(N'Mì xào hải sản', 1, 39000, 'myxao.jpg'),
+(N'Cơm cuộn Hàn Quốc (Gimbap)', 1, 25000, 'comcuon.jpg'),
+(N'Món xôi cuộn gói lá chuối', 1, 15000, 'xoi.jpg'),
+(N'Đậu hủ chiên', 1, 15000, 'dau-hu-chien-don.jpg'),
 
+-- món chính
+(N'Bạch tuột sốt cay', 2, 249000, 'bach_tuot.jpg'),
+(N'Mực trứng chiên nước mắn', 2, 299000, 'muc-trung-chien-mam.jpg'),
+(N'Gà hấp xả', 2, 350000, 'ga-hap-xa.jpg'),
+(N'Lẩu bò', 2, 399000, 'lau-bo.jpg'),
+(N'Lẩu hải sản', 2, 499000, 'lau-hai-san.jpg'),
+(N'Nghiêu hấp thái', 2, 249000, 'ngheu-hap-thai.jpg'),
+(N'Râu muống xào tỏi', 2, 119000, 'rao-muong-xao-toi.jpg'),
+(N'Sò huyết rang me', 2, 139000, 'so-huyet-rang-me.jpg'),
+(N'Sụn gà chiên mắn', 2, 239000, 'sun-ga-chien-mam.jpg'),
+(N'Cơm chiên dương châu', 2, 119000, 'com-chien-duong-chau.jpg'),
+(N'Bò sốt vang đỏ', 2, 249000, 'Bit-tet-ap-chao-sot-ruou-vang-do.jpg'),
+(N'Sushi hải sản', 2, 229000, 'sushi.jpg'),
+(N'Lasagna', 2, 349000, 'lasagna.jpg'),
+(N'Pizza', 2, 449000, 'piza.jpg'),
+(N'Bún chả', 2, 149000, 'buncha.jpg'),
+(N'Phở bò', 2, 149000, 'pho-bo.jpg'),
+
+-- tráng miệng
+(N'Kem', 3, 12000, 'kem.jpg'),
+(N'Tiramisu', 3, 29000, 'Tiramisu.jpg'),
+(N'Mochi', 3, 15000, 'mochi.jpg'),
+(N'Bánh chuối Foster', 3, 19000, 'banhchuoi.jpg'),
+(N'Pavlova', 3, 9000, 'banh-pavlova.jpg'),
+(N'Cheesecake hương vị trái cây', 3, 18000, 'chessetraicay.jpg'),
+(N'Bánh flan', 3, 15000, 'banh-flan.jpg'),
+(N'Bánh Matcha', 3, 27000, 'BanhMatcha.jpg'),
+(N'Tart táo', 3, 21000, 'Tarttao.jpg'),
+(N'Bánh crepe', 3, 23000, 'banh-crepe.jpg');
 
 
 -- Thêm dữ liệu mẫu cho bảng MenuItemDetail
