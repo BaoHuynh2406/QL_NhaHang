@@ -1,4 +1,3 @@
-
 package HangHoa;
 
 import Dao.ProductsDao;
@@ -14,6 +13,7 @@ public class Kiem extends javax.swing.JPanel {
     ProductsDao dao = new ProductsDao();
     Products products = new Products();
     private int soLuong = 0;
+
     public Kiem() {
         initComponents();
         model = (DefaultTableModel) table.getModel();
@@ -79,6 +79,8 @@ public class Kiem extends javax.swing.JPanel {
         }
     }
 
+    
+
     // Lưu
     public void Luu() {
         try {
@@ -115,6 +117,7 @@ public class Kiem extends javax.swing.JPanel {
             msg.Error("Lỗi khi cập nhật số lượng.");
         }
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

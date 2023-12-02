@@ -15,9 +15,9 @@ public class ProductsDao extends RestauranDao<Products, String> {
     final String DELETE_SQL = "DELETE FROM Products WHERE ID_product = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Products";
     final String SELECT_BY_ID_SQL = "SELECT *  FROM Products WHERE ID_product = ?";
-    final String FIND_BY_ID_OR_NAME = "SELECT TOP 1 * " +
-                                        "FROM Products " +
-                                        "WHERE ID_product LIKE ? OR Name LIKE ?";
+    final String FIND_BY_ID_OR_NAME = "SELECT TOP 1 * "
+            + "FROM Products "
+            + "WHERE ID_product LIKE ? OR Name LIKE ?";
 
     @Override
     public void insert(Products entity) {
@@ -49,20 +49,29 @@ public class ProductsDao extends RestauranDao<Products, String> {
         return selectBySql(SELECT_ALL_SQL);
     }
 
-    public List<Products>Search(String key) {
+    public List<Products> Search(String key) {
         String sql = "select * from Products where ID_product like ? OR Name like ?";
         return selectBySql(sql, "%" + key + "%", "%" + key + "%");
     }
-    public int updateQuantity(String idProduct, int newQuantity) {
-        String UPDATE_QUANTITY_SQL = "UPDATE Products SET Quantity = ? WHERE ID_product = ?";
-        return jdbc.update(UPDATE_QUANTITY_SQL, newQuantity, idProduct);
+
+    public void updateQuantity(String idProduct, int quantity) {
+        try {
+            String sql = "UPDATE Products SET Quantity = Quantity + ? WHERE ID_product = ?";
+            jdbc.update(sql, quantity, idProduct);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
-    
+
     public Products SearchFirst(String maHang, String tenHang) {
-        if(maHang.isBlank()) maHang = "NULL";
-        if(tenHang.isBlank()) tenHang = "NULL";
+        if (maHang.isBlank()) {
+            maHang = "NULL";
+        }
+        if (tenHang.isBlank()) {
+            tenHang = "NULL";
+        }
         List<Products> l = selectBySql(FIND_BY_ID_OR_NAME, "%" + maHang + "%", "%" + tenHang + "%");
-        if(l.isEmpty()){
+        if (l.isEmpty()) {
             return null;
         }
         return l.get(0);
