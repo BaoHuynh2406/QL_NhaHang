@@ -8,6 +8,7 @@ public class Model_Mon_Da_Goi {
     private int sl;
     private int total;
     private ItemType type;
+    public int ID_Order;
     
     public static enum ItemType{
         ChuaGoi, DaGoi, TieuDe

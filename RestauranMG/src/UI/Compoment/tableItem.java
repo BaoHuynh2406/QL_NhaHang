@@ -2,6 +2,7 @@
 package UI.Compoment;
 
 import UI.Model.Model_Table;
+import Utils.fNum;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -30,7 +31,7 @@ public class tableItem extends javax.swing.JPanel {
         }else{
             lbGuest.setText(data.getGuestNum()+" Khách");
             lbName.setText(data.getName());
-            lbTitle.setText(data.getTotal()+"đ");
+            lbTitle.setText(fNum.parseString(data.getTotal())+"đ");
             this.setBackground(new Color(155,190,200));
 
         }
