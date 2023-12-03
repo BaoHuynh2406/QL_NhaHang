@@ -28,10 +28,17 @@ public class Nhap extends javax.swing.JPanel {
         model = (DefaultTableModel) table.getModel();
         txtsoLuong.setEditable(false);
         btnOK.setEnabled(false);
+        if (Auth.isLogin()) {
+            String maNhanVienDangNhap = Auth.getRole();
+            txtmaNV.setText(maNhanVienDangNhap);
+            txtmaNV.setEditable(false);
+        } else {
+            System.out.println("Không lấy được mã NV");
+        }
         date();
-//        txtmaNV.setEditable(false);
     }
 
+    
     // hiện thị ngày tháng năm hiện tại
     private void date() {
         // Lấy ngày tháng năm hiện tại
@@ -159,10 +166,13 @@ public class Nhap extends javax.swing.JPanel {
         button1 = new button.Button();
         btnXoa = new button.Button();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(199, 161, 69));
         jLabel1.setText("Bảng nhập hàng");
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Thông tin", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
         jPanel1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -217,6 +227,7 @@ public class Nhap extends javax.swing.JPanel {
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nhập hàng", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N

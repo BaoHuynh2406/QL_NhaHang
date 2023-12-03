@@ -41,7 +41,7 @@
                   <Component id="button2" alignment="3" max="32767" attributes="0"/>
                   <Component id="button3" alignment="3" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -58,6 +58,9 @@
         </Property>
         <Property name="radius" type="int" value="30"/>
       </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="button1MousePressed"/>
+      </Events>
     </Component>
     <Component class="button.Button" name="button2">
       <Properties>

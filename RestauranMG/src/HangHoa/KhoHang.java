@@ -188,6 +188,8 @@ public class KhoHang extends javax.swing.JPanel {
         cbb = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(255, 255, 255));
+
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

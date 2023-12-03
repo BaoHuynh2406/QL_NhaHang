@@ -6,7 +6,9 @@ public class Header extends javax.swing.JPanel {
     public Header() {
         initComponents();
     }
-
+    public void showKhoHang(){
+        
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -21,6 +23,11 @@ public class Header extends javax.swing.JPanel {
         button1.setBorderColor(new java.awt.Color(0, 0, 0));
         button1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         button1.setRadius(30);
+        button1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                button1MousePressed(evt);
+            }
+        });
 
         button2.setText("Kiểm hàng");
         button2.setBorderColor(new java.awt.Color(0, 0, 0));
@@ -53,9 +60,14 @@ public class Header extends javax.swing.JPanel {
                     .addComponent(button1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(button2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(button3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(22, 22, 22))
+                .addGap(30, 30, 30))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void button1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button1MousePressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_button1MousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
