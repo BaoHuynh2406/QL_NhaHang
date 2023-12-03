@@ -29,7 +29,7 @@ public class Nhap extends javax.swing.JPanel {
         txtsoLuong.setEditable(false);
         btnOK.setEnabled(false);
         date();
-        txtmaNV.setEditable(false);
+//        txtmaNV.setEditable(false);
     }
 
     // hiện thị ngày tháng năm hiện tại
@@ -125,6 +125,7 @@ public class Nhap extends javax.swing.JPanel {
 
         // Thông báo thành công
         msg.Info("Lưu thành công!");
+        txtmaNH.setText("");
     } catch (Exception e) {
         // Xử lý nếu có lỗi
         msg.Error("Lỗi khi lưu đơn hàng: " + e.getMessage());

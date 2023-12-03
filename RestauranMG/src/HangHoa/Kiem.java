@@ -21,31 +21,6 @@ public class Kiem extends javax.swing.JPanel {
         btnOk.setEnabled(false);
     }
 
-    // fill dữ liệu theo tên hoặc mã
-    public void fillTable(String key) {
-        model.setRowCount(0);
-        try {
-            System.out.println("Key: " + key);
-            int i = 1;
-            for (Products p : dao.Search(key)) {
-                model.addRow(new Object[]{i++,
-                    p.getID_product(),
-                    p.getName(),
-                    p.getUnit(),
-                    p.getQuantity(),
-                    p.getPrice()});
-            }
-            if (model.getRowCount() > 0) {
-                txtMaHang.setText(model.getValueAt(0, 1).toString());
-                txtTenHang.setText(model.getValueAt(0, 2).toString());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
-            msg.Error("Có lỗi trong quá trình truy xuất dữ liệu!");
-        }
-    }
-
     // xóa form
     public void clear() {
         txtMaHang.setText("");
@@ -63,23 +38,36 @@ public class Kiem extends javax.swing.JPanel {
             return;
         }
 
-        int selectRow = table.getSelectedRow();
-        if (selectRow >= 0) {
-            String maHang = table.getValueAt(selectRow, 1).toString();
-            table.setValueAt(soLuong, selectRow, 4);
-            Products product = dao.selectById(maHang);
+        // Lấy mã và tên từ JTextField
+        String maHang = txtMaHang.getText().trim();
+        String tenHang = txtTenHang.getText().trim();
 
-            if (product != null) {
-                // Cập nhật số lượng tạm thời trong bảng Products
-                product.setQuantity(soLuong);
-            }
+        // Tìm kiếm thông tin sản phẩm
+        Products product = dao.SearchFirst(maHang, tenHang);
+
+        if (product != null) {
+            // Tạo một mảng đối tượng để thêm vào bảng
+            Object[] rowData = new Object[]{
+                model.getRowCount() + 1,
+                product.getID_product(),
+                product.getName(),
+                product.getUnit(),
+                product.getPrice(),
+                product.getQuantity(),
+                soLuong // Số lượng mới nhập
+            };
+
+            // Thêm dòng mới vào bảng
+            model.addRow(rowData);
+
+            // Clear các JTextField
+            txtMaHang.setText("");
+            txtTenHang.setText("");
+            txtThucTe.setText("");
         } else {
-            table.setValueAt(soLuong, row, 4);
-            clear();
+            msg.Warning("Không tìm thấy sản phẩm!");
         }
     }
-
-    
 
     // Lưu
     public void Luu() {
@@ -96,7 +84,7 @@ public class Kiem extends javax.swing.JPanel {
                 int soLuong;
 
                 try {
-                    soLuong = Integer.parseInt(table.getValueAt(i, 4).toString());
+                    soLuong = Integer.parseInt(table.getValueAt(i, 6).toString());
                 } catch (NumberFormatException ex) {
                     System.out.println(ex.getMessage());
                     msg.Error("Dòng " + (i + 1) + ": Vui lòng nhập số lượng là một số nguyên.");
@@ -223,11 +211,11 @@ public class Kiem extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Mã hàng", "Tên hàng", "Đơn vị", "Số lượng"
+                "STT", "Mã hàng", "Tên hàng", "Đơn vị", "Giá", "Số lượng", "Thực tế"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -259,8 +247,10 @@ public class Kiem extends javax.swing.JPanel {
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1))
+                    .addComponent(jScrollPane1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(30, 30, 30))
             .addGroup(layout.createSequentialGroup()
                 .addGap(308, 308, 308)
@@ -294,10 +284,16 @@ public class Kiem extends javax.swing.JPanel {
 
         // Kiểm tra xem có cung cấp mã sản phẩm hoặc tên sản phẩm không
         if (!maHang.isEmpty() || !tenHang.isEmpty()) {
-            // Sử dụng khóa cung cấp (mã sản phẩm hoặc tên sản phẩm) để tìm kiếm
-            fillTable(maHang.isEmpty() ? tenHang : maHang);
-            txtThucTe.setEditable(true);
-            btnOk.setEnabled(true);
+            //đây là sản phẩm trả về làm gì với nó thì làm
+            Products p = dao.SearchFirst(maHang, tenHang);
+            if (p != null) {
+                txtThucTe.setEditable(true);
+                btnOk.setEnabled(true);
+                txtMaHang.setText(p.getID_product());
+                txtTenHang.setText(p.getName());
+            } else {
+                msg.Warning("Không tìm thấy mặt hàng!");
+            }
         } else {
             msg.Warning("Vui lòng nhập mã hàng hoặc tên hàng!");
         }
@@ -308,6 +304,10 @@ public class Kiem extends javax.swing.JPanel {
         int result = JOptionPane.showConfirmDialog(this, "Bạn có muốn lưu không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (result == JOptionPane.YES_OPTION) {
             Luu();
+            model.setRowCount(0);
+            clear();
+            txtThucTe.setEditable(false);
+            btnOk.setEnabled(false);
         }
     }//GEN-LAST:event_btnLuuMousePressed
 
