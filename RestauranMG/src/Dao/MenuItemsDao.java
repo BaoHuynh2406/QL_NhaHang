@@ -28,12 +28,12 @@ public class MenuItemsDao extends RestauranDao<MenuItems, Integer>{
     @Override
     public void update(MenuItems entity) {
         jdbc.update(UPDATE_ALL,
-                entity.getID_Item(),
                 entity.getItemName(),
                 entity.getID_Category(),
                 entity.getPrice(),
                 entity.getPhoto(),
-                    entity.isAvailable());
+                    entity.isAvailable(),
+                     entity.getID_Item());
     }
 
     @Override

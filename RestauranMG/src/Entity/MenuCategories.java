@@ -32,4 +32,21 @@ public class MenuCategories {
     public String toString() {
         return this.CategoryName;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        MenuCategories other = (MenuCategories) obj;
+
+        // So sánh cả ID_Category và CategoryName
+        return this.ID_Category == other.ID_Category &&
+                this.CategoryName.equals(other.CategoryName);
+    }
 }

@@ -35,6 +35,8 @@ import UI.Form.QLNV;
 import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 
@@ -259,13 +261,40 @@ public class Main extends javax.swing.JFrame {
     }
     
     //Form cài đặt nhà hàng
-    public void caiDatForm(){
-        CaiDatNhaHang f = new CaiDatNhaHang();
-        pnDashboard.removeAll();
-        pnDashboard.add(f, BorderLayout.CENTER);
-        pnDashboard.repaint();
-        pnDashboard.revalidate();
+    public void caiDatForm() {
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                pnDashboard.removeAll();
+                ImageIcon loadingIcon = new ImageIcon("src/IMG/ld.gif"); 
+                JLabel ic = new JLabel(loadingIcon);
+                pnDashboard.add(ic, BorderLayout.CENTER);
+                revalidate();
+                repaint();
+                CaiDatNhaHang f = new CaiDatNhaHang();
+                pnDashboard.removeAll();
+                pnDashboard.add(f, BorderLayout.CENTER);
+                pnDashboard.repaint();
+                pnDashboard.revalidate();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                revalidate();
+            }
+        };
+
+        worker.execute();
+
     }
+    
+                
+    
+ 
+        
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -238,18 +238,18 @@ public class QLMenu extends javax.swing.JPanel {
     private void tblMenuMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMenuMousePressed
       int id = (int) tblMenu.getValueAt(tblMenu.getSelectedRow(), 1);
       MenuItems e = mDao.selectById(id);
-      ChiTietMenu f = new ChiTietMenu(new javax.swing.JFrame(), true, e);
+      ChiTietMenu f = new ChiTietMenu(new javax.swing.JFrame(), true, e, this);
       f.setModal(true);
       f.setVisible(true);
-      selectTuCombobox();
+      
     }//GEN-LAST:event_tblMenuMousePressed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
       MenuItems e = new MenuItems();
-      ChiTietMenu f = new ChiTietMenu(new javax.swing.JFrame(), true, e);
+      ChiTietMenu f = new ChiTietMenu(new javax.swing.JFrame(), true, e, this);
       f.setModal(true);
       f.setVisible(true);
-      selectTuCombobox();
+     
     }//GEN-LAST:event_jButton7ActionPerformed
 
 

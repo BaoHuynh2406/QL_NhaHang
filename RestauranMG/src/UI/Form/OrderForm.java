@@ -727,35 +727,35 @@ public class OrderForm extends javax.swing.JPanel {
             if (row.isAvailable()) {
                 item = new MonAnItem(new Model_Item_Menu(row.getItemName(), row.getID_Item(),
                         row.getPrice(), row.getPhoto(), Model_Item_Menu.MenuType.AVAiLABLE));
+
+                // Bắt sự kiện
+                item.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        item.setColor(new Color(245, 255, 135, 200));
+                        item.setIcon("src/IMG/plus.png");
+                        PanelTable.repaint();
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        item.setColor(new Color(228, 253, 255, 200));
+                        item.setIcon("src/IMG/plus1.png");
+                        PanelTable.repaint();
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        Model_Mon_Da_Goi data = new Model_Mon_Da_Goi(row.getID_Item(), row.getItemName(),
+                                row.getPrice(), 1, Model_Mon_Da_Goi.ItemType.ChuaGoi);
+                        addDanhSachGoiMon(data, dsMonDangGoiMap);
+                    }
+                });
             } else {
                 item = new MonAnItem(new Model_Item_Menu(row.getItemName(), row.getID_Item(),
                         row.getPrice(), row.getPhoto(), Model_Item_Menu.MenuType.UNAVAiLABLE));
             }
-            // Bắt sự kiện
 
-            item.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    item.setColor(new Color(245, 255, 135, 200));
-                    item.setIcon("src/IMG/plus.png");
-                    PanelTable.repaint();
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    item.setColor(new Color(228, 253, 255, 200));
-                    item.setIcon("src/IMG/plus1.png");
-                    PanelTable.repaint();
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    Model_Mon_Da_Goi data = new Model_Mon_Da_Goi(row.getID_Item(), row.getItemName(),
-                            row.getPrice(), 1, Model_Mon_Da_Goi.ItemType.ChuaGoi);
-                    addDanhSachGoiMon(data, dsMonDangGoiMap);
-                }
-
-            });
             PanelTable.add(item);
             PanelTable.revalidate();
             dsMonAn.add(item);
