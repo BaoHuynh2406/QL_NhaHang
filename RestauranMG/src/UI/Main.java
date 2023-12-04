@@ -5,7 +5,9 @@ import Controller.EventMenuSelected;
 import Controller.EventOrder;
 import Controller.EventTableSelected;
 import Dao.procDao;
+import HangHoa.QLKhoHangForm;
 import UI.Compoment.MainMenu.MainMenu;
+import UI.Form.CaiDat.CaiDatNhaHang;
 import UI.Form.Login;
 import UI.Form.OrderForm;
 import java.awt.Dimension;
@@ -137,8 +139,14 @@ public class Main extends javax.swing.JFrame {
                         if (index == 0) {
                             formTable();
                         }
+                        if(index == 1){
+                            formHangHoa();
+                        }
                         if (index == 2) {
                             nvForm();
+                        }
+                        if(index == 3){
+                            caiDatForm();
                         }
                     }
                 });
@@ -232,12 +240,29 @@ public class Main extends javax.swing.JFrame {
         });
     }
     
+    //Form Hàng hóa
+    public void formHangHoa(){
+        QLKhoHangForm f = new QLKhoHangForm();
+        pnDashboard.removeAll();
+        pnDashboard.add(f, BorderLayout.CENTER);
+        pnDashboard.repaint();
+        pnDashboard.revalidate();
+    }
     
     //Form Nhân viên
     public void nvForm(){
         QLNV nvForm = new QLNV(); //Form Hiển thị nhân viên
         pnDashboard.removeAll();
         pnDashboard.add(nvForm, BorderLayout.CENTER);
+        pnDashboard.repaint();
+        pnDashboard.revalidate();
+    }
+    
+    //Form cài đặt nhà hàng
+    public void caiDatForm(){
+        CaiDatNhaHang f = new CaiDatNhaHang();
+        pnDashboard.removeAll();
+        pnDashboard.add(f, BorderLayout.CENTER);
         pnDashboard.repaint();
         pnDashboard.revalidate();
     }

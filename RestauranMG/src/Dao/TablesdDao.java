@@ -16,7 +16,6 @@ public class TablesdDao extends RestauranDao<Tables, Integer>{
     @Override
     public void insert(Tables entity) {
         jdbc.update(INSERT_SQL,
-                entity.getID_Table(),
                 entity.getTableName(),
                 entity.getID_Area(),
                 entity.isIsOccupied());

@@ -1,6 +1,8 @@
 
 package Entity;
 
+import java.util.Objects;
+
 public class Areas {
     private int ID_Area;
     private String AreaName;
@@ -32,5 +34,16 @@ public class Areas {
     @Override
     public String toString() {
         return this.AreaName;
+    }
+   @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Areas other = (Areas) obj;
+        return ID_Area == other.ID_Area && Objects.equals(AreaName, other.AreaName);
     }
 }

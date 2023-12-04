@@ -16,7 +16,6 @@ public class AreasDao extends RestauranDao<Areas, Integer>{
     @Override
     public void insert(Areas entity) {
         jdbc.update(INSERT_SQL,
-                entity.getID_Area(),
                 entity.getAreaName());
     }
 
@@ -37,9 +36,9 @@ public class AreasDao extends RestauranDao<Areas, Integer>{
         if(r.next()) return r.getInt("Num");
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return -1;
+            return 0;
         }
-        return -1;
+        return 0;
     }
     
     public void delete(Integer id) {
