@@ -27,15 +27,26 @@ Create table Employees(
 	foreign key (ID_role) REFERENCES Role(ID_role)
 );
 
--- Hàng hóa trong kho
 
-create table Products(
-	ID_product varchar(6) primary key,
-	Name nvarchar(32) not null,
-	Quantity int default 0, --Số lượng
-	Unit nvarchar(10) not null,
-	Price int default 0
+
+-- Tạo bảng để lưu trữ thông tin về loại hàng
+CREATE TABLE ProductCategories (
+    ID_Categories INT identity(1,1) PRIMARY KEY,
+    CategoryName NVARCHAR(50) NOT NULL
 );
+
+
+-- Hàng hóa trong kho
+CREATE TABLE Products (
+    ID_product VARCHAR(6) PRIMARY KEY,
+    ID_Categories INT,
+    Name NVARCHAR(32) NOT NULL,
+    Quantity INT DEFAULT 0, -- Số lượng
+    Unit NVARCHAR(10) NOT NULL,
+    Price INT DEFAULT 0,
+    FOREIGN KEY (ID_Categories) REFERENCES ProductCategories(ID_Categories)
+);
+
 
 -- Nhóm nhập hàng
 
@@ -45,7 +56,6 @@ create table PurchaseOrders(
 	ID_Employee INT,
 	Foreign key (ID_Employee) REFERENCES Employees(ID_Employee)
 );
-
 
 Create table PurchaseOrdersDetail(
 	ID_POD INT identity(1,1) primary key,
@@ -57,13 +67,13 @@ Create table PurchaseOrdersDetail(
 	Foreign Key (ID_Product) References Products (ID_product)
 );
 
-
 -- Nhóm thực đơn
 
 Create table MenuCategories(
 	ID_Category INT identity(1,1) primary key,
 	CategoryName nvarchar(20) not null
 );
+
 
 CREATE TABLE MenuItems (
     ID_Item INT identity(1,1) PRIMARY KEY,
@@ -264,6 +274,9 @@ inner join MenuItems m ON od.ID_Item = m.ID_Item
 where od.ID_order = 33
 
 
-select * from tables
-select * from Orders
-select * from OrderDetail
+
+SELECT p.*
+FROM Products p
+INNER JOIN ProductCategories pc ON p.ID_Categories = pc.ID_Categories
+WHERE pc.CategoryName = 'Bia';
+

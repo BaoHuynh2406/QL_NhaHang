@@ -106,7 +106,14 @@ public class NhapHang extends javax.swing.JPanel {
         String maNV = txtmaNV.getText().trim();
         LocalDate orderDate = LocalDate.now(); // Sử dụng ngày hiện tại
 
-        // Tạo một đối tượng PurchaseOrders từ các thông tin
+        // Kiểm tra độ dài của mã phiếu nhập hàng
+        if (maNH.length() <= 6) {
+            // Thông báo lỗi nếu mã phiếu nhập hàng không đạt yêu cầu
+            msg.Error("Mã phiếu nhập hàng phải có hơn 6 ký tự!");
+            return; // Kết thúc phương thức nếu có lỗi
+        }
+
+        // Tiếp tục thực hiện lưu nếu mã phiếu nhập hàng hợp lệ
         PurchaseOrders purchaseOrder = new PurchaseOrders();
         purchaseOrder.setID_PurchaseOrder(Integer.parseInt(maNH));
         
@@ -138,6 +145,7 @@ public class NhapHang extends javax.swing.JPanel {
         msg.Error("Lỗi khi lưu đơn hàng: " + e.getMessage());
     }
 }
+
 
 
     @SuppressWarnings("unchecked")

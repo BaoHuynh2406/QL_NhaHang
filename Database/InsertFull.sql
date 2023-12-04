@@ -16,13 +16,59 @@ insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, Phone
 
 update Employees set Password = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9'
 
+-- Thêm dữ liệu cho bảng ProductCategories
+INSERT INTO ProductCategories (CategoryName) VALUES
+    ('Banh'),
+    ('Bia'),
+    ('Thit'),
+    ('Hai san');
+
 -- Thêm dữ liệu mẫu cho bảng Products
 select * from Products
-INSERT INTO Products (ID_product, Name, Quantity, Unit, Price) VALUES 
-('P00001', N'Bánh gạo', 50, N'cái', 15000),
-('P00002', N'Bia Sài Gòn', 100, 'lon', 13000),
-('P00003', N'Thịt bò', 30, 'kg', 200000);
+INSERT INTO Products (ID_product,ID_Categories, Name, Quantity, Unit, Price) VALUES 
 
+-- loai Banh
+('P00001', 1, N'Bánh gạo', 50, N'cái', 15000),
+('P00002', 1, N'Bánh mì', 50, N'ổ', 10000),
+('P00003', 1, N'Bánh tráng', 50, N'cái', 12000),
+('P00004', 1, N'Bánh quy', 50, N'cái', 20000),
+('P00005', 1, N'Bánh flan', 50, N'cái', 20000),
+('P00006', 1, N'Bánh chocolate lava', 50, N'cái', 22000),
+('P00007', 1, N'Bánh dẻo', 50, N'cái', 11000),
+
+-- loại bia
+('P00008', 2, N'Bia Sài Gòn', 100, 'lon', 13000),
+('P00009', 2, N'Bia Tiger', 100, 'lon', 17000),
+('P00010', 2, N'Bia Sapporo', 100, 'lon', 13500),
+('P00011', 2, N'Bia Heineken', 100, 'lon', 22000),
+('P00012', 2, N'Bia 333', 100, 'lon', 13000),
+
+-- loai thit
+('P00013', 3, N'Thịt bò', 30, 'kg', 200000),
+('P00014', 3, N'Thịt ba chỉ', 30, 'kg', 185000),
+('P00015', 3, N'Sườn non', 30, 'kg', 220000),
+('P00016', 3, N'Nạc thăn', 30, 'kg', 190000),
+('P00017', 3, N'Thịt nạc vai', 30, 'kg', 180000),
+('P00018', 3, N'Thịt bò úc', 30, 'kg', 270000),
+('P00019', 3, N'Gầu bò', 30, 'kg', 250000),
+('P00020', 3, N'Thịt gà', 30, 'kg', 90000),
+('P00021', 3, N'Chân gà', 30, 'kg', 100000),
+
+-- loại hải sản 
+('P00022', 4, N'Cá hồi', 30, 'kg', 350000),
+('P00023', 4, N'Cá bớp', 30, 'kg', 210000),
+('P00024', 4, N'Chả cá thu', 30, 'kg', 180000),
+('P00025', 4, N'Mực ống', 30, 'kg', 320000),
+('P00026', 4, N'Bạc tuộc', 30, 'kg', 125000),
+('P00027', 4, N'Mực trứng', 30, 'kg', 220000),
+('P00028', 4, N'Tôm xú', 30, 'kg', 190000),
+('P00029', 4, N'Tôm hùm baby', 30, 'kg', 550000),
+('P00030', 4, N'Ghẹ biển', 30, 'kg', 400000),
+('P00031', 4, N'Cua biển', 30, 'kg', 240000),
+('P00032', 4, N'Sò dương', 30, 'kg', 160000),
+('P00033', 4, N'Ốc hương', 30, 'kg', 500000);
+
+select * from Products
 -- Thêm dữ liệu mẫu cho bảng PurchaseOrders
 select * from PurchaseOrders
 INSERT INTO PurchaseOrders (ID_PurchaseOrder,OrderDate, ID_Employee) VALUES 

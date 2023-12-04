@@ -1,6 +1,8 @@
 package HangHoa;
 
+import Dao.ProductCategoriesDao;
 import Dao.ProductsDao;
+import Entity.ProductCategories;
 import Entity.Products;
 import Utils.msg;
 import button.EventCallBack;
@@ -23,6 +25,7 @@ public class KhoHang extends javax.swing.JPanel {
     DefaultTableModel model;
     ProductsDao dao = new ProductsDao();
     Products products = new Products();
+    ProductCategoriesDao pdao = new ProductCategoriesDao();
 
     public KhoHang() {
         initComponents();
@@ -67,7 +70,7 @@ public class KhoHang extends javax.swing.JPanel {
         model.addElement("Tất cả");
 
         // Thêm các sản phẩm từ cơ sở dữ liệu vào JComboBox
-        dao.selectAll().forEach(model::addElement);
+        pdao.selectAll().forEach(model::addElement);
     }
 
     public void fillTable() {
@@ -96,16 +99,22 @@ public class KhoHang extends javax.swing.JPanel {
             fillTable();
         } else {
             model.setRowCount(0);
-            if (selectedObject instanceof Products) {
-                Products selectedProduct = (Products) selectedObject;
-                model.addRow(new Object[]{
-                    1,
-                    selectedProduct.getID_product(),
-                    selectedProduct.getName(),
-                    selectedProduct.getUnit(),
-                    selectedProduct.getQuantity(),
-                    selectedProduct.getPrice()
-                });
+
+            if (selectedObject instanceof ProductCategories) {
+                ProductCategories selectedCategory = (ProductCategories) selectedObject;
+                List<Products> products = dao.getProductsByCategory(selectedCategory.getCategoryName());
+                int i = 1;
+                for (Products product : products) {
+                    
+                    model.addRow(new Object[]{
+                        i++,
+                        product.getID_product(),
+                        product.getName(),
+                        product.getUnit(),
+                        product.getQuantity(),
+                        product.getPrice()
+                    });
+                }
             }
         }
     }
@@ -294,7 +303,7 @@ public class KhoHang extends javax.swing.JPanel {
 
     private void btnXuatFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatFileActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_btnXuatFileActionPerformed
 
     private void btnXuatFileMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXuatFileMousePressed
