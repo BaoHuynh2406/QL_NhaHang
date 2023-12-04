@@ -49,6 +49,13 @@ public class ProductsDao extends RestauranDao<Products, String> {
         return selectBySql(SELECT_ALL_SQL);
     }
 
+    public List<Products> getProductsByCategory(String categoryName) {
+        String sql = "SELECT p.* FROM Products p "
+                + "INNER JOIN ProductCategories pc ON p.ID_Categories = pc.ID_Categories "
+                + "WHERE pc.CategoryName = ?";
+        return selectBySql(sql, categoryName);
+    }
+
     public List<Products> Search(String key) {
         String sql = "select * from Products where ID_product like ? OR Name like ?";
         return selectBySql(sql, "%" + key + "%", "%" + key + "%");
