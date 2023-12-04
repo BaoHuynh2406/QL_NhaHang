@@ -2,9 +2,13 @@
 package UI.Form.CaiDat;
 
 import Dao.MenuCategoriesDao;
+import Dao.MenuItemDetailDao;
 import Dao.MenuItemsDao;
+import Dao.ProductsDao;
 import Entity.MenuCategories;
+import Entity.MenuItemDetail;
 import Entity.MenuItems;
+import Entity.Products;
 import Utils.IMG;
 import Utils.fNum;
 import Utils.msg;
@@ -15,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 
 public class ChiTietMenu extends javax.swing.JDialog {
@@ -45,7 +50,9 @@ public class ChiTietMenu extends javax.swing.JDialog {
         
         lbAnh.setIcon(IMG.resize("src/IMG/Food/"+mnu.getPhoto(), 300, 160));
         lbPath.setText(mnu.getPhoto());
+        fillTableCongThuc();
     }
+    
     
     MenuCategoriesDao mDao = new MenuCategoriesDao();
      //Hàm fill lên combobox
@@ -103,6 +110,30 @@ public class ChiTietMenu extends javax.swing.JDialog {
 
     }
 
+    
+    //Hàm fill Bảng công thức món
+    public void fillTableCongThuc(){
+        MenuItemDetailDao mndDao = new MenuItemDetailDao();
+        List<MenuItemDetail> detail = mndDao.selectBySql("select * from MenuItemDetail where ID_Item = ?", mnu.getID_Item());
+        
+        DefaultTableModel model = (DefaultTableModel) tbl.getModel();
+        model.setRowCount(0);
+        if(detail.isEmpty()) return;
+        int i = 1;
+        ProductsDao pDao = new ProductsDao();
+        Products product = new Products();
+        for(MenuItemDetail item : detail){
+            product = pDao.selectById(item.getID_Product());
+            model.addRow(new Object[]{
+            i,
+            item.getID_Product(),
+            product.getName(),
+            product.getUnit(),
+            item.getQuantity(),
+            "Xóa"
+            });
+        }
+    }
  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -128,7 +159,7 @@ public class ChiTietMenu extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        table1 = new UI.Compoment.CustomTable.Table();
+        tbl = new UI.Compoment.CustomTable.Table();
         jTextField1 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
@@ -228,7 +259,7 @@ public class ChiTietMenu extends javax.swing.JDialog {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Công thức", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 18))); // NOI18N
 
-        table1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -236,10 +267,18 @@ public class ChiTietMenu extends javax.swing.JDialog {
                 {null, null, null, null, null, null}
             },
             new String [] {
-                "STT", "ID Hàng hóa", "Tên hàng", "Đơn vị tính", "Tiêu hao", "Xóa"
+                "STT", "ID Hàng hóa", "Tên hàng", "Đơn vị tính", "Tiêu hao", "Thao tác"
             }
-        ));
-        jScrollPane1.setViewportView(table1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, true, true, true, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tbl);
 
         jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -526,7 +565,7 @@ public class ChiTietMenu extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lbAnh;
     private javax.swing.JLabel lbPath;
-    private UI.Compoment.CustomTable.Table table1;
+    private UI.Compoment.CustomTable.Table tbl;
     private javax.swing.JTextField txtGia;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;

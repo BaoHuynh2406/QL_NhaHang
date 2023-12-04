@@ -159,18 +159,60 @@ public class Main extends javax.swing.JFrame {
                 lbChucVu.setText("Phục vụ:");
                 lbUserName.setText(Auth.user.getFullName());
                 menu.SV();
+                menu.addEventMenuSelected(new EventMenuSelected() {
+                    @Override
+                    public void selected(int index) {
+                        if (index == 0) {
+                            formTable();
+                        }
+                        if(index == 1){
+                            
+                        }
+                        
+                    }
+                });
+                formTable();
             }
             
             if(Auth.getRole().equals("KS")){
                 lbChucVu.setText("Bếp:");
                 lbUserName.setText(Auth.user.getFullName());
                 menu.KS();
+                menu.addEventMenuSelected(new EventMenuSelected() {
+                    @Override
+                    public void selected(int index) {
+                        if (index == 0) {
+                            formHangHoa();
+                        }
+                        if(index == 1){
+                            
+                        }
+                        
+                    }
+                });
+                formHangHoa();
             }
             
             if(Auth.getRole().equals("CS")){
                 lbChucVu.setText("Thu ngân:");
                 lbUserName.setText(Auth.user.getFullName());
                 menu.CS();
+                menu.addEventMenuSelected(new EventMenuSelected() {
+                    @Override
+                    public void selected(int index) {
+                        if (index == 0) {
+                            formTable();
+                        }
+                        if(index == 1){
+                           
+                        }
+                        if (index == 2) {
+                           
+                        }
+                        
+                    }
+                });
+                formTable();
             }
             
             

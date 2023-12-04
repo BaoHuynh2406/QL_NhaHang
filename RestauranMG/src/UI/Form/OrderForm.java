@@ -198,22 +198,26 @@ public class OrderForm extends javax.swing.JPanel {
         pnMonAnOrder.removeAll();
         int total = 0;
         if (dsDaGoiMap != null) {
-            total += fillToScreenDSMonDaGoi(dsDaGoiMap);
+            total += fillToScreenDSMon(dsDaGoiMap, false);
             MonAnDaOrder item = new MonAnDaOrder(new Model_Mon_Da_Goi(Model_Mon_Da_Goi.ItemType.TieuDe));
             pnMonAnOrder.add(item);
         }
 
-        total += fillToScreenDSMonDaGoi(dsMonDangGoiMap);
+        total += fillToScreenDSMon(dsMonDangGoiMap, true);
 
         lblTotal.setText(fNum.parseString(total) + "đ");
     }
 
-    private int fillToScreenDSMonDaGoi(Map<Integer, Model_Mon_Da_Goi> map) {
+    //Hàm fill lên màn hình
+    private int fillToScreenDSMon(Map<Integer, Model_Mon_Da_Goi> map, boolean edit) {
         int width = (dsDaGoiMap.size() + dsMonDangGoiMap.size()) * 50 + 40;
         pnMonAnOrder.setPreferredSize(new Dimension(370, width));
         int total = 0;
         for (Model_Mon_Da_Goi data : map.values()) {
             total += data.getTotal();
+            if(!Auth.user.getID_role().equals("MG") && !Auth.user.getID_role().equals("CS") && edit == false){
+                data.setType(Model_Mon_Da_Goi.ItemType.DaGoi);
+            }
             MonAnDaOrder item = new MonAnDaOrder(data);
             item.Giam.addMouseListener(new MouseAdapter() {
                 @Override
