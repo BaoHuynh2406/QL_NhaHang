@@ -30,9 +30,6 @@ public class MenuCategories {
     
     @Override
     public String toString() {
-        return "MenuCategory{" +
-                "idCategory=" + CategoryName +
-                ", categoryName='" + CategoryName + '\'' +
-                '}';
+        return this.CategoryName;
     }
 }

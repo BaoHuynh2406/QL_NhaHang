@@ -165,6 +165,9 @@ public class QLKhuVuc extends javax.swing.JPanel {
             }
         });
         jScrollPane5.setViewportView(tblKhuVuc);
+        if (tblKhuVuc.getColumnModel().getColumnCount() > 0) {
+            tblKhuVuc.getColumnModel().getColumn(0).setMaxWidth(100);
+        }
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -189,7 +192,7 @@ public class QLKhuVuc extends javax.swing.JPanel {
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("Khu vực", jPanel4);
+        jTabbedPane2.addTab("Khu vực          ", jPanel4);
 
         jPanel7.setBackground(new java.awt.Color(153, 153, 0));
         jPanel7.setForeground(new java.awt.Color(66, 125, 157));
@@ -257,6 +260,9 @@ public class QLKhuVuc extends javax.swing.JPanel {
             }
         });
         jScrollPane6.setViewportView(tblBan);
+        if (tblBan.getColumnModel().getColumnCount() > 0) {
+            tblBan.getColumnModel().getColumn(0).setMaxWidth(100);
+        }
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Khu vực:");

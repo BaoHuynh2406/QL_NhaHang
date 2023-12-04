@@ -4,11 +4,12 @@ package Dao;
 import Entity.MenuItems;
 
 import Utils.jdbc;
+import Utils.msg;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuItemsDao extends RestauranDao<MenuItems, String>{
+public class MenuItemsDao extends RestauranDao<MenuItems, Integer>{
     final String INSERT_SQL = "INSERT INTO MenuItems (ItemName, ID_Category, Price, Photo) "
             + "VALUES (?, ?, ?, ?)";
     final String UPDATE_ALL = "UPDATE MenuItems SET ItemName = ?, ID_Category = ?, Price = ?, Photo = ?, IsAvailable = ? WHERE ID_Item = ?";
@@ -18,7 +19,6 @@ public class MenuItemsDao extends RestauranDao<MenuItems, String>{
     @Override
     public void insert(MenuItems entity) {
         jdbc.update(INSERT_SQL,
-                entity.getID_Item(),
                 entity.getItemName(),
                 entity.getID_Category(),
                 entity.getPrice(),
@@ -37,7 +37,7 @@ public class MenuItemsDao extends RestauranDao<MenuItems, String>{
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
     }
 
@@ -56,7 +56,7 @@ public class MenuItemsDao extends RestauranDao<MenuItems, String>{
     }
     
     @Override
-    public MenuItems selectById(String id) {
+    public MenuItems selectById(Integer id) {
         List<MenuItems> list = selectBySql(SELECT_BY_ID_SQL, id);
         if(list.isEmpty()){
             return null;

@@ -39,8 +39,8 @@ public class CaiDatNhaHang extends javax.swing.JPanel {
 
         jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
         jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTabbedPane1.addTab("QL Khu vực - Bàn  ", qLKhuVuc1);
-        jTabbedPane1.addTab("QL Menu", qLMenu1);
+        jTabbedPane1.addTab("QL Khu vực - Bàn          ", qLKhuVuc1);
+        jTabbedPane1.addTab("QL Menu         ", qLMenu1);
         jTabbedPane1.addTab("QL Hàng hóa", qLKhoHang1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

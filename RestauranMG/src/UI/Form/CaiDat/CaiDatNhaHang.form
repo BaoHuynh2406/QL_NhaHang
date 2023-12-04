@@ -52,8 +52,8 @@
         <Component class="UI.Form.CaiDat.QLKhuVuc" name="qLKhuVuc1">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="QL Khu v&#x1ef1;c - B&#xe0;n  ">
-                <Property name="tabTitle" type="java.lang.String" value="QL Khu v&#x1ef1;c - B&#xe0;n  "/>
+              <JTabbedPaneConstraints tabName="QL Khu v&#x1ef1;c - B&#xe0;n          ">
+                <Property name="tabTitle" type="java.lang.String" value="QL Khu v&#x1ef1;c - B&#xe0;n          "/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -61,8 +61,8 @@
         <Component class="UI.Form.CaiDat.QLMenu" name="qLMenu1">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="QL Menu">
-                <Property name="tabTitle" type="java.lang.String" value="QL Menu"/>
+              <JTabbedPaneConstraints tabName="QL Menu         ">
+                <Property name="tabTitle" type="java.lang.String" value="QL Menu         "/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>

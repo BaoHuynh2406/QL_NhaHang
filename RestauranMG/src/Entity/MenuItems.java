@@ -1,7 +1,7 @@
 
 package Entity;
 public class MenuItems {
-    private int ID_Item;
+    private int ID_Item = 0;
     private String ItemName;
     private int ID_Category;
     private int Price;
