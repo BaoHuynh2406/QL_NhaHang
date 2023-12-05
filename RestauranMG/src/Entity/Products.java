@@ -4,11 +4,11 @@ package Entity;
 public class Products {
     private String ID_product;
     private String Name;
-    private int Quantity;
+    private double Quantity;
     private String Unit;
     private double Price;
 
-    public Products(String ID_product, String Name, int Quantity, String Unit, double Price) {
+    public Products(String ID_product, String Name, double Quantity, String Unit, double Price) {
         this.ID_product = ID_product;
         this.Name = Name;
         this.Quantity = Quantity;
@@ -35,11 +35,11 @@ public class Products {
         this.Name = Name;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return Quantity;
     }
 
-    public void setQuantity(int Quantity) {
+    public void setQuantity(double Quantity) {
         this.Quantity = Quantity;
     }
 
