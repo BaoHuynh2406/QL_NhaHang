@@ -28,7 +28,17 @@ public class msg {
     public static boolean Yes_no(String mess) {
     int choice = JOptionPane.showConfirmDialog(null, mess, "Bạn có chắc", JOptionPane.YES_NO_OPTION);
     return choice == JOptionPane.YES_OPTION;
-}
+    }
+    
+    public static int InputNum(String mess){
+        String numS = JOptionPane.showInputDialog(mess);
+        try {
+            return Integer.valueOf(numS);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
     
     
  

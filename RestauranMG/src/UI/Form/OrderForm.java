@@ -75,6 +75,8 @@ public class OrderForm extends javax.swing.JPanel {
         initComponents();
         ScroolTable.getVerticalScrollBar().setUnitIncrement(20);
         updateStatus();
+        
+        
 
     }
 
@@ -97,7 +99,17 @@ public class OrderForm extends javax.swing.JPanel {
     private void updateThongTinDonHang() {
         DonHang.setID_Employee(Auth.user.getID_Employee());
         DonHang.setIsPaid(false);
-        DonHang.setNumberOfGuests(Integer.valueOf(txtGustNum.getText()));
+        try {
+            int soKhach = Integer.valueOf(txtGustNum.getText());
+            if(soKhach < 0) soKhach = 0;
+            DonHang.setNumberOfGuests(soKhach);
+            txtGustNum.setText(soKhach+"");
+        } catch (Exception e) {
+           txtGustNum.setText(0+"");
+           DonHang.setNumberOfGuests(0);
+        }
+                
+        
         DonHang.setOrderDate(new Date());
     }
 
@@ -129,6 +141,7 @@ public class OrderForm extends javax.swing.JPanel {
                 
                 
             } else {
+                txtGustNum.setText(msg.InputNum("Số khách: ")+"");
                 DonHang.setID_Order(-1);
                 updateThongTinDonHang();
             }
@@ -324,7 +337,7 @@ public class OrderForm extends javax.swing.JPanel {
     
     
     private void callThanhToan(){
-        
+        updateThongTinDonHang();
         ThanhToanForm f = new ThanhToanForm(DonHang, tenBan, main);
         this.removeAll();
         this.repaint();
