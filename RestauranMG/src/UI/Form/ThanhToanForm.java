@@ -276,7 +276,11 @@ public class ThanhToanForm extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ThanhToanQR f = new ThanhToanQR(new javax.swing.JFrame(), true);
+        f.tongTien = total;
+        f.ID_Invoice = ID_Invoice;
+        f.CreateQR();
         f.setVisible(true);
+        chuyenTrangThaiDonHangThanhDaThanhToan(ID_Order);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnTienMatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTienMatActionPerformed

@@ -436,7 +436,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="UI.Compoment.CustomTable.Table" name="table1">
+                <Component class="UI.Compoment.CustomTable.Table" name="tbl">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="6" rowCount="4">
@@ -445,7 +445,7 @@
                         <Column editable="true" title="T&#xea;n h&#xe0;ng" type="java.lang.Object"/>
                         <Column editable="true" title="&#x110;&#x1a1;n v&#x1ecb; t&#xed;nh" type="java.lang.Object"/>
                         <Column editable="true" title="Ti&#xea;u hao" type="java.lang.Object"/>
-                        <Column editable="true" title="X&#xf3;a" type="java.lang.Object"/>
+                        <Column editable="false" title="Thao t&#xe1;c" type="java.lang.Object"/>
                       </Table>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
