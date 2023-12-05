@@ -2,13 +2,14 @@ package Dao;
 
 import Entity.PurchaseOrders;
 import Utils.jdbc;
+
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String> {
+public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, Integer> {
 
-    final String INSERT_SQL = "INSERT INTO Purchase (ID_PurchaseOrder, OrderDate, ID_Employee) VALUES (?, ?, ?)";
+    final String INSERT_SQL = "INSERT INTO PurchaseOrders (ID_PurchaseOrder, OrderDate, ID_Employee) VALUES (?, ?, ?)";
     final String UPDATE_ALL = "UPDATE PurchaseOrders SET OrderDate = ?, ID_Employee = ? WHERE ID_PurchaseOrder = ?";
     final String DELETE_SQL = "DELETE FROM PurchaseOrders WHERE ID_PurchaseOrder = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM PurchaseOrders";
@@ -31,7 +32,7 @@ public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String> {
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
     }
 
@@ -41,7 +42,7 @@ public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String> {
     }
 
     @Override
-    public PurchaseOrders selectById(String id) {
+    public PurchaseOrders selectById(Integer id) {
         List<PurchaseOrders> list = selectBySql(SELECT_BY_ID_SQL, id);
         if (list.isEmpty()) {
             return null;
@@ -66,5 +67,4 @@ public class PurchaseOrdersDao extends RestauranDao<PurchaseOrders, String> {
         }
         return list;
     }
-
 }

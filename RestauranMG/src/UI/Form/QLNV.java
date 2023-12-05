@@ -600,7 +600,7 @@ public class QLNV extends javax.swing.JPanel {
         });
 
         btnLuu.setBackground(new java.awt.Color(51, 204, 0));
-        btnLuu.setForeground(new java.awt.Color(255, 255, 255));
+        btnLuu.setForeground(new java.awt.Color(102, 102, 102));
         btnLuu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/download.png"))); // NOI18N
         btnLuu.setText("Lưu");
         btnLuu.setBorderColor(new java.awt.Color(0, 102, 102));

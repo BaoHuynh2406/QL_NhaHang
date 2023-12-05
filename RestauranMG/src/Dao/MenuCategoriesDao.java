@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuCategoriesDao extends RestauranDao<MenuCategories, String>{
+public class MenuCategoriesDao extends RestauranDao<MenuCategories, Integer>{
     final String INSERT_SQL = "INSERT INTO MenuCategories (CategoryName) VALUES (?)";
     final String UPDATE_ALL = "UPDATE MenuCategories SET CategoryName = ? WHERE ID_Category = ?";
     final String DELETE_SQL = "DELETE FROM MenuCategories WHERE ID_Category = ?";
@@ -28,7 +28,7 @@ public class MenuCategoriesDao extends RestauranDao<MenuCategories, String>{
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
     }
 
@@ -38,7 +38,7 @@ public class MenuCategoriesDao extends RestauranDao<MenuCategories, String>{
     }
 
     @Override
-    public MenuCategories selectById(String id) {
+    public MenuCategories selectById(Integer id) {
         List<MenuCategories> list = selectBySql(SELECT_BY_ID_SQL, id);
         if(list.isEmpty()){
             return null;

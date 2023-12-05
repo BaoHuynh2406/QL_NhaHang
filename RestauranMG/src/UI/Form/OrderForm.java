@@ -75,6 +75,8 @@ public class OrderForm extends javax.swing.JPanel {
         initComponents();
         ScroolTable.getVerticalScrollBar().setUnitIncrement(20);
         updateStatus();
+        
+        
 
     }
 
@@ -97,7 +99,17 @@ public class OrderForm extends javax.swing.JPanel {
     private void updateThongTinDonHang() {
         DonHang.setID_Employee(Auth.user.getID_Employee());
         DonHang.setIsPaid(false);
-        DonHang.setNumberOfGuests(Integer.valueOf(txtGustNum.getText()));
+        try {
+            int soKhach = Integer.valueOf(txtGustNum.getText());
+            if(soKhach < 0) soKhach = 0;
+            DonHang.setNumberOfGuests(soKhach);
+            txtGustNum.setText(soKhach+"");
+        } catch (Exception e) {
+           txtGustNum.setText(0+"");
+           DonHang.setNumberOfGuests(0);
+        }
+                
+        
         DonHang.setOrderDate(new Date());
     }
 
@@ -129,6 +141,7 @@ public class OrderForm extends javax.swing.JPanel {
                 
                 
             } else {
+                txtGustNum.setText(msg.InputNum("Số khách: ")+"");
                 DonHang.setID_Order(-1);
                 updateThongTinDonHang();
             }
@@ -198,22 +211,26 @@ public class OrderForm extends javax.swing.JPanel {
         pnMonAnOrder.removeAll();
         int total = 0;
         if (dsDaGoiMap != null) {
-            total += fillToScreenDSMonDaGoi(dsDaGoiMap);
+            total += fillToScreenDSMon(dsDaGoiMap, false);
             MonAnDaOrder item = new MonAnDaOrder(new Model_Mon_Da_Goi(Model_Mon_Da_Goi.ItemType.TieuDe));
             pnMonAnOrder.add(item);
         }
 
-        total += fillToScreenDSMonDaGoi(dsMonDangGoiMap);
+        total += fillToScreenDSMon(dsMonDangGoiMap, true);
 
         lblTotal.setText(fNum.parseString(total) + "đ");
     }
 
-    private int fillToScreenDSMonDaGoi(Map<Integer, Model_Mon_Da_Goi> map) {
+    //Hàm fill lên màn hình
+    private int fillToScreenDSMon(Map<Integer, Model_Mon_Da_Goi> map, boolean edit) {
         int width = (dsDaGoiMap.size() + dsMonDangGoiMap.size()) * 50 + 40;
         pnMonAnOrder.setPreferredSize(new Dimension(370, width));
         int total = 0;
         for (Model_Mon_Da_Goi data : map.values()) {
             total += data.getTotal();
+            if(!Auth.user.getID_role().equals("MG") && !Auth.user.getID_role().equals("CS") && edit == false){
+                data.setType(Model_Mon_Da_Goi.ItemType.DaGoi);
+            }
             MonAnDaOrder item = new MonAnDaOrder(data);
             item.Giam.addMouseListener(new MouseAdapter() {
                 @Override
@@ -320,7 +337,7 @@ public class OrderForm extends javax.swing.JPanel {
     
     
     private void callThanhToan(){
-        
+        updateThongTinDonHang();
         ThanhToanForm f = new ThanhToanForm(DonHang, tenBan, main);
         this.removeAll();
         this.repaint();
@@ -727,35 +744,35 @@ public class OrderForm extends javax.swing.JPanel {
             if (row.isAvailable()) {
                 item = new MonAnItem(new Model_Item_Menu(row.getItemName(), row.getID_Item(),
                         row.getPrice(), row.getPhoto(), Model_Item_Menu.MenuType.AVAiLABLE));
+
+                // Bắt sự kiện
+                item.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        item.setColor(new Color(245, 255, 135, 200));
+                        item.setIcon("src/IMG/plus.png");
+                        PanelTable.repaint();
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        item.setColor(new Color(228, 253, 255, 200));
+                        item.setIcon("src/IMG/plus1.png");
+                        PanelTable.repaint();
+                    }
+
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        Model_Mon_Da_Goi data = new Model_Mon_Da_Goi(row.getID_Item(), row.getItemName(),
+                                row.getPrice(), 1, Model_Mon_Da_Goi.ItemType.ChuaGoi);
+                        addDanhSachGoiMon(data, dsMonDangGoiMap);
+                    }
+                });
             } else {
                 item = new MonAnItem(new Model_Item_Menu(row.getItemName(), row.getID_Item(),
                         row.getPrice(), row.getPhoto(), Model_Item_Menu.MenuType.UNAVAiLABLE));
             }
-            // Bắt sự kiện
 
-            item.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    item.setColor(new Color(245, 255, 135, 200));
-                    item.setIcon("src/IMG/plus.png");
-                    PanelTable.repaint();
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    item.setColor(new Color(228, 253, 255, 200));
-                    item.setIcon("src/IMG/plus1.png");
-                    PanelTable.repaint();
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    Model_Mon_Da_Goi data = new Model_Mon_Da_Goi(row.getID_Item(), row.getItemName(),
-                            row.getPrice(), 1, Model_Mon_Da_Goi.ItemType.ChuaGoi);
-                    addDanhSachGoiMon(data, dsMonDangGoiMap);
-                }
-
-            });
             PanelTable.add(item);
             PanelTable.revalidate();
             dsMonAn.add(item);

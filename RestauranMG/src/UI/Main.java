@@ -5,7 +5,9 @@ import Controller.EventMenuSelected;
 import Controller.EventOrder;
 import Controller.EventTableSelected;
 import Dao.procDao;
+import HangHoa.QLKhoHangForm;
 import UI.Compoment.MainMenu.MainMenu;
+import UI.Form.CaiDat.CaiDatNhaHang;
 import UI.Form.Login;
 import UI.Form.OrderForm;
 import java.awt.Dimension;
@@ -33,6 +35,8 @@ import UI.Form.QLNV;
 import java.awt.Image;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.SwingWorker;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 
@@ -137,8 +141,14 @@ public class Main extends javax.swing.JFrame {
                         if (index == 0) {
                             formTable();
                         }
+                        if(index == 1){
+                            formHangHoa();
+                        }
                         if (index == 2) {
                             nvForm();
+                        }
+                        if(index == 3){
+                            caiDatForm();
                         }
                     }
                 });
@@ -149,18 +159,60 @@ public class Main extends javax.swing.JFrame {
                 lbChucVu.setText("Phục vụ:");
                 lbUserName.setText(Auth.user.getFullName());
                 menu.SV();
+                menu.addEventMenuSelected(new EventMenuSelected() {
+                    @Override
+                    public void selected(int index) {
+                        if (index == 0) {
+                            formTable();
+                        }
+                        if(index == 1){
+                            
+                        }
+                        
+                    }
+                });
+                formTable();
             }
             
             if(Auth.getRole().equals("KS")){
                 lbChucVu.setText("Bếp:");
                 lbUserName.setText(Auth.user.getFullName());
                 menu.KS();
+                menu.addEventMenuSelected(new EventMenuSelected() {
+                    @Override
+                    public void selected(int index) {
+                        if (index == 0) {
+                            formHangHoa();
+                        }
+                        if(index == 1){
+                            
+                        }
+                        
+                    }
+                });
+                formHangHoa();
             }
             
             if(Auth.getRole().equals("CS")){
                 lbChucVu.setText("Thu ngân:");
                 lbUserName.setText(Auth.user.getFullName());
                 menu.CS();
+                menu.addEventMenuSelected(new EventMenuSelected() {
+                    @Override
+                    public void selected(int index) {
+                        if (index == 0) {
+                            formTable();
+                        }
+                        if(index == 1){
+                           
+                        }
+                        if (index == 2) {
+                           
+                        }
+                        
+                    }
+                });
+                formTable();
             }
             
             
@@ -232,6 +284,14 @@ public class Main extends javax.swing.JFrame {
         });
     }
     
+    //Form Hàng hóa
+    public void formHangHoa(){
+        QLKhoHangForm f = new QLKhoHangForm();
+        pnDashboard.removeAll();
+        pnDashboard.add(f, BorderLayout.CENTER);
+        pnDashboard.repaint();
+        pnDashboard.revalidate();
+    }
     
     //Form Nhân viên
     public void nvForm(){
@@ -241,6 +301,42 @@ public class Main extends javax.swing.JFrame {
         pnDashboard.repaint();
         pnDashboard.revalidate();
     }
+    
+    //Form cài đặt nhà hàng
+    public void caiDatForm() {
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                pnDashboard.removeAll();
+                ImageIcon loadingIcon = new ImageIcon("src/IMG/ld.gif"); 
+                JLabel ic = new JLabel(loadingIcon);
+                pnDashboard.add(ic, BorderLayout.CENTER);
+                revalidate();
+                repaint();
+                CaiDatNhaHang f = new CaiDatNhaHang();
+                pnDashboard.removeAll();
+                pnDashboard.add(f, BorderLayout.CENTER);
+                pnDashboard.repaint();
+                pnDashboard.revalidate();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                revalidate();
+            }
+        };
+
+        worker.execute();
+
+    }
+    
+                
+    
+ 
+        
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

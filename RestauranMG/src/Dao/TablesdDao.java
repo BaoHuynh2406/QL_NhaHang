@@ -16,7 +16,6 @@ public class TablesdDao extends RestauranDao<Tables, Integer>{
     @Override
     public void insert(Tables entity) {
         jdbc.update(INSERT_SQL,
-                entity.getID_Table(),
                 entity.getTableName(),
                 entity.getID_Area(),
                 entity.isIsOccupied());
@@ -35,10 +34,14 @@ public class TablesdDao extends RestauranDao<Tables, Integer>{
         jdbc.update(DELETE_SQL, id);
     }
 
+    
     @Override
     public List<Tables> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
     }
+    
+ 
+    
 
     public Tables selectById(Integer id) {
         List<Tables> list = selectBySql(SELECT_BY_ID_SQL, id);
@@ -68,8 +71,14 @@ public class TablesdDao extends RestauranDao<Tables, Integer>{
     }
 
     public List<Tables> selectByArea(int ID_area){
-        String sql = "Select * from Tables where ID_Area = ?";
-        return selectBySql(sql, ID_area);
+        String sql;
+        if(ID_area == -1){
+            sql = "Select * from Tables";
+            return selectBySql(sql);
+        }else{
+            sql = "Select * from Tables where ID_Area = ?";
+            return selectBySql(sql, ID_area);
+        }
     }
     
 }

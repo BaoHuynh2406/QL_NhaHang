@@ -16,7 +16,6 @@ public class AreasDao extends RestauranDao<Areas, Integer>{
     @Override
     public void insert(Areas entity) {
         jdbc.update(INSERT_SQL,
-                entity.getID_Area(),
                 entity.getAreaName());
     }
 
@@ -27,6 +26,21 @@ public class AreasDao extends RestauranDao<Areas, Integer>{
                 entity.getAreaName());
     }
 
+    public int getTableCount(Integer id){
+        try {
+            String sql = "select COUNT(Tables.ID_Area) as Num from Areas "
+                    + "inner join Tables on Areas.ID_Area = Tables.ID_Area "
+                    + "where Areas.ID_Area = ? "
+                    + "GROUP by Areas.ID_Area ";
+            ResultSet r = jdbc.query(sql, id);
+        if(r.next()) return r.getInt("Num");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+        return 0;
+    }
+    
     public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
     }
