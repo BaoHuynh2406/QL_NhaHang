@@ -66,7 +66,7 @@ public class PurchaseOrdersDetailDao extends RestauranDao<PurchaseOrdersDetail, 
                 entity.setID_POD(rs.getInt("ID_POD"));
                 entity.setID_PurchaseOrder(rs.getInt("ID_PurchaseOrder"));
                 entity.setID_Product(rs.getString("ID_product"));
-                entity.setQuantity(rs.getInt("Quantity"));
+                entity.setQuantity(rs.getFloat("Quantity"));
                 entity.setPrice(rs.getDouble("Price"));
                 list.add(entity);
             }

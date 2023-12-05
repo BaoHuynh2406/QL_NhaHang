@@ -4,10 +4,10 @@ public class PurchaseOrdersDetail {
     private int ID_POD;
     private int ID_PurchaseOrder;
     private String ID_Product;
-    private int Quantity;
+    private double Quantity;
     private double Price;
 
-    public PurchaseOrdersDetail(int ID_POD, int ID_PurchaseOrder, String ID_Product, int Quantity, double Price) {
+    public PurchaseOrdersDetail(int ID_POD, int ID_PurchaseOrder, String ID_Product, double Quantity, double Price) {
         this.ID_POD = ID_POD;
         this.ID_PurchaseOrder = ID_PurchaseOrder;
         this.ID_Product = ID_Product;
@@ -42,11 +42,11 @@ public class PurchaseOrdersDetail {
         this.ID_POD = ID_POD;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return Quantity;
     }
 
-    public void setQuantity(int Quantity) {
+    public void setQuantity(double Quantity) {
         this.Quantity = Quantity;
     }
 

@@ -102,7 +102,7 @@ public class ProductsDao extends RestauranDao<Products, String> {
                 Products entity = new Products();
                 entity.setID_product(rs.getString("ID_product"));
                 entity.setName(rs.getString("Name"));
-                entity.setQuantity(rs.getInt("Quantity"));
+                entity.setQuantity(rs.getFloat("Quantity"));
                 entity.setUnit(rs.getString("Unit"));
                 entity.setPrice(rs.getDouble("Price"));
                 list.add(entity);

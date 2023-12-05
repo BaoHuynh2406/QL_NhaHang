@@ -112,20 +112,21 @@ public class ChiTietMenu extends javax.swing.JDialog {
 
     
     //Hàm fill Bảng công thức món
+    private DefaultTableModel model;
     public void fillTableCongThuc(){
         MenuItemDetailDao mndDao = new MenuItemDetailDao();
         List<MenuItemDetail> detail = mndDao.selectBySql("select * from MenuItemDetail where ID_Item = ?", mnu.getID_Item());
         
-        DefaultTableModel model = (DefaultTableModel) tbl.getModel();
+        model = (DefaultTableModel) tbl.getModel();
         model.setRowCount(0);
         if(detail.isEmpty()) return;
-        int i = 1;
+        
+        
         ProductsDao pDao = new ProductsDao();
         Products product = new Products();
         for(MenuItemDetail item : detail){
             product = pDao.selectById(item.getID_Product());
             model.addRow(new Object[]{
-            i,
             item.getID_Product(),
             product.getName(),
             product.getUnit(),
@@ -134,6 +135,9 @@ public class ChiTietMenu extends javax.swing.JDialog {
             });
         }
     }
+    
+    
+    
  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -160,15 +164,15 @@ public class ChiTietMenu extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl = new UI.Compoment.CustomTable.Table();
-        jTextField1 = new javax.swing.JTextField();
+        txtProductID = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        txtProductName = new javax.swing.JTextField();
+        btnFind = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        txtTieuHao = new javax.swing.JTextField();
+        txtDVT = new javax.swing.JLabel();
+        btnNhap = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Chi tiết menu");
@@ -261,26 +265,31 @@ public class ChiTietMenu extends javax.swing.JDialog {
 
         tbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "STT", "ID Hàng hóa", "Tên hàng", "Đơn vị tính", "Tiêu hao", "Thao tác"
+                "ID Hàng hóa", "Tên hàng", "Đơn vị tính", "Tiêu hao", "Thao tác"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                true, true, true, true, true, false
+                true, true, true, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl);
 
-        jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtProductID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("ID Hàng hóa:");
@@ -288,24 +297,35 @@ public class ChiTietMenu extends javax.swing.JDialog {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Tên hàng:");
 
-        jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField2.setEnabled(false);
+        txtProductName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtProductName.setEnabled(false);
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton3.setText("Tìm");
+        btnFind.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnFind.setText("Tìm");
+        btnFind.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFindActionPerformed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setText("Tiêu hao:");
 
-        jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextField3.setEnabled(false);
+        txtTieuHao.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtTieuHao.setEnabled(false);
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel9.setText("ĐVT");
+        txtDVT.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtDVT.setText("ĐVT");
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton4.setForeground(new java.awt.Color(0, 153, 102));
-        jButton4.setText("Nhập");
+        btnNhap.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnNhap.setForeground(new java.awt.Color(0, 153, 102));
+        btnNhap.setText("Nhập");
+        btnNhap.setEnabled(false);
+        btnNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNhapActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -318,25 +338,25 @@ public class ChiTietMenu extends javax.swing.JDialog {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton3))
+                                .addComponent(btnFind))
                             .addComponent(jLabel6))
                         .addGap(86, 86, 86)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(61, 61, 61)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel8)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTieuHao, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtDVT, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton4)))))
+                                .addComponent(btnNhap)))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -350,12 +370,12 @@ public class ChiTietMenu extends javax.swing.JDialog {
                         .addComponent(jLabel8)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2)
-                    .addComponent(jButton3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
-                    .addComponent(jButton4))
+                    .addComponent(txtProductID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtProductName)
+                    .addComponent(btnFind)
+                    .addComponent(txtTieuHao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDVT)
+                    .addComponent(btnNhap))
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -497,6 +517,89 @@ public class ChiTietMenu extends javax.swing.JDialog {
        lbAnh.setIcon(IMG.resize(icPath, 300, 160));
     }//GEN-LAST:event_lbAnhMousePressed
 
+    
+    private Products find(){
+        String id = txtProductID.getText();
+        ProductsDao pDao = new ProductsDao();
+        Products product = pDao.SearchFirst(id, id);
+        if (product == null) {
+            msg.Warning("Không có");
+            txtTieuHao.setEnabled(false);
+            btnNhap.setEnabled(false);
+            txtProductID.setText("");
+            txtProductName.setText("");
+            txtTieuHao.setText("");
+            txtDVT.setText("ĐVT");
+            return null;
+        }
+        txtProductID.setText(product.getID_product());
+        txtProductName.setText(product.getName());
+        txtTieuHao.setEnabled(true);
+        txtDVT.setText(product.getUnit());
+        btnNhap.setEnabled(true);
+        return product;
+    }
+    
+    private void Nhap() {
+        Products product = find();
+        double tieuHao = 0;
+        try {
+            tieuHao = Double.valueOf(txtTieuHao.getText());
+        } catch (Exception e) {
+            msg.Error("Lỗi định dạng");
+        }
+         
+        boolean check = false;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String id = (String) model.getValueAt(i, 0);
+            double tieuHaocu = 0;
+            try {
+                double tieuHaoCu = (double) model.getValueAt(i, 3);
+            } catch (Exception e) {
+                
+            }
+            
+            if (id.equals(product.getID_product())) {
+                model.setValueAt((tieuHao + tieuHaocu), i, 3);
+                check = true;
+            }
+        }
+        if (!check) {
+            model.addRow(new Object[]{
+                product.getID_product(),
+                product.getName(),
+                product.getUnit(),
+                txtTieuHao.getText(),
+                "Xóa"
+            });
+        }
+
+        txtTieuHao.setEnabled(false);
+        btnNhap.setEnabled(false);
+        txtProductID.setText("");
+        txtProductName.setText("");
+        txtTieuHao.setText("");
+        txtDVT.setText("ĐVT");
+    }
+    
+    private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
+        find();
+    }//GEN-LAST:event_btnFindActionPerformed
+
+    private void btnNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNhapActionPerformed
+        Nhap();
+    }//GEN-LAST:event_btnNhapActionPerformed
+
+    private void tblMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMousePressed
+        int selectRow = tbl.getSelectedRow();
+        int selectCol = tbl.getSelectedColumn();
+        if(selectCol == 4){
+            if(msg.Yes_no("Xóa?")){
+                model.removeRow(selectRow);
+            }
+        }
+    }//GEN-LAST:event_tblMousePressed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -539,14 +642,14 @@ public class ChiTietMenu extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFind;
     private javax.swing.JButton btnLuu;
+    private javax.swing.JButton btnNhap;
     private javax.swing.JButton btnXoa;
     private javax.swing.JComboBox<String> cbLoai;
     private javax.swing.JComboBox<String> cbTrangThai;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -555,20 +658,20 @@ public class ChiTietMenu extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel lbAnh;
     private javax.swing.JLabel lbPath;
     private UI.Compoment.CustomTable.Table tbl;
+    private javax.swing.JLabel txtDVT;
     private javax.swing.JTextField txtGia;
     private javax.swing.JTextField txtId;
     private javax.swing.JTextField txtName;
+    private javax.swing.JTextField txtProductID;
+    private javax.swing.JTextField txtProductName;
+    private javax.swing.JTextField txtTieuHao;
     // End of variables declaration//GEN-END:variables
 
 public String selectAnh(){
