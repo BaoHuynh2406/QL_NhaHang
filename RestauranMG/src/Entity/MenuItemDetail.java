@@ -4,9 +4,9 @@ public class MenuItemDetail {
     private int ID_MIT;
     private int ID_Item;
     private String ID_Product;
-    private int Quantity;
+    private double Quantity;
 
-    public MenuItemDetail(int ID_MIT, int ID_Item, String ID_Product, int Quantity) {
+    public MenuItemDetail(int ID_MIT, int ID_Item, String ID_Product, double Quantity) {
         this.ID_MIT = ID_MIT;
         this.ID_Item = ID_Item;
         this.ID_Product = ID_Product;
@@ -42,11 +42,11 @@ public class MenuItemDetail {
         this.ID_MIT = ID_MIT;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return Quantity;
     }
 
-    public void setQuantity(int Quantity) {
+    public void setQuantity(double Quantity) {
         this.Quantity = Quantity;
     }
     

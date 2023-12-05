@@ -18,10 +18,10 @@ update Employees set Password = '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8
 
 -- Thêm dữ liệu cho bảng ProductCategories
 INSERT INTO ProductCategories (CategoryName) VALUES
-    ('Banh'),
-    ('Bia'),
-    ('Thit'),
-    ('Hai san');
+    (N'Bánh'),
+    (N'Bia'),
+    (N'Thịt'),
+    (N'Hải sản');
 
 -- Thêm dữ liệu mẫu cho bảng Products
 select * from Products
@@ -68,25 +68,12 @@ INSERT INTO Products (ID_product,ID_Categories, Name, Quantity, Unit, Price) VAL
 ('P00032', 4, N'Sò dương', 30, 'kg', 160000),
 ('P00033', 4, N'Ốc hương', 30, 'kg', 500000);
 
-select * from Products
--- Thêm dữ liệu mẫu cho bảng PurchaseOrders
-select * from PurchaseOrders
-INSERT INTO PurchaseOrders (ID_PurchaseOrder,OrderDate, ID_Employee) VALUES 
-(123,'2023-11-15', 100000),
-(124,'2023-11-16', 100001),
-(125, '2023-11-17', 100002);
-
--- Thêm dữ liệu mẫu cho bảng PurchaseOrdersDetail
-INSERT INTO PurchaseOrdersDetail (ID_PurchaseOrder, ID_product, Quantity, Price) VALUES 
-(123, 'P00001', 20, 9.99),
-(124, 'P00002', 50, 4.49),
-(125, 'P00003', 10, 18.00);
 
 -- Thêm dữ liệu mẫu cho bảng MenuCategories
 INSERT INTO MenuCategories (CategoryName) VALUES 
-('Khai vị'),
-('Món chính'),
-('Tráng miệng');
+(N'Khai vị'),
+(N'Món chính'),
+(N'Tráng miệng');
 
 -- Thêm dữ liệu mẫu cho bảng MenuItems
 INSERT INTO MenuItems (ItemName, ID_Category, Price, Photo) VALUES 
@@ -191,21 +178,6 @@ insert into Tables (TableName, ID_Area, IsOccupied) values ('B07', 2, 0);
 insert into Tables (TableName, ID_Area, IsOccupied) values (N'Khách lẻ', 3, 0);
 
 
--- Thêm dữ liệu mẫu cho bảng Orders
-INSERT INTO Orders (ID_Table, ID_Employee, OrderDate, NumberOfGuests, IsPaid) VALUES 
-(1, 100000, '2023-11-15', 4, 1),
-(2, 100001, '2023-11-16', 2, 0),
-(3, 100002, '2023-11-17', 6, 0);
-INSERT INTO Orders (ID_Table, ID_Employee, OrderDate, NumberOfGuests, IsPaid) VALUES 
-(9, 100000, '2023-11-15', 4, 0),
-(10, 100001, '2023-11-16', 10, 0),
-(11, 100002, '2023-11-17', 6, 0);
-
--- Thêm dữ liệu mẫu cho bảng OrderDetail
-INSERT INTO OrderDetail (ID_Order, ID_Item, Quantity, Price, TotalPrice) VALUES 
-(4, 1, 2, 899, 17000),
-(5, 2, 1, 199, 1599),
-(6, 3, 4, 699, 2796);
 
 -- Thêm dữ liệu mẫu cho bảng Taxes
 INSERT INTO Taxes (TaxName, TaxRate) VALUES 
@@ -218,9 +190,3 @@ INSERT INTO PaymentMethods (MethodName) VALUES
 ('Cash'),
 ('Credit Card'),
 ('Online Payment');
-
--- Thêm dữ liệu mẫu cho bảng Invoices
-INSERT INTO Invoices (ID_Order, ID_Method, ID_Employee, ID_Tax, InvoiceDate, TaxAmount, TotalAmount, IsPaid) VALUES 
-(1, 1, 100000, 1, '2023-11-15', 1.798, 19.778, 1),
-(2, 2, 100001, 2, '2023-11-16', 1.359, 18.349, 0),
-(3, 3, 100002, 3, '2023-11-17', 1.398, 29.356, 0);

@@ -41,7 +41,7 @@ CREATE TABLE Products (
     ID_product VARCHAR(6) PRIMARY KEY,
     ID_Categories INT,
     Name NVARCHAR(32) NOT NULL,
-    Quantity INT DEFAULT 0, -- Số lượng
+    Quantity FLOAT DEFAULT 0, -- Số lượng
     Unit NVARCHAR(10) NOT NULL,
     Price INT DEFAULT 0,
     FOREIGN KEY (ID_Categories) REFERENCES ProductCategories(ID_Categories)
@@ -61,7 +61,7 @@ Create table PurchaseOrdersDetail(
 	ID_POD INT identity(1,1) primary key,
 	ID_PurchaseOrder INT,
 	ID_product varchar(6),
-	Quantity int default 0,
+	Quantity FLOAT default 0,
 	Price int default 0,
 	Foreign key (ID_PurchaseOrder) References PurchaseOrders(ID_PurchaseOrder),
 	Foreign Key (ID_Product) References Products (ID_product)
@@ -89,7 +89,7 @@ Create table MenuItemDetail(
 	ID_MIT INT identity(1,1) primary key,
 	ID_Item INT,
 	ID_Product varchar(6),
-	Quantity INT,
+	Quantity FLOAT,
 	Foreign key (ID_Item) References MenuItems(ID_Item),
 	Foreign key (ID_Product) References Products(ID_Product)
 );

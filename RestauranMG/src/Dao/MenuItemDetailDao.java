@@ -60,7 +60,7 @@ public class MenuItemDetailDao extends RestauranDao<MenuItemDetail, String>{
                 entity.setID_MIT(rs.getInt("ID_MIT"));
                 entity.setID_Item(rs.getInt("ID_Item"));
                 entity.setID_Product(rs.getString("ID_Product"));
-                entity.setQuantity(rs.getInt("Quantity"));
+                entity.setQuantity(rs.getFloat("Quantity"));
                 list.add(entity);
             }
         } catch (Exception e) {
