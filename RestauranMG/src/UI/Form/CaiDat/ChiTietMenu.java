@@ -13,10 +13,14 @@ import Utils.IMG;
 import Utils.fNum;
 import Utils.msg;
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -99,10 +103,12 @@ public class ChiTietMenu extends javax.swing.JDialog {
         if (mnu.getID_Item() == 0) {
             //Nếu null thì insert
             mnuDao.insert(getForm());
+            getTable();
             msg.Info("Thêm mới thành công!");
             clear();
         } else {
             mnuDao.update(mnu);
+            getTable();
             msg.Info("Cập nhật thành công!");
         }
         
@@ -124,13 +130,14 @@ public class ChiTietMenu extends javax.swing.JDialog {
         
         ProductsDao pDao = new ProductsDao();
         Products product = new Products();
+        DecimalFormat df = new DecimalFormat("#.#");
         for(MenuItemDetail item : detail){
             product = pDao.selectById(item.getID_Product());
             model.addRow(new Object[]{
             item.getID_Product(),
             product.getName(),
             product.getUnit(),
-            item.getQuantity(),
+            df.format(item.getQuantity()).replace(",", "."),
             "Xóa"
             });
         }
@@ -173,6 +180,7 @@ public class ChiTietMenu extends javax.swing.JDialog {
         txtTieuHao = new javax.swing.JTextField();
         txtDVT = new javax.swing.JLabel();
         btnNhap = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Chi tiết menu");
@@ -289,7 +297,8 @@ public class ChiTietMenu extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tbl);
 
-        txtProductID.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtProductID.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtProductID.setForeground(new java.awt.Color(255, 153, 51));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel6.setText("ID Hàng hóa:");
@@ -327,6 +336,14 @@ public class ChiTietMenu extends javax.swing.JDialog {
             }
         });
 
+        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton3.setText("Chọn");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -336,13 +353,15 @@ public class ChiTietMenu extends javax.swing.JDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(txtProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtProductID, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnFind))
                             .addComponent(jLabel6))
-                        .addGap(86, 86, 86)
+                        .addGap(41, 41, 41)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel7)
                             .addComponent(txtProductName, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -355,7 +374,7 @@ public class ChiTietMenu extends javax.swing.JDialog {
                                 .addComponent(txtTieuHao, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtDVT, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                                 .addComponent(btnNhap)))))
                 .addContainerGap())
         );
@@ -363,11 +382,10 @@ public class ChiTietMenu extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(12, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel7)
-                        .addComponent(jLabel8)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtProductID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -375,7 +393,8 @@ public class ChiTietMenu extends javax.swing.JDialog {
                     .addComponent(btnFind)
                     .addComponent(txtTieuHao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDVT)
-                    .addComponent(btnNhap))
+                    .addComponent(btnNhap)
+                    .addComponent(jButton3))
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -517,6 +536,10 @@ public class ChiTietMenu extends javax.swing.JDialog {
        lbAnh.setIcon(IMG.resize(icPath, 300, 160));
     }//GEN-LAST:event_lbAnhMousePressed
 
+    public void chonSanPham(String id){
+        txtProductID.setText(id);
+        find();
+    }
     
     private Products find(){
         String id = txtProductID.getText();
@@ -524,12 +547,7 @@ public class ChiTietMenu extends javax.swing.JDialog {
         Products product = pDao.SearchFirst(id, id);
         if (product == null) {
             msg.Warning("Không có");
-            txtTieuHao.setEnabled(false);
-            btnNhap.setEnabled(false);
-            txtProductID.setText("");
-            txtProductName.setText("");
-            txtTieuHao.setText("");
-            txtDVT.setText("ĐVT");
+            clearInputFields();
             return null;
         }
         txtProductID.setText(product.getID_product());
@@ -543,43 +561,79 @@ public class ChiTietMenu extends javax.swing.JDialog {
     private void Nhap() {
         Products product = find();
         double tieuHao = 0;
+
         try {
-            tieuHao = Double.valueOf(txtTieuHao.getText());
-        } catch (Exception e) {
-            msg.Error("Lỗi định dạng");
+            tieuHao = Double.parseDouble(txtTieuHao.getText());
+        } catch (NumberFormatException e) {
+            try {
+                tieuHao = (double) Integer.valueOf(txtTieuHao.getText());
+            } catch (NumberFormatException e1) {
+                msg.Error("Lỗi định dạng");
+                 return;
+            }  
         }
-         
-        boolean check = false;
+
         for (int i = 0; i < model.getRowCount(); i++) {
             String id = (String) model.getValueAt(i, 0);
             double tieuHaocu = 0;
-            try {
-                double tieuHaoCu = (double) model.getValueAt(i, 3);
-            } catch (Exception e) {
-                
-            }
-            
-            if (id.equals(product.getID_product())) {
-                model.setValueAt((tieuHao + tieuHaocu), i, 3);
-                check = true;
-            }
-        }
-        if (!check) {
-            model.addRow(new Object[]{
-                product.getID_product(),
-                product.getName(),
-                product.getUnit(),
-                txtTieuHao.getText(),
-                "Xóa"
-            });
-        }
 
+            try {
+                tieuHaocu = Double.parseDouble((String) model.getValueAt(i, 3));
+            } catch (Exception e) {
+                msg.Error(e.getMessage());
+                return;
+            }
+            if (id.equals(product.getID_product())) {
+                double soMoi = tieuHao + tieuHaocu;
+                model.setValueAt(soMoi, i, 3);
+                clearInputFields();
+                return;
+            }
+        }
+        
+        model.addRow(new Object[]{
+            product.getID_product(),
+            product.getName(),
+            product.getUnit(),
+            txtTieuHao.getText(),
+            "Xóa"
+        });
+
+        txtTieuHao.setEnabled(false);
+        btnNhap.setEnabled(false);
+        clearInputFields();
+    }
+
+// Method to clear input fields
+    private void clearInputFields() {
         txtTieuHao.setEnabled(false);
         btnNhap.setEnabled(false);
         txtProductID.setText("");
         txtProductName.setText("");
         txtTieuHao.setText("");
         txtDVT.setText("ĐVT");
+    }
+    
+    
+    public void getTable(){
+        //Xóa hết các công thức cũ
+        MenuItemDetailDao dao = new MenuItemDetailDao();
+        dao.deleteAll(mnu.getID_Item());
+        //Thêm lại từng hàng trong bảng vào database
+        for(int i=0; i<tbl.getRowCount(); i++){
+            MenuItemDetail mnuD = new MenuItemDetail();
+            mnuD.setID_Item(mnu.getID_Item());
+            mnuD.setID_Product((String) tbl.getValueAt(i, 0));
+            try {
+                BigDecimal b = new BigDecimal((String) tbl.getValueAt(i, 3));
+                b = b.setScale(1, RoundingMode.HALF_UP);
+                mnuD.setQuantity(b.doubleValue());
+            } catch (Exception e) {
+                mnuD.setQuantity(-1);
+            }
+            
+            dao.insert(mnuD);
+        }
     }
     
     private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
@@ -599,6 +653,13 @@ public class ChiTietMenu extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_tblMousePressed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       DsHangHoa f = new DsHangHoa(new JFrame(), true);
+       f.setModal(true);
+       f.form = this;
+       f.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -650,6 +711,7 @@ public class ChiTietMenu extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> cbTrangThai;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

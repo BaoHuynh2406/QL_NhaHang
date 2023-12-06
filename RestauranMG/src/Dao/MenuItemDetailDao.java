@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuItemDetailDao extends RestauranDao<MenuItemDetail, String>{
+public class MenuItemDetailDao extends RestauranDao<MenuItemDetail, Integer>{
     final String INSERT_SQL = "INSERT INTO MenuItemDetail (ID_Item, ID_Product, Quantity) VALUES (?, ?, ?)";
     final String UPDATE_ALL = "UPDATE MenuItemDetail SET ID_Item = ?, ID_Product = ?, Quantity = ? WHERE ID_MIT= ?";
     final String DELETE_SQL = "DELETE FROM MenuItemDetail WHERE ID_MIT = ?";
@@ -16,7 +16,6 @@ public class MenuItemDetailDao extends RestauranDao<MenuItemDetail, String>{
     @Override
     public void insert(MenuItemDetail entity) {
         jdbc.update(INSERT_SQL,
-                entity.getID_MIT(),
                 entity.getID_Item(),
                 entity.getID_Product(),
                 entity.getQuantity());
@@ -32,8 +31,12 @@ public class MenuItemDetailDao extends RestauranDao<MenuItemDetail, String>{
     }
 
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
+    }
+    
+    public void deleteAll(int id_menuItem){
+        jdbc.update("DELETE FROM MenuItemDetail where ID_Item = ?", id_menuItem);
     }
 
     @Override
@@ -42,7 +45,7 @@ public class MenuItemDetailDao extends RestauranDao<MenuItemDetail, String>{
     }
 
     @Override
-    public MenuItemDetail selectById(String id) {
+    public MenuItemDetail selectById(Integer id) {
         List<MenuItemDetail> list = selectBySql(SELECT_BY_ID_SQL, id);
         if(list.isEmpty()){
             return null;

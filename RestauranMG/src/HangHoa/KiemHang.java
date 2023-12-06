@@ -3,6 +3,7 @@ package HangHoa;
 import Dao.ProductsDao;
 import Entity.Products;
 import Utils.msg;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -12,7 +13,7 @@ public class KiemHang extends javax.swing.JPanel {
     DefaultTableModel model;
     ProductsDao dao = new ProductsDao();
     Products products = new Products();
-    private int soLuong = 0;
+    private double soLuong = 0;
 
     public KiemHang() {
         initComponents();
@@ -27,11 +28,17 @@ public class KiemHang extends javax.swing.JPanel {
         txtTenHang.setText("");
         txtThucTe.setText("");
     }
+    
+    //Chọn sp
+    public void chonSanPham(String id){
+        txtMaHang.setText(id);
+        tim();
+    }
 
     // tạo biến instance để lưu giá trị số lượng tạm thời
     public void TamThoi() {
         try {
-            soLuong = Integer.parseInt(txtThucTe.getText().trim());
+            soLuong = Double.parseDouble(txtThucTe.getText().trim());
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
             msg.Error("Vui lòng nhập mã số lượng là số nguyên !");
@@ -46,6 +53,14 @@ public class KiemHang extends javax.swing.JPanel {
         Products product = dao.SearchFirst(maHang, tenHang);
 
         if (product != null) {
+            
+            for(int i = 0; i< table.getRowCount(); i++){
+                String ID = (String) table.getValueAt(i, 1);
+                if(product.getID_product().equals(ID)){
+                    double sl_Old = Double.parseDouble((String) table.getValueAt(i, 6));
+                    soLuong = soLuong + sl_Old;
+                }
+            }
             // Tạo một mảng đối tượng để thêm vào bảng
             Object[] rowData = new Object[]{
                 model.getRowCount() + 1,
@@ -81,7 +96,7 @@ public class KiemHang extends javax.swing.JPanel {
 
             for (int i = 0; i < rowCount; i++) {
                 String maHang = table.getValueAt(i, 1).toString();
-                int soLuong;
+                double soLuong;
 
                 try {
                     soLuong = Integer.parseInt(table.getValueAt(i, 6).toString());
@@ -120,6 +135,7 @@ public class KiemHang extends javax.swing.JPanel {
         txtTenHang = new javax.swing.JTextField();
         btnOk = new javax.swing.JButton();
         btnTim = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new UI.Compoment.CustomTable.Table();
         btnLuu = new button.Button();
@@ -137,7 +153,8 @@ public class KiemHang extends javax.swing.JPanel {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Mã hàng :");
 
-        txtMaHang.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtMaHang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        txtMaHang.setForeground(new java.awt.Color(255, 153, 0));
         txtMaHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMaHangActionPerformed(evt);
@@ -170,6 +187,14 @@ public class KiemHang extends javax.swing.JPanel {
             }
         });
 
+        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButton3.setText("Chọn");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -182,15 +207,14 @@ public class KiemHang extends javax.swing.JPanel {
                     .addComponent(jLabel4))
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMaHang, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTenHang)
-                            .addComponent(txtThucTe))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnTim, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                            .addComponent(btnOk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(txtTenHang, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                    .addComponent(txtThucTe)
+                    .addComponent(txtMaHang))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnTim, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                    .addComponent(btnOk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19))
         );
         jPanel1Layout.setVerticalGroup(
@@ -199,8 +223,9 @@ public class KiemHang extends javax.swing.JPanel {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtMaHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8)
+                    .addComponent(txtMaHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addGap(7, 7, 7)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtTenHang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -287,8 +312,8 @@ public class KiemHang extends javax.swing.JPanel {
         TamThoi();
     }//GEN-LAST:event_btnOkActionPerformed
 
-    private void btnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimActionPerformed
-        // TODO add your handling code here:
+    public void tim(){
+         // TODO add your handling code here:
         String maHang = txtMaHang.getText().trim();
         String tenHang = txtTenHang.getText().trim();
 
@@ -307,6 +332,9 @@ public class KiemHang extends javax.swing.JPanel {
         } else {
             msg.Warning("Vui lòng nhập mã hàng hoặc tên hàng!");
         }
+    }
+    private void btnTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimActionPerformed
+        tim();
     }//GEN-LAST:event_btnTimActionPerformed
 
     private void btnLuuMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMousePressed
@@ -329,11 +357,19 @@ public class KiemHang extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMaHangActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        DsHangHoa f = new DsHangHoa(new JFrame(), true);
+        f.setModal(true);
+        f.formKH = this;
+        f.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private button.Button btnLuu;
     private javax.swing.JButton btnOk;
     private javax.swing.JButton btnTim;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

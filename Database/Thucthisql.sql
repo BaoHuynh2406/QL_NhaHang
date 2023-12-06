@@ -24,13 +24,13 @@ DELETE FROM Products WHERE ID_product = 'P003'
 SELECT *  FROM Products WHERE ID_product = 'P001'
 
 -- PurchaseOrders
-INSERT INTO PurchaseOrders (ID_PurchaseOrder, OrderDate, ID_Employee) VALUES ('1', '2023-11-15', '100005');  -- Đơn hàng số 1, ngày đặt là 2023-11-15, do nhân viên 100001
+INSERT INTO PurchaseOrders (ID_PurchaseOrder, OrderDate, ID_Employee) VALUES ('1', '2023-11-15', '100005'); 
 UPDATE PurchaseOrders SET OrderDate = '2023-11-20', ID_Employee = '100005' WHERE ID_PurchaseOrder = '1'
 DELETE FROM PurchaseOrders WHERE ID_PurchaseOrder = '1'
 SELECT * FROM PurchaseOrders WHERE ID_PurchaseOrder = '1'
 
 -- PurchaseOrdersDetail
-INSERT INTO PurchaseOrdersDetail (ID_PurchaseOrder, ID_product, Quantity, Price) VALUES (1, 'P001', 10, 100.50);  -- Chi tiết đơn hàng số 1, sản phẩm P001, số lượng 10, giá 100.50
+INSERT INTO PurchaseOrdersDetail (ID_PurchaseOrder, ID_product, Quantity, Price) VALUES (1, 'P001', 10, 100.50);  
 UPDATE PurchaseOrdersDetail SET ID_PurchaseOrder = '1', ID_product = 'P001', Quantity = '20', Price = '100.200' WHERE ID_POD = '2'
 DELETE FROM PurchaseOrdersDetail WHERE ID_POD = '1'
 SELECT *  FROM PurchaseOrdersDetail WHERE ID_POD = '2'
@@ -49,7 +49,7 @@ UPDATE MenuItems SET ItemName = 'Cacao', ID_Category = '2', Price = '5.00', Phot
 DELETE FROM MenuItems WHERE ID_Item = '2'
 
 -- MenuItemDetail
-INSERT INTO MenuItemDetail (ID_Item, ID_Product, Quantity) VALUES ('3', 'P001', '2')  -- Chi tiết món ăn số 1, sử dụng sản phẩm P001, số lượng 2
+INSERT INTO MenuItemDetail (ID_Item, ID_Product, Quantity) VALUES ('3', 'P001', '2') 
 UPDATE MenuItemDetail SET ID_Item = '3', ID_Product = 'P001', Quantity = '5' WHERE ID_MIT= '2'
 DELETE FROM MenuItemDetail WHERE ID_MIT = '2'
 SELECT * FROM MenuItemDetail WHERE ID_MIT = '2'

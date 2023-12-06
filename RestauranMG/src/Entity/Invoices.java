@@ -13,6 +13,7 @@ public class Invoices {
     private double TaxAmount;
     private double TotalAmount;
     private boolean paid;
+    
 
     public Invoices(int ID_Invoice, int ID_Order, int ID_Method, int ID_Employee, int ID_Tax, Date InvoiceDate, double TaxAmount, double TotalAmount, boolean IsPaid) {
         this.ID_Invoice = ID_Invoice;
