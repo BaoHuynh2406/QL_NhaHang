@@ -291,7 +291,7 @@ public class ForgetPass extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSupmitActionPerformed
 
     private void txtUserNameMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtUserNameMousePressed
-         txtUserName.setBackground(Color.white);
+        txtUserName.setBackground(Color.white);
     }//GEN-LAST:event_txtUserNameMousePressed
 
     private void txtEmailMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtEmailMousePressed

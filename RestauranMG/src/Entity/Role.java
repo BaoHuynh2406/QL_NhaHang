@@ -32,13 +32,6 @@ public class Role implements Serializable{
         this.RoleNam = RoleNam;
     }
     
-//    @Override
-//    public String toString(){
-//        return "Role{" +
-//                "idRole='" + ID_role + '\'' +
-//                ", roleName='" + RoleNam + '\'' +
-//                '}';
-//    }
     @Override
     public String toString(){
         return ID_role;

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
 package UI.Form;
 
 import Dao.procDao;
@@ -9,26 +5,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
-/**
- *
- * @author mtsst
- */
 public class SpalshScreen extends javax.swing.JDialog {
 
-   
     public SpalshScreen(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        
-        
-         new Timer(10, new ActionListener() {
+
+        new Timer(10, new ActionListener() {
             private int value = 0;
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 prLoding.setValue(value);
-                value+=2;
-                if(value==100){
+                value += 2;
+                if (value == 100) {
                     dispose();
                 };
             }
@@ -114,7 +104,6 @@ public class SpalshScreen extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
