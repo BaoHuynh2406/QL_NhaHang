@@ -20,7 +20,7 @@ public class NhapHang extends javax.swing.JPanel {
     ProductsDao dao = new ProductsDao();
 
     PurchaseOrders po = new PurchaseOrders();
-    private int soLuong = 0;
+    private double soLuong = 0;
     private boolean hasSearched = false;
 
     public NhapHang() {
@@ -54,7 +54,7 @@ public class NhapHang extends javax.swing.JPanel {
 
     public void TamThoi() {
         try {
-            soLuong = Integer.parseInt(txtsoLuong.getText().trim());
+            soLuong = Double.parseDouble(txtsoLuong.getText().trim());
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
             msg.Error("Vui lòng nhập mã số lượng là số nguyên !");
@@ -91,7 +91,7 @@ public class NhapHang extends javax.swing.JPanel {
             msg.Warning("Không tìm thấy sản phẩm!");
         }
     }
-
+    
     private void xoaHangDuocChon(int selectedRow) {
         if (!table.getSelectionModel().isSelectionEmpty()) {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -130,7 +130,7 @@ public class NhapHang extends javax.swing.JPanel {
         // Lưu chi tiết đơn hàng vào cơ sở dữ liệu
         for (int i = 0; i < model.getRowCount(); i++) {
             String maHang = model.getValueAt(i, 1).toString();
-            int soLuongNhap = Integer.parseInt(model.getValueAt(i, 6).toString());
+            double soLuongNhap = Double.parseDouble(model.getValueAt(i, 6).toString());
 
             // Gọi phương thức updateQuantity trong ProductsDao để cập nhật số lượng
             ProductsDao productDao = new ProductsDao();

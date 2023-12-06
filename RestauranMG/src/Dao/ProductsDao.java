@@ -61,7 +61,7 @@ public class ProductsDao extends RestauranDao<Products, String> {
         return selectBySql(sql, "%" + key + "%", "%" + key + "%");
     }
 
-    public void updateQuantity(String idProduct, int quantity) {
+    public void updateQuantity(String idProduct, double quantity) {
         try {
             String sql = "UPDATE Products SET Quantity = Quantity + ? WHERE ID_product = ?";
             jdbc.update(sql, quantity, idProduct);

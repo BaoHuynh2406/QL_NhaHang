@@ -41,7 +41,7 @@ public class KiemHang extends javax.swing.JPanel {
             soLuong = Double.parseDouble(txtThucTe.getText().trim());
         } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
-            msg.Error("Vui lòng nhập mã số lượng là số nguyên !");
+            msg.Error("Vui lòng nhập mã số lượng là số.");
             return;
         }
 
@@ -51,30 +51,35 @@ public class KiemHang extends javax.swing.JPanel {
 
         // Tìm kiếm thông tin sản phẩm
         Products product = dao.SearchFirst(maHang, tenHang);
-
+         boolean check = false;
         if (product != null) {
-            
-            for(int i = 0; i< table.getRowCount(); i++){
+           
+            for (int i = 0; i < table.getRowCount(); i++) {
                 String ID = (String) table.getValueAt(i, 1);
-                if(product.getID_product().equals(ID)){
-                    double sl_Old = Double.parseDouble((String) table.getValueAt(i, 6));
+                if (product.getID_product().equals(ID)) {
+                    double sl_Old = (Double) table.getValueAt(i, 6);
                     soLuong = soLuong + sl_Old;
-                }
+                    table.setValueAt(soLuong, i, 6);
+                     check = true;
+                     break;
+                } 
             }
-            // Tạo một mảng đối tượng để thêm vào bảng
-            Object[] rowData = new Object[]{
-                model.getRowCount() + 1,
-                product.getID_product(),
-                product.getName(),
-                product.getUnit(),
-                product.getPrice(),
-                product.getQuantity(),
-                soLuong // Số lượng mới nhập
-            };
-
-            // Thêm dòng mới vào bảng
-            model.addRow(rowData);
-
+            
+            if(!check){
+                // Tạo một mảng đối tượng để thêm vào bảng
+                    Object[] rowData = new Object[]{
+                        model.getRowCount() + 1,
+                        product.getID_product(),
+                        product.getName(),
+                        product.getUnit(),
+                        product.getPrice(),
+                        product.getQuantity(),
+                        soLuong, // Số lượng mới nhập
+                        "Xóa"
+                    };
+                    // Thêm dòng mới vào bảng
+                    model.addRow(rowData);
+            }
             // Clear các JTextField
             txtMaHang.setText("");
             txtTenHang.setText("");
@@ -99,10 +104,10 @@ public class KiemHang extends javax.swing.JPanel {
                 double soLuong;
 
                 try {
-                    soLuong = Integer.parseInt(table.getValueAt(i, 6).toString());
+                    soLuong = Double.parseDouble(table.getValueAt(i, 6).toString());
                 } catch (NumberFormatException ex) {
                     System.out.println(ex.getMessage());
-                    msg.Error("Dòng " + (i + 1) + ": Vui lòng nhập số lượng là một số nguyên.");
+                    msg.Error("Dòng " + (i + 1) + ": Vui lòng nhập số lượng là một số.");
                     return;
                 }
 
@@ -243,15 +248,20 @@ public class KiemHang extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Mã hàng", "Tên hàng", "Đơn vị", "Giá", "Số lượng", "Thực tế"
+                "STT", "Mã hàng", "Tên hàng", "Đơn vị", "Giá", "Số lượng", "Thực tế", "Thao tác"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tableMousePressed(evt);
             }
         });
         jScrollPane1.setViewportView(table);
@@ -360,9 +370,19 @@ public class KiemHang extends javax.swing.JPanel {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         DsHangHoa f = new DsHangHoa(new JFrame(), true);
         f.setModal(true);
-        f.formKH = this;
+        f.form = this;
         f.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void tableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMousePressed
+       int selectRow = table.getSelectedRow();
+        int selectCol = table.getSelectedColumn();
+        if(selectCol == 7){
+            if(msg.Yes_no("Xóa?")){
+                model.removeRow(selectRow);
+            }
+        }
+    }//GEN-LAST:event_tableMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

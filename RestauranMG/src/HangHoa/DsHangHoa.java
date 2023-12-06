@@ -10,8 +10,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class DsHangHoa extends javax.swing.JDialog {
 
-    KiemHang formKH;
-    NhapHang formNH;
+    KiemHang form;
     public DsHangHoa(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -84,7 +83,7 @@ public class DsHangHoa extends javax.swing.JDialog {
     private void tblMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMousePressed
         int row = tbl.getSelectedRow();
         String id = (String) tbl.getValueAt(row, 1);
-        formKH.chonSanPham(id);
+        form.chonSanPham(id);
         this.dispose();
     }//GEN-LAST:event_tblMousePressed
 
