@@ -1,6 +1,11 @@
 
 package Entity;
 
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Invoices {
@@ -102,6 +107,9 @@ public class Invoices {
     public void setPaid(boolean IsPaid) {
         this.paid = IsPaid;
     }
+    
+
+    
     @Override
     public String toString() {
         return "Invoice{" +

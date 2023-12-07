@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InvoicesDao extends RestauranDao<Invoices, String>{
+public class InvoicesDao extends RestauranDao<Invoices, Integer>{
     final String INSERT_SQL = "INSERT INTO Invoices (ID_Order, ID_Method, ID_Employee, ID_Tax, InvoiceDate, TaxAmount, TotalAmount, IsPaid)"
             + " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     final String UPDATE_ALL = "UPDATE Invoices SET ID_Order = ?, ID_Method = ?, "
@@ -82,7 +82,7 @@ public class InvoicesDao extends RestauranDao<Invoices, String>{
                 );
     }
     @Override
-    public void delete(String id) {
+    public void delete(Integer id) {
         jdbc.update(DELETE_SQL, id);
     }
 
@@ -92,7 +92,7 @@ public class InvoicesDao extends RestauranDao<Invoices, String>{
     }
 
     @Override
-    public Invoices selectById(String id) {
+    public Invoices selectById(Integer id) {
         List<Invoices> list = selectBySql(SELECT_BY_ID_SQL, id);
         if(list.isEmpty()){
             return null;

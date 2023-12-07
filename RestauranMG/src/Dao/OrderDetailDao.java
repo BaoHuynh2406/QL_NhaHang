@@ -27,6 +27,8 @@ public class OrderDetailDao extends RestauranDao<OrderDetail, Integer>{
                 entity.getTotalPrice());
     }
 
+    
+    
     @Override
     public void update(OrderDetail entity) {
         jdbc.update(UPDATE_ALL,
@@ -54,6 +56,7 @@ public class OrderDetailDao extends RestauranDao<OrderDetail, Integer>{
         return selectBySql(SELECT_ALL_SQL);
     }
 
+  
     @Override
     public OrderDetail selectById(Integer id) {
         List<OrderDetail> list = selectBySql(SELECT_BY_ID_SQL, id);
