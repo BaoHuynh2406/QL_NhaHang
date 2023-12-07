@@ -9,6 +9,7 @@ import HangHoa.QLKhoHangForm;
 import ThongKe.DoanhThu;
 import UI.Compoment.MainMenu.MainMenu;
 import UI.Form.CaiDat.CaiDatNhaHang;
+import UI.Form.GioiThieu;
 import UI.Form.Login;
 import UI.Form.OrderForm;
 import java.awt.Dimension;
@@ -155,6 +156,10 @@ public class Main extends javax.swing.JFrame {
                         if(index == 4){
                             formThongKe();
                         }
+                        
+                        if(index == 5){
+                            FormGioThieu();
+                        }
                     }
                 });
                 formTable();
@@ -171,7 +176,7 @@ public class Main extends javax.swing.JFrame {
                             formTable();
                         }
                         if(index == 1){
-                            
+                            FormGioThieu();
                         }
                         
                     }
@@ -190,7 +195,7 @@ public class Main extends javax.swing.JFrame {
                             formHangHoa();
                         }
                         if(index == 1){
-                            
+                            FormGioThieu();
                         }
                         
                     }
@@ -209,10 +214,10 @@ public class Main extends javax.swing.JFrame {
                             formTable();
                         }
                         if(index == 1){
-                           
+                           formThongKe();
                         }
                         if (index == 2) {
-                           
+                           FormGioThieu();
                         }
                         
                     }
@@ -348,7 +353,14 @@ public class Main extends javax.swing.JFrame {
     }
  
         
-    
+    //Form giới thiệu
+    public void FormGioThieu(){
+        GioiThieu f = new GioiThieu();
+        pnDashboard.removeAll();
+        pnDashboard.add(f, BorderLayout.CENTER);
+        pnDashboard.repaint();
+        pnDashboard.revalidate();
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
