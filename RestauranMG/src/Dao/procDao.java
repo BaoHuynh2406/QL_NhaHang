@@ -6,6 +6,7 @@ import Utils.jdbc;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -79,5 +80,13 @@ public class procDao {
                 + "where od.ID_order = ?";
         String cols[] = {"ID_Item","ItemName","Quantity","Price","TotalPrice"};
         return getListOfArray(sql, cols, ID_Order);
+    }
+    
+    
+    //Proc thống kê theo ca
+    public List<Object[]> GetInvoiceDetailsByDateTimeRange(Date date, int in, int out){
+        String sql = "{CALL GetInvoiceDetailsByDateTimeRange(?, ?, ?)}";
+        String cols[] = {"TableName", "ID_Invoice", "InvoiceDate", "InvoiceTime", "TotalAmount"};
+        return getListOfArray(sql, cols, date, in, out);
     }
 }

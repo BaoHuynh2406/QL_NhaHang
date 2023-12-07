@@ -77,7 +77,7 @@ public class ThanhToanForm extends javax.swing.JPanel {
         e.setID_Tax(1);
         e.setID_Method(1);
         e.setTaxAmount(0);
-        e.setTotalAmount(0);
+        e.setTotalAmount(total);
         d.insert(e);
         ID_Invoice = d.getNewID();
     }

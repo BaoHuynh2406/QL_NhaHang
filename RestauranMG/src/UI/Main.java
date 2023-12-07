@@ -6,6 +6,7 @@ import Controller.EventOrder;
 import Controller.EventTableSelected;
 import Dao.procDao;
 import HangHoa.QLKhoHangForm;
+import ThongKe.DoanhThu;
 import UI.Compoment.MainMenu.MainMenu;
 import UI.Form.CaiDat.CaiDatNhaHang;
 import UI.Form.Login;
@@ -149,6 +150,10 @@ public class Main extends javax.swing.JFrame {
                         }
                         if(index == 3){
                             caiDatForm();
+                        }
+                        
+                        if(index == 4){
+                            formThongKe();
                         }
                     }
                 });
@@ -333,7 +338,14 @@ public class Main extends javax.swing.JFrame {
     }
     
                 
-    
+    //Form thống kê
+    public void formThongKe(){
+        DoanhThu f = new DoanhThu();
+        pnDashboard.removeAll();
+        pnDashboard.add(f, BorderLayout.CENTER);
+        pnDashboard.repaint();
+        pnDashboard.revalidate();
+    }
  
         
     
