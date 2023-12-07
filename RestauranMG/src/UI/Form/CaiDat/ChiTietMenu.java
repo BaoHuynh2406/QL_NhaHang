@@ -273,10 +273,7 @@ public class ChiTietMenu extends javax.swing.JDialog {
 
         tbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "ID Hàng hóa", "Tên hàng", "Đơn vị tính", "Tiêu hao", "Thao tác"
