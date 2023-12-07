@@ -7,8 +7,7 @@ insert into Role VALUES ('CS', N'Thu ngân');
 insert into Role VALUES ('KS', N'Bếp');
 go
 
-select * from Employees where ID_Employee = 1000%
-select * FROM Employees where ID_Employee = 100000
+
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Admin', 'admin123', 'huynhbaomts2004@gmail.com', 'MG',1,'2004-06-24','0388319013');
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Bé Hoa', 'admin123', 'huynhbaomts2004@gmail.com', 'SV',1,'2004-06-24','0388319013');
 insert into Employees (FullName, [Password], Email, ID_role,SEX, birthday, PhoneNumber) VALUES (N'Bé Bò', 'admin123', 'huynhbaomts2004@gmail.com', 'KS',1,'2004-06-24','0388319013');
@@ -24,7 +23,7 @@ INSERT INTO ProductCategories (CategoryName) VALUES
     (N'Hải sản');
 
 -- Thêm dữ liệu mẫu cho bảng Products
-select * from Products
+
 INSERT INTO Products (ID_product,ID_Categories, Name, Quantity, Unit, Price) VALUES 
 
 -- loai Banh

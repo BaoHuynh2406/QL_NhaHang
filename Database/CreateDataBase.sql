@@ -82,6 +82,7 @@ CREATE TABLE MenuItems (
     Price int not null,
     Photo nvarchar(50),
 	IsAvailable BIT default 1,
+	IsLock BIT default 0
 	Foreign key (ID_Category) References MenuCategories(ID_Category)
 );
 
@@ -165,7 +166,7 @@ CREATE TABLE Invoices(
 
 
 -- -----------------------------------------------------------------
-
+-- PROC Chức năng cập nhật bàn thành có khách khi có đơn hàng chưa thanh toán
 CREATE PROCEDURE UpdateAllTablesStatus
 AS
 BEGIN
@@ -267,25 +268,11 @@ END
 
 EXEC DeleteOrdersWithoutDetails;
 
-select od.ID_Item, m.ItemName,  od.Quantity, od.price, od.totalPrice, o.ID_order from OrderDetail  od
-inner join Orders o ON o.ID_Order = od.ID_Order
-inner join tables t ON t.ID_Table = o.ID_table
-inner join MenuItems m ON od.ID_Item = m.ID_Item
-where od.ID_order = 33
-
-
-
-SELECT p.*
-FROM Products p
-INNER JOIN ProductCategories pc ON p.ID_Categories = pc.ID_Categories
-WHERE pc.CategoryName = 'Bia';
 
 
 
 -- Tạo stored procedure để cập nhật trạng thái của các món trong menu
-EXEC UpdateMenuItemsAvailability
 
-select * from MenuItems
 
 CREATE PROCEDURE UpdateMenuItemsAvailability
 AS
