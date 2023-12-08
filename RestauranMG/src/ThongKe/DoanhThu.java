@@ -49,6 +49,7 @@ public class DoanhThu extends javax.swing.JPanel {
 
         lblTong.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lblTong.setForeground(new java.awt.Color(255, 102, 102));
+        lblTong.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblTong.setText("Doanh Thu: ");
 
         table.setModel(new javax.swing.table.DefaultTableModel(
@@ -94,8 +95,8 @@ public class DoanhThu extends javax.swing.JPanel {
                         .addComponent(txtDate, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(96, 96, 96)
                         .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 102, Short.MAX_VALUE)
-                        .addComponent(lblTong, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                        .addComponent(lblTong, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(

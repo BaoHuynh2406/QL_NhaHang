@@ -1,36 +1,54 @@
-
 package Utils;
 
-import javax.swing.JOptionPane;
-
+import javax.swing.*;
 
 public class msg {
-    public static void Info(String mess){
-        JOptionPane.showMessageDialog(null, mess, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+    public static void Info(String mess) {
+        JOptionPane pane = new JOptionPane(mess, JOptionPane.INFORMATION_MESSAGE);
+        JDialog dialog = pane.createDialog("Thông báo");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
     }
-    
-    public static void Error(String mess){
-        JOptionPane.showMessageDialog(null, mess, "Lỗi", JOptionPane.ERROR_MESSAGE);
+
+    public static void Error(String mess) {
+        JOptionPane pane = new JOptionPane(mess, JOptionPane.ERROR_MESSAGE);
+        JDialog dialog = pane.createDialog("Lỗi");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
     }
-    
-    public static void Warning(String mess){
-        JOptionPane.showMessageDialog(null, mess, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+
+    public static void Warning(String mess) {
+        JOptionPane pane = new JOptionPane(mess, JOptionPane.WARNING_MESSAGE);
+        JDialog dialog = pane.createDialog("Cảnh báo");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
     }
-    
-    public static void Question(String mess){
-        JOptionPane.showMessageDialog(null, mess, "Bạn có chắc?", JOptionPane.QUESTION_MESSAGE);
+
+    public static void Question(String mess) {
+        JOptionPane pane = new JOptionPane(mess, JOptionPane.QUESTION_MESSAGE);
+        JDialog dialog = pane.createDialog("Bạn có chắc?");
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
     }
-    
-    public static int Yes_no(String mess, String title){
-        return JOptionPane.showConfirmDialog(null, mess, title, JOptionPane.YES_NO_OPTION);
+
+    public static int Yes_no(String mess, String title) {
+        JOptionPane pane = new JOptionPane(mess, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION);
+        JDialog dialog = pane.createDialog(title);
+        dialog.setAlwaysOnTop(true);
+        dialog.setVisible(true);
+        Object selectedValue = pane.getValue();
+        if (selectedValue instanceof Integer) {
+            return ((Integer) selectedValue);
+        }
+        return JOptionPane.CLOSED_OPTION;
     }
-    
+
     public static boolean Yes_no(String mess) {
-    int choice = JOptionPane.showConfirmDialog(null, mess, "Bạn có chắc", JOptionPane.YES_NO_OPTION);
-    return choice == JOptionPane.YES_OPTION;
+        int choice = JOptionPane.showConfirmDialog(null, mess, "Bạn có chắc", JOptionPane.YES_NO_OPTION);
+        return choice == JOptionPane.YES_OPTION;
     }
-    
-    public static int InputNum(String mess){
+
+    public static int InputNum(String mess) {
         String numS = JOptionPane.showInputDialog(mess);
         try {
             return Integer.valueOf(numS);
@@ -38,8 +56,4 @@ public class msg {
             return 0;
         }
     }
-
-    
-    
- 
 }

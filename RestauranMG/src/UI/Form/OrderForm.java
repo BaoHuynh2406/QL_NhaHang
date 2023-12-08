@@ -73,7 +73,7 @@ public class OrderForm extends javax.swing.JPanel {
     public OrderForm(Main main) {
         this.main = main;
         initComponents();
-        ScroolTable.getVerticalScrollBar().setUnitIncrement(20);
+        ScroolTable.getVerticalScrollBar().setUnitIncrement(30);
         updateStatus();
         
         
@@ -86,12 +86,7 @@ public class OrderForm extends javax.swing.JPanel {
         }else{
             btnThanhToan.setEnabled(true);
         }
-        
-        if(dsMonDangGoiMap.isEmpty()){
-            btnGoiMon.setEnabled(false);
-        }else{
-            btnGoiMon.setEnabled(true);
-        } 
+       
     }
     
     private Orders DonHang = new Orders();
@@ -153,7 +148,9 @@ public class OrderForm extends javax.swing.JPanel {
     }
 
     //Nhóm chức năng cho phần món đã gọi
+    //Mãng lưu các item đã gọi
     private Map<Integer, Model_Mon_Da_Goi> dsDaGoiMap = new HashMap<>();
+    //Mãng lưu các item đang gọi
     private Map<Integer, Model_Mon_Da_Goi> dsMonDangGoiMap = new HashMap<>();
 
     //Lấy dữ liệu đã gọi từ database nếu có
@@ -161,13 +158,14 @@ public class OrderForm extends javax.swing.JPanel {
         int ID_table = DonHang.getID_Table();
         dsDaGoiMap = proDao.GetGetItemsByTableID(ID_table);
         if (!dsDaGoiMap.isEmpty()) {
-            refreshMonAnOrder();
+            refreshOrder();
         }
 
     }
 
     // Các phương thức để thêm sản phẩm vào dsDaGoiMap và dsMonDangGoiMap
     private void addDanhSachGoiMon(Model_Mon_Da_Goi data, Map<Integer, Model_Mon_Da_Goi> map) {
+        btnGoiMon.setEnabled(true);
         int idItem = data.getId();
 
         if (map.containsKey(idItem)) {
@@ -180,17 +178,18 @@ public class OrderForm extends javax.swing.JPanel {
         }
 
         // Refresh danh sách hiển thị
-        refreshMonAnOrder();
+        refreshOrder();
     }
 
     // Các phương thức để giảm và tăng số lượng sản phẩm trong dsDaGoiMap và dsMonDangGoiMap
     private void adjustQuantity(int idItem, int quantityAdjustment, Map<Integer, Model_Mon_Da_Goi> map) {
+        btnGoiMon.setEnabled(true);
         if (map.containsKey(idItem)) {
             Model_Mon_Da_Goi data = map.get(idItem);
             int newQuantity = data.getSl() + quantityAdjustment;
             if (newQuantity >= 0) { // Kiểm tra số lượng không âm
                 data.setSl(newQuantity);
-                refreshMonAnOrder();
+                refreshOrder();
             } else {
                 // Xử lý khi số lượng âm (nếu cần)
             }
@@ -206,7 +205,7 @@ public class OrderForm extends javax.swing.JPanel {
         adjustQuantity(idItem, -1, map); // Giảm số lượng đi 1
     }
 
-    private void refreshMonAnOrder() {
+    private void refreshOrder() {
         updateStatus();
         pnMonAnOrder.removeAll();
         int total = 0;
@@ -259,6 +258,7 @@ public class OrderForm extends javax.swing.JPanel {
     //Nếu sản phẩm đã tồn tại cộng lại và update lên databse 
     //Nếu số lượng sản phẩm là 0 thì xóa sản phẩm 
     private void sync() {
+        //Gộp mảng đang gọi vào mảng đã gọi với sản phẩm giống nhau.
         for (Model_Mon_Da_Goi item1 : dsDaGoiMap.values()) {
             for (Model_Mon_Da_Goi item2 : dsMonDangGoiMap.values()) {
                 if (item1.getId() == item2.getId()) {
@@ -268,7 +268,8 @@ public class OrderForm extends javax.swing.JPanel {
                 }
             }
         }
-
+        
+        //
         Iterator<Model_Mon_Da_Goi> iterator = dsDaGoiMap.values().iterator();
         while (iterator.hasNext()) {
             Model_Mon_Da_Goi item = iterator.next();
@@ -286,15 +287,22 @@ public class OrderForm extends javax.swing.JPanel {
                 iterator.remove();
             }
         }
-
+        //Nếu bàn này vẫn chưa có đơn hàng -> tạo mới đơn hàng
         if (DonHang.getID_Order() == -1) {
             OrdersDao d = new OrdersDao();
             updateThongTinDonHang();
             d.insert(DonHang);
             DonHang.setID_Order(d.GetID());
         }
+        
         OrderDetailDao dt = new OrderDetailDao();
         for (Model_Mon_Da_Goi item : dsDaGoiMap.values()) {
+            //trước khi update lọc ra sự thay đổi với database
+            Map<Integer, Model_Mon_Da_Goi> dsDaGoiDatabase = new HashMap<>();
+            dsDaGoiDatabase = proDao.GetGetItemsByTableID(DonHang.getID_Table());
+            //so sánh với mảng dsDagoiMap lọc ra sự thay đổi về sl và lưu vào mảng mới
+            
+            
             
             OrderDetail e = new OrderDetail();
             e.setID_Item(item.getId());
@@ -317,10 +325,11 @@ public class OrderForm extends javax.swing.JPanel {
         }
         
         msg.Info("Gọi món thành công!");
+        btnGoiMon.setEnabled(false);
         dsMonDangGoiMap.clear();
         fillDsDaGoi();
         updateDonHang();
-        refreshMonAnOrder();
+        refreshOrder();
     }
 
     
@@ -512,6 +521,7 @@ public class OrderForm extends javax.swing.JPanel {
 
         btnGoiMon.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnGoiMon.setText("Gọi món");
+        btnGoiMon.setEnabled(false);
         btnGoiMon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGoiMonActionPerformed(evt);
@@ -864,4 +874,6 @@ public class OrderForm extends javax.swing.JPanel {
         worker.execute(); // Bắt đầu thực hiện công việc trong luồng phụ
     }
 
+    
+ 
 }

@@ -8,10 +8,10 @@ import java.util.List;
 
 public class ProductsDao extends RestauranDao<Products, String> {
 
-    final String INSERT_SQL = "INSERT INTO Products (ID_product, Name, Quantity, Unit, Price) "
-            + "VALUES (?, ?, ?, ?, ?)";
+    final String INSERT_SQL = "INSERT INTO Products (ID_product, Name, Quantity, Unit, Price, ID_Categories) "
+            + "VALUES (?, ?, ?, ?, ?, ?)";
     final String UPDATE_ALL = "UPDATE Products SET "
-            + "Name = ?, Quantity = ?, Unit = ?, Price = ? Where ID_product = ?";
+            + "Name = ?, Quantity = ?, Unit = ?, Price = ?, ID_Categories = ? Where ID_product = ?";
     final String DELETE_SQL = "DELETE FROM Products WHERE ID_product = ?";
     final String SELECT_ALL_SQL = "SELECT * FROM Products";
     final String SELECT_BY_ID_SQL = "SELECT *  FROM Products WHERE ID_product = ?";
@@ -26,7 +26,9 @@ public class ProductsDao extends RestauranDao<Products, String> {
                 entity.getName(),
                 entity.getQuantity(),
                 entity.getUnit(),
-                entity.getPrice());
+                entity.getPrice(),
+                entity.ID_Catory
+        );
     }
 
     @Override
@@ -36,6 +38,7 @@ public class ProductsDao extends RestauranDao<Products, String> {
                 entity.getQuantity(),
                 entity.getUnit(),
                 entity.getPrice(),
+                entity.ID_Catory,
                 entity.getID_product());
     }
 
@@ -104,7 +107,8 @@ public class ProductsDao extends RestauranDao<Products, String> {
                 entity.setName(rs.getString("Name"));
                 entity.setQuantity(rs.getFloat("Quantity"));
                 entity.setUnit(rs.getString("Unit"));
-                entity.setPrice(rs.getDouble("Price"));
+                entity.setPrice(rs.getInt("Price"));
+                entity.ID_Catory = rs.getInt("ID_Categories");
                 list.add(entity);
             }
         } catch (Exception e) {

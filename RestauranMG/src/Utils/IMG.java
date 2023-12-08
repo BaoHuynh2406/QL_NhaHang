@@ -65,7 +65,7 @@ public class IMG {
      */
     public static ImageIcon setAvatar(String name) {
             String path = "src/IMG/" + name;
-            return resize(path, "src/IMG/Avatar.png", 200, 250);
+            return resize(path, "src/IMG/Avatar.png", 256, 250);
     }
 
    

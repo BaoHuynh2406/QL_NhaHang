@@ -16,15 +16,15 @@ public class MenuCategoriesDao extends RestauranDao<MenuCategories, Integer>{
     @Override
     public void insert(MenuCategories entity) {
         jdbc.update(INSERT_SQL,
-                entity.getID_Category(),
                 entity.getCategoryName());
     }
 
     @Override
     public void update(MenuCategories entity) {
         jdbc.update(UPDATE_ALL,
-                entity.getID_Category(),
-                entity.getCategoryName());
+                entity.getCategoryName(),
+                entity.getID_Category());
+                
     }
 
     @Override

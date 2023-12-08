@@ -41,6 +41,22 @@ public class ChiTietMenu extends javax.swing.JDialog {
             return;
         }
         
+        setForm();
+    }
+    
+    
+    MenuCategoriesDao mDao = new MenuCategoriesDao();
+     //Hàm fill lên combobox
+    public void fillCombox(){
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cbLoai.getModel();
+        model.removeAllElements();
+       List<MenuCategories> l = mDao.selectAll();
+       for (MenuCategories a : l){
+           model.addElement(a); 
+       }
+    }
+    
+    public void setForm(){
         txtId.setText(mnu.getID_Item()+"");
         txtName.setText(mnu.getItemName());
         txtGia.setText(mnu.getPrice()+"");
@@ -55,18 +71,6 @@ public class ChiTietMenu extends javax.swing.JDialog {
         lbAnh.setIcon(IMG.resize("src/IMG/Food/"+mnu.getPhoto(), 300, 160));
         lbPath.setText(mnu.getPhoto());
         fillTableCongThuc();
-    }
-    
-    
-    MenuCategoriesDao mDao = new MenuCategoriesDao();
-     //Hàm fill lên combobox
-    public void fillCombox(){
-        DefaultComboBoxModel model = (DefaultComboBoxModel) cbLoai.getModel();
-        model.removeAllElements();
-       List<MenuCategories> l = mDao.selectAll();
-       for (MenuCategories a : l){
-           model.addElement(a); 
-       }
     }
     
     public MenuItems getForm(){
@@ -207,6 +211,11 @@ public class ChiTietMenu extends javax.swing.JDialog {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("Thêm loại");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Giá:");
@@ -657,6 +666,11 @@ public class ChiTietMenu extends javax.swing.JDialog {
        f.form = this;
        f.setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new ThemLoaiMon(new JFrame(), true).setVisible(true);
+        fillCombox();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

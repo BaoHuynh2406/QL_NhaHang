@@ -6,9 +6,10 @@ public class Products {
     private String Name;
     private double Quantity;
     private String Unit;
-    private double Price;
+    private int Price;
+    public int ID_Catory;
 
-    public Products(String ID_product, String Name, double Quantity, String Unit, double Price) {
+    public Products(String ID_product, String Name, double Quantity, String Unit, int Price) {
         this.ID_product = ID_product;
         this.Name = Name;
         this.Quantity = Quantity;
@@ -16,6 +17,16 @@ public class Products {
         this.Price = Price;
     }
 
+    public Products(String ID_product, String Name, double Quantity, String Unit, int Price, int ID_Catory) {
+        this.ID_product = ID_product;
+        this.Name = Name;
+        this.Quantity = Quantity;
+        this.Unit = Unit;
+        this.Price = Price;
+        this.ID_Catory = ID_Catory;
+    }
+    
+    
     public Products() {
     }
     
@@ -51,11 +62,11 @@ public class Products {
         this.Unit = Unit;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return Price;
     }
 
-    public void setPrice(double Price) {
+    public void setPrice(int Price) {
         this.Price = Price;
     }
     

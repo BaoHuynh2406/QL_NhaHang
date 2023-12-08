@@ -1,5 +1,8 @@
 
 package Entity;
+
+import java.util.Objects;
+
 public class ProductCategories {
     private int ID_Categories;
     private String CategoryName;
@@ -31,5 +34,14 @@ public class ProductCategories {
     @Override
     public String toString() {
         return CategoryName;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductCategories that = (ProductCategories) o;
+        return ID_Categories == that.ID_Categories &&
+                Objects.equals(CategoryName, that.CategoryName);
     }
 }
