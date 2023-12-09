@@ -1,69 +1,94 @@
-
 package UI.Form.CaiDat;
 
-import Dao.AreasDao;
-import Dao.TablesdDao;
-import Entity.Areas;
-import Entity.Tables;
-import Utils.msg;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.table.DefaultTableModel;
-
+import javax.swing.ImageIcon;
+import javax.swing.SwingWorker;
 
 public class CaiDatNhaHang extends javax.swing.JPanel {
 
-   
     public CaiDatNhaHang() {
         initComponents();
-        
+        formKhuVuc();
+        loadFormHangHoa();
     }
 
-    
-   
-    
-    
- 
+    private void loadFormMenu() {
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() {
+                formMenu();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+
+            }
+        };
+
+        worker.execute();
+    }
+
+    private void loadFormHangHoa() {
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() {
+                formHangHoa();
+                return null;
+            }
+
+            @Override
+            protected void done() {
+
+                loadFormMenu();
+            }
+        };
+
+        worker.execute();
+    }
+
+    private void formKhuVuc() {
+        QLKhuVuc khuVuc = new QLKhuVuc();
+        tab.add(khuVuc);
+        tab.setTitleAt(0, "QL Khu vực - Bàn     ");
+        tab.setIconAt(0, new ImageIcon("src/IMG/round-table.png"));
+    }
+
+    private void formMenu() {
+        QLMenu menu = new QLMenu();
+        tab.add(menu);
+        tab.setTitleAt(2, "QL Menu     ");
+        tab.setIconAt(2, new ImageIcon("src/IMG/m.png"));
+    }
+
+    private void formHangHoa() {
+        QLKhoHang khoHang = new QLKhoHang();
+        tab.add(khoHang);
+        tab.setTitleAt(1, "QL Kho Hàng    ");
+        tab.setIconAt(1, new ImageIcon("src/IMG/box.png"));
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        qLKhuVuc1 = new UI.Form.CaiDat.QLKhuVuc();
-        qLMenu1 = new UI.Form.CaiDat.QLMenu();
-        qLKhoHang1 = new UI.Form.CaiDat.QLKhoHang();
+        tab = new javax.swing.JTabbedPane();
 
-        setBackground(new java.awt.Color(255, 255, 255));
-
-        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jTabbedPane1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jTabbedPane1.addTab("QL Khu vực - Bàn          ", new javax.swing.ImageIcon(getClass().getResource("/IMG/round-table.png")), qLKhuVuc1); // NOI18N
-        jTabbedPane1.addTab("QL Menu         ", new javax.swing.ImageIcon(getClass().getResource("/IMG/m.png")), qLMenu1); // NOI18N
-        jTabbedPane1.addTab("QL Hàng hóa", new javax.swing.ImageIcon(getClass().getResource("/IMG/box.png")), qLKhoHang1); // NOI18N
+        tab.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jTabbedPane1))
+            .addComponent(tab, javax.swing.GroupLayout.DEFAULT_SIZE, 975, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jTabbedPane1)
-                .addGap(0, 0, 0))
+            .addComponent(tab, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 693, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private UI.Form.CaiDat.QLKhoHang qLKhoHang1;
-    private UI.Form.CaiDat.QLKhuVuc qLKhuVuc1;
-    private UI.Form.CaiDat.QLMenu qLMenu1;
+    private javax.swing.JTabbedPane tab;
     // End of variables declaration//GEN-END:variables
 }
