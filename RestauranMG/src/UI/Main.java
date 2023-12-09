@@ -7,6 +7,7 @@ import Controller.EventTableSelected;
 import Dao.procDao;
 import HangHoa.QLKhoHangForm;
 import ThongKe.DoanhThu;
+import ThongKe.ThongKeForm;
 import UI.Compoment.MainMenu.MainMenu;
 import UI.Form.CaiDat.CaiDatNhaHang;
 import UI.Form.GioiThieu;
@@ -345,7 +346,7 @@ public class Main extends javax.swing.JFrame {
                 
     //Form thống kê
     public void formThongKe(){
-        DoanhThu f = new DoanhThu();
+       ThongKeForm f = new ThongKeForm();
         pnDashboard.removeAll();
         pnDashboard.add(f, BorderLayout.CENTER);
         pnDashboard.repaint();
