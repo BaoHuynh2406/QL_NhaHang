@@ -89,4 +89,11 @@ public class procDao {
         String cols[] = {"TableName", "ID_Invoice", "InvoiceDate", "InvoiceTime", "TotalAmount"};
         return getListOfArray(sql, cols, date, in, out);
     }
+    
+    //Proc thông kê theo khoảng thời gian
+    public List<Object[]> GetInvoiceDetailsByBetwentTime(Date date1, Date date2){
+        String sql = "{CALL GetInvoiceDetailsByBetwentTime(?, ?)}";
+        String cols[] = {"TableName", "ID_Invoice", "InvoiceDate", "InvoiceTime", "TotalAmount"};
+        return getListOfArray(sql, cols, date1, date2);
+    }
 }

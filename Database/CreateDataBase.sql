@@ -105,11 +105,12 @@ Create table Areas(
 
 Create table Tables(
 	ID_Table int identity(1,1) primary key,
-	TableName nvarchar(20),
+	TableName nvarchar(20) UNIQUE,
 	ID_Area int,
 	IsOccupied BIT,
 	Foreign key (ID_Area) references Areas(ID_Area)
 );
+
 
 -- Nhóm thanh toán
 
@@ -292,5 +293,19 @@ BEGIN
     WHERE CONVERT(DATE, InvoiceDate) = @InputDate
           AND DATEPART(HOUR, InvoiceDate) >= @StartHour
           AND DATEPART(HOUR, InvoiceDate) < @EndHour
+          AND Invoices.isPaid = 1
+END
+
+CREATE PROCEDURE GetInvoiceDetailsByBetwentTime
+    @StartDate DATE,
+    @EndDate DATE
+AS
+BEGIN
+    SELECT Tables.TableName, Invoices.ID_Invoice, CONVERT(DATE, InvoiceDate) AS InvoiceDate,
+           CONVERT(TIME, InvoiceDate) AS InvoiceTime, Invoices.TotalAmount
+    FROM Invoices
+    INNER JOIN Orders ON Orders.ID_Order = Invoices.ID_Invoice
+    INNER JOIN Tables ON Tables.ID_Table = Orders.ID_Table
+    WHERE CONVERT(DATE, InvoiceDate) BETWEEN @StartDate AND @EndDate
           AND Invoices.isPaid = 1
 END
