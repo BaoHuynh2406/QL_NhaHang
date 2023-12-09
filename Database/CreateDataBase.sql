@@ -36,6 +36,7 @@ CREATE TABLE ProductCategories (
 );
 
 
+
 -- Hàng hóa trong kho
 CREATE TABLE Products (
     ID_product VARCHAR(6) PRIMARY KEY,
@@ -271,92 +272,6 @@ EXEC DeleteOrdersWithoutDetails;
 
 
 
--- Tạo stored procedure để cập nhật trạng thái của các món trong menu
-
-
-CREATE PROCEDURE UpdateMenuItemsAvailability
-AS
-BEGIN
-    -- Cập nhật các món trong menu
-    UPDATE MenuItems
-    SET IsAvailable = CASE
-                            -- Kiểm tra món nào có liên kết với sản phẩm trong kho
-                            WHEN EXISTS (SELECT 1
-                                         FROM MenuItemDetail MID
-                                         INNER JOIN Products P ON MID.ID_Product = P.ID_product
-                                         WHERE MID.ID_Item = MenuItems.ID_Item
-                                         AND (P.Quantity < MID.Quantity OR P.Quantity IS NULL)) THEN 0 -- Món hết hàng
-                            ELSE 1 -- Món còn hàng
-                      END;
-
-    -- Kiểm tra món nào cần được đánh dấu là hết hàng hoặc còn hàng dựa trên mặt hàng trong kho
-    DECLARE @OutOfStockItems TABLE (ID_Item INT);
-
-    INSERT INTO @OutOfStockItems (ID_Item)
-    SELECT MID.ID_Item
-    FROM MenuItemDetail MID
-    LEFT JOIN Products P ON MID.ID_Product = P.ID_product
-    GROUP BY MID.ID_Item
-    HAVING SUM(CASE WHEN P.Quantity < MID.Quantity OR P.Quantity IS NULL THEN 1 ELSE 0 END) > 0;
-
-    -- Cập nhật trạng thái của các món
-    UPDATE MenuItems
-    SET IsAvailable = 0 -- Món hết hàng
-    WHERE ID_Item IN (SELECT ID_Item FROM @OutOfStockItems);
-
-    UPDATE MenuItems
-    SET IsAvailable = 1 -- Món còn hàng
-    WHERE ID_Item NOT IN (SELECT ID_Item FROM @OutOfStockItems);
-END;
-
-
-
--- kiễm tra số lượng tối đa
-DECLARE @MenuItemID INT = 1; -- ID của món ăn cần kiểm tra
-DECLARE @MaxAvailableQuantity FLOAT; -- Số lượng tối đa có thể đáp ứng được
-
-EXEC CheckMenuItemAvailabilityDetailed @MenuItemID, @MaxAvailableQuantity OUTPUT;
-
-SELECT @MaxAvailableQuantity AS MaxAvailableQuantity;
-
-CREATE PROCEDURE CheckMenuItemAvailabilityDetailed
-    @MenuItemID INT,
-    @RequestedQuantity FLOAT OUTPUT
-AS
-BEGIN
-    DECLARE @AvailableQuantity FLOAT;
-
-    -- Khởi tạo giá trị mặc định cho số lượng có sẵn và số lượng yêu cầu
-    SET @AvailableQuantity = -1; -- Mặc định -1 nếu không có sản phẩm nào liên kết
-
-    -- Kiểm tra xem món có liên kết với sản phẩm trong kho hay không
-    IF EXISTS (
-        SELECT 1
-        FROM MenuItemDetail MID
-        INNER JOIN Products P ON MID.ID_Product = P.ID_product
-        WHERE MID.ID_Item = @MenuItemID
-    )
-    BEGIN
-        -- Tính toán số lượng có sẵn và số lượng yêu cầu
-        SELECT @AvailableQuantity = MIN(P.Quantity / MID.Quantity)
-        FROM MenuItemDetail MID
-        INNER JOIN Products P ON MID.ID_Product = P.ID_product
-        WHERE MID.ID_Item = @MenuItemID
-            AND P.Quantity IS NOT NULL
-            AND P.Quantity >= MID.Quantity;
-
-        -- Trả về kết quả dựa trên số lượng có sẵn và số lượng yêu cầu
-        IF @AvailableQuantity >= @RequestedQuantity
-            SET @RequestedQuantity = CAST(@RequestedQuantity AS INT);
-        ELSE
-            SET @RequestedQuantity = 0;
-    END
-    ELSE
-    BEGIN
-        -- Món không có liên kết với sản phẩm trong kho
-        SET @RequestedQuantity = -1;
-    END
-END;
 
 
 
