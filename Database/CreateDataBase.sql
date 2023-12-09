@@ -309,3 +309,25 @@ BEGIN
     WHERE CONVERT(DATE, InvoiceDate) BETWEEN @StartDate AND @EndDate
           AND Invoices.isPaid = 1
 END
+
+
+-- Lấy thông tin các món bán ra
+create PROCEDURE GetSalesReport
+    @FromDate DATE,
+    @ToDate DATE
+AS
+BEGIN
+    SELECT MI.ID_Item AS 'Mã món',
+           MI.ItemName AS 'Tên món',
+           SUM(OD.Quantity) AS 'Số lượng bán ra',
+           SUM(OD.TotalPrice) AS 'Doanh thu'
+    FROM MenuItems MI
+    INNER JOIN OrderDetail OD ON MI.ID_Item = OD.ID_Item
+    INNER JOIN Orders O ON OD.ID_Order = O.ID_Order
+    WHERE CONVERT(DATE, O.OrderDate) >= @FromDate
+      AND CONVERT(DATE, O.OrderDate) <= @ToDate
+    GROUP BY MI.ID_Item, MI.ItemName
+    ORDER BY SUM(OD.Quantity) DESC; -- Sắp xếp theo số lượng bán ra từ nhiều đến ít
+END;
+
+exec GetSalesReport '2023-12-09', '2023-12-09'

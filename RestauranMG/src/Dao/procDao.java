@@ -96,4 +96,12 @@ public class procDao {
         String cols[] = {"TableName", "ID_Invoice", "InvoiceDate", "InvoiceTime", "TotalAmount"};
         return getListOfArray(sql, cols, date1, date2);
     }
+    
+    
+    //Hàm thống kê món bán chạy
+    public List<Object[]> GetSalesReport(Date date1, Date date2){
+        String sql = "{CALL GetSalesReport(?,?)}";
+        String cols[] = {"Mã món", "Tên món", "Số lượng bán ra", "Doanh thu"};
+        return getListOfArray(sql, cols, date1, date2);
+    }
 }

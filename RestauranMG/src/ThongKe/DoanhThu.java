@@ -23,14 +23,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class DoanhThu extends javax.swing.JPanel {
 
-    DateChose chose = new DateChose();
+    private DateChose chose = new DateChose();
 
     public DoanhThu() {
         initComponents();
         chose.type = DateChose.Type.DAY;
         Date now = new Date();
         txtDate.setDate(now);
-        fillTable();
+      
         btnNgay.setSelected(true);
     }
 
@@ -290,6 +290,7 @@ public class DoanhThu extends javax.swing.JPanel {
         btnThang.setSelected(true);
         btnNam.setSelected(false);
         btnNgay.setSelected(false);
+        fillTable();
     }//GEN-LAST:event_btnThangActionPerformed
 
     private void btnNgayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNgayActionPerformed
@@ -307,6 +308,7 @@ public class DoanhThu extends javax.swing.JPanel {
         btnNgay.setSelected(true);
         btnThang.setSelected(false);
         btnNam.setSelected(false);
+        fillTable();
     }//GEN-LAST:event_btnNgayActionPerformed
 
     private void btnNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNamActionPerformed
@@ -324,6 +326,8 @@ public class DoanhThu extends javax.swing.JPanel {
         btnNam.setSelected(true);
         btnThang.setSelected(false);
         btnNgay.setSelected(false);
+        
+        fillTable();
     }//GEN-LAST:event_btnNamActionPerformed
 
     private void btnGiamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGiamActionPerformed
