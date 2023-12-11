@@ -4,6 +4,7 @@ import Dao.EmployeesDao;
 import Dao.RoleDao;
 import Entity.Employees;
 import Entity.Role;
+import Utils.Encryption;
 import Utils.IMG;
 import Utils.Validate;
 import Utils.XDate;
@@ -240,6 +241,11 @@ public class QLNV extends javax.swing.JPanel {
         }
         Employees employees = getForm();
         try {
+            employees.setPassword(Encryption.hashPassword(employees.getPassword()));
+        } catch (Exception e) {
+        }
+        
+        try {
             dao.insert(employees);
             clear();
             row = -1; // Cập nhật giá trị của row
@@ -283,6 +289,12 @@ public class QLNV extends javax.swing.JPanel {
             return;
         }
         Employees employees = getForm();
+        
+        try {
+             employees.setPassword(Encryption.hashPassword(employees.getPassword()));
+        } catch (Exception e) {
+        }
+       
         try {
             if (employees.getPassword().isEmpty()) {
                 dao.updateNotPass(employees);
