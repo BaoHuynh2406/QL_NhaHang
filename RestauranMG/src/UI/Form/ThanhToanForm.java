@@ -100,7 +100,7 @@ public class ThanhToanForm extends javax.swing.JPanel {
         
         this.setLayout(new BorderLayout());
         
-        setHoaDon(ID_Order);
+        setHoaDon(ID_Invoice);
         this.add(p, BorderLayout.CENTER);
         this.revalidate();
     }
