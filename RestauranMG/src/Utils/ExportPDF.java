@@ -171,6 +171,7 @@ public class ExportPDF {
             document.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            msg.Error(e.getMessage());
         }
 
     }

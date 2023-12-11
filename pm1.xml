@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>D:\WorkSpace\project1\RestauranMG\dist\RestauranMG.jar</jar>
+  <outfile>D:\WorkSpace\project1\RestauranMG\dist\RestaurantMG.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl></downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>D:\WorkSpace\project1\logo512.ico</icon>
+  <classPath>
+    <mainClass>UI.Main</mainClass>
+    <cp>lib/mssql-jdbc-12.2.0.jre8.jar</cp>
+    <cp>lib/activation.jar</cp>
+    <cp>lib/javax.mail-api-1.6.2.jar</cp>
+    <cp>lib/javax.mail.jar</cp>
+    <cp>lib/mssql-jdbc-12.2.0.jre11.jar</cp>
+    <cp>lib/AbsoluteLayout.jar</cp>
+    <cp>lib/java-ui-dashboard-011.jar</cp>
+    <cp>lib/TimingFramework-0.55.jar</cp>
+    <cp>lib/TimingFramework-0.55.jar</cp>
+    <cp>lib/TimingFramework-0.55.jar</cp>
+    <cp>lib/commons-codec-1.11.jar</cp>
+    <cp>lib/commons-collections4-4.2.jar</cp>
+    <cp>lib/commons-compress-1.18.jar</cp>
+    <cp>lib/poi-4.0.1.jar</cp>
+    <cp>lib/poi-ooxml-4.0.1.jar</cp>
+    <cp>lib/poi-ooxml-schemas-4.0.1.jar</cp>
+    <cp>lib/xmlbeans-3.0.2.jar</cp>
+    <cp>lib/${file.reference.core-3.5.2.jar}</cp>
+    <cp>lib/qrgen-1.4.jar</cp>
+    <cp>lib/${file.reference.javase-2.0.jar}</cp>
+    <cp>lib/jcalendar-1.4.jar</cp>
+    <cp>lib/itextpdf-5.5.4.jar</cp>
+  </classPath>
+  <jre>
+    <path>%JAVA_HOME%;%PATH%</path>
+    <requiresJdk>false</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion>21</minVersion>
+    <maxVersion></maxVersion>
+  </jre>
+  <messages>
+    <startupErr>An error occurred while starting the application.</startupErr>
+    <jreNotFoundErr>This application requires a Java Runtime Environment.</jreNotFoundErr>
+    <jreVersionErr>This application requires a Java Runtime Environment</jreVersionErr>
+    <launcherErr>The registry refers to a nonexistent Java Runtime Environment installation or the runtime is corrupted.</launcherErr>
+    <instanceAlreadyExistsMsg>An application instance is already running.</instanceAlreadyExistsMsg>
+  </messages>
+</launch4jConfig>

@@ -16,5 +16,6 @@
     <orderEntry type="library" name="jcalendar-1.4" level="project" />
     <orderEntry type="library" name="TimingFramework-0.55" level="project" />
     <orderEntry type="library" name="thuvienpoi" level="project" />
+    <orderEntry type="library" name="itextpdf-5.5.4" level="project" />
   </component>
 </module>
