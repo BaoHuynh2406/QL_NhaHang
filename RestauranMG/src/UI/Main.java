@@ -138,6 +138,7 @@ public class Main extends javax.swing.JFrame {
                 lbChucVu.setText("Quản lý:");
                 lbUserName.setText(Auth.user.getFullName());
                 menu.MG();
+                
                 menu.addEventMenuSelected(new EventMenuSelected() {
                     @Override
                     public void selected(int index) {
@@ -170,6 +171,7 @@ public class Main extends javax.swing.JFrame {
                 lbChucVu.setText("Phục vụ:");
                 lbUserName.setText(Auth.user.getFullName());
                 menu.SV();
+              
                 menu.addEventMenuSelected(new EventMenuSelected() {
                     @Override
                     public void selected(int index) {
@@ -189,6 +191,7 @@ public class Main extends javax.swing.JFrame {
                 lbChucVu.setText("Bếp:");
                 lbUserName.setText(Auth.user.getFullName());
                 menu.KS();
+   
                 menu.addEventMenuSelected(new EventMenuSelected() {
                     @Override
                     public void selected(int index) {
@@ -208,6 +211,7 @@ public class Main extends javax.swing.JFrame {
                 lbChucVu.setText("Thu ngân:");
                 lbUserName.setText(Auth.user.getFullName());
                 menu.CS();
+         
                 menu.addEventMenuSelected(new EventMenuSelected() {
                     @Override
                     public void selected(int index) {

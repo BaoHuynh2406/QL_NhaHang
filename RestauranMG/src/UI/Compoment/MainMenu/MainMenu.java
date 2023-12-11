@@ -5,7 +5,7 @@ import UI.Model.Model_Menu;
 
 public class MainMenu extends javax.swing.JPanel {
 
-    private EventMenuSelected event;
+    public EventMenuSelected event;
 
     public void addEventMenuSelected(EventMenuSelected event) {
         this.event = event;
@@ -26,6 +26,7 @@ public class MainMenu extends javax.swing.JPanel {
         listMenu1.addItem(new Model_Menu("caidat", "QL Nhà hàng", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("thongke", "Báo cáo & TK", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("info", "Giới thiệu", Model_Menu.MenuType.MENU));
+       
     }
 
     //Phục vụ
@@ -33,6 +34,7 @@ public class MainMenu extends javax.swing.JPanel {
         listMenu1.Clear();
         listMenu1.addItem(new Model_Menu("Order", "Gọi món", Model_Menu.MenuType.MENU));
         listMenu1.addItem(new Model_Menu("info", "Giới thiệu", Model_Menu.MenuType.MENU));
+     
     }
 
     //Thu Ngân

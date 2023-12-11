@@ -2,6 +2,7 @@ package ThongKe;
 
 import Dao.OrdersDao;
 import Dao.procDao;
+import Utils.Auth;
 import Utils.XDate;
 import Utils.fNum;
 import Utils.msg;
@@ -31,8 +32,17 @@ public class DoanhThu extends javax.swing.JPanel {
         chose.type = DateChose.Type.DAY;
         Date now = new Date();
         txtDate.setDate(now);
-      
+
         btnNgay.setSelected(true);
+        if (!Auth.isMG()) {
+            btnNgay.setEnabled(false);
+            btnThang.setEnabled(false);
+            btnNam.setEnabled(false);
+            btnGiam.setEnabled(false);
+            btnTang.setEnabled(false);
+            txtDate.setEnabled(false);
+
+        }
     }
 
     private void adjustDATE(int adjust) {
@@ -298,7 +308,7 @@ public class DoanhThu extends javax.swing.JPanel {
         txtDate.setDateFormatString("MMM, yyyy");
         chose.type = DateChose.Type.MONTH;
         cbb.setEnabled(false);
-        
+
         btnThang.setSelected(true);
         btnNam.setSelected(false);
         btnNgay.setSelected(false);
@@ -316,7 +326,7 @@ public class DoanhThu extends javax.swing.JPanel {
         txtDate.setDateFormatString("d, MMM, y");
         chose.type = DateChose.Type.DAY;
         cbb.setEnabled(true);
-        
+
         btnNgay.setSelected(true);
         btnThang.setSelected(false);
         btnNam.setSelected(false);
@@ -334,11 +344,11 @@ public class DoanhThu extends javax.swing.JPanel {
         txtDate.setDateFormatString("yyyy");
         chose.type = DateChose.Type.YEAR;
         cbb.setEnabled(false);
-        
+
         btnNam.setSelected(true);
         btnThang.setSelected(false);
         btnNgay.setSelected(false);
-        
+
         fillTable();
     }//GEN-LAST:event_btnNamActionPerformed
 
@@ -360,21 +370,20 @@ public class DoanhThu extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXuatFileActionPerformed
 
     public void fillTable() {
-        
+
         procDao dao = new procDao();
         List<Object[]> l;
-       
+
         if (chose.type == DateChose.Type.DAY) {
 
             if (cbb.getSelectedItem().equals("Cả ngày")) {
                 l = dao.GetInvoiceDetailsByDateTimeRange(txtDate.getDate(), 0, 24);
             } else if (cbb.getSelectedItem().equals("Ca sáng")) {
-                l = dao.GetInvoiceDetailsByDateTimeRange(txtDate.getDate(), 6, 17);
+                l = dao.GetInvoiceDetailsByDateTimeRange(txtDate.getDate(), 0, 17);
             } else {
                 l = dao.GetInvoiceDetailsByDateTimeRange(txtDate.getDate(), 17, 24);
             }
-             
-            
+
         } else if (chose.type == DateChose.Type.MONTH) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(txtDate.getDate());
@@ -388,9 +397,9 @@ public class DoanhThu extends javax.swing.JPanel {
             Date lastDayOfMonth = calendar.getTime();
 
             l = dao.GetInvoiceDetailsByBetwentTime(firstDayOfMonth, lastDayOfMonth);
-            
+
         } else {
-           Calendar calendar = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
             calendar.setTime(txtDate.getDate());
             // Thiết lập ngày đầu tiên của năm
             calendar.set(Calendar.DAY_OF_YEAR, 1);
@@ -403,7 +412,7 @@ public class DoanhThu extends javax.swing.JPanel {
 
             l = dao.GetInvoiceDetailsByBetwentTime(firstDayOfYear, lastDayOfYear);
         }
-        
+
         fill(l);
 
     }
@@ -421,13 +430,13 @@ public class DoanhThu extends javax.swing.JPanel {
                 row[3],
                 fNum.parseString((int) row[4]) + "đ"
             });
-            
+
             total += (int) row[4];
-            soKhach += new OrdersDao().selectById( (int) row[1]).getNumberOfGuests();
+            soKhach += new OrdersDao().selectById((int) row[1]).getNumberOfGuests();
         }
 
         lblTong.setText("Doanh thu: " + fNum.parseString(total) + "đ");
-        lbSoKhach.setText("Số khách: "+fNum.parseString(soKhach));
+        lbSoKhach.setText("Số khách: " + fNum.parseString(soKhach));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGiam;
@@ -447,7 +456,6 @@ public class DoanhThu extends javax.swing.JPanel {
     private com.toedter.calendar.JDateChooser txtDate;
     // End of variables declaration//GEN-END:variables
 
-    
     // xuất file Excel
     public void exportToExcel() {
         JFileChooser fileChooser = new JFileChooser();
@@ -493,7 +501,7 @@ public class DoanhThu extends javax.swing.JPanel {
             }
         }
     }
-    
+
     class DateChose {
 
         public Type type;

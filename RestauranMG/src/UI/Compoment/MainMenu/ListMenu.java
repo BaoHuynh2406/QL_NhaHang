@@ -17,7 +17,7 @@ public class ListMenu<E extends Object> extends JList<E> {
     private final DefaultListModel model;
     private int selectedIndex = -1;
     private int overIndex = -1;
-    private EventMenuSelected event;
+    public EventMenuSelected event;
 
     public void addEventMenuSelected(EventMenuSelected event) {
         this.event = event;

@@ -30,7 +30,7 @@ public class NhapHang extends javax.swing.JPanel {
         btnOK.setEnabled(false);
         if (Auth.isLogin()) {
             int maNhanVienDangNhap = Auth.user.getID_Employee();
-            txtmaNV.setText(maNhanVienDangNhap+"");
+            txtmaNV.setText(maNhanVienDangNhap + "");
             txtmaNV.setEditable(false);
         } else {
             System.out.println("Không lấy được mã NV");
@@ -38,7 +38,6 @@ public class NhapHang extends javax.swing.JPanel {
         date();
     }
 
-    
     // hiện thị ngày tháng năm hiện tại
     private void date() {
         // Lấy ngày tháng năm hiện tại
@@ -68,20 +67,37 @@ public class NhapHang extends javax.swing.JPanel {
         // Tìm kiếm thông tin sản phẩm
         Products product = dao.SearchFirst(maHang, tenHang);
 
+        boolean check = false;
         if (product != null) {
-            // Tạo một mảng đối tượng để thêm vào bảng
-            Object[] rowData = new Object[]{
-                model.getRowCount() + 1,
-                product.getID_product(),
-                product.getName(),
-                product.getUnit(),
-                product.getPrice(),
-                product.getQuantity(),
-                soLuong // Số lượng mới nhập
-            };
 
-            // Thêm dòng mới vào bảng
-            model.addRow(rowData);
+            for (int i = 0; i < table.getRowCount(); i++) {
+                String ID = (String) table.getValueAt(i, 1);
+                if (product.getID_product().equals(ID)) {
+                    double sl_Old = (Double) table.getValueAt(i, 6);
+                    soLuong = soLuong + sl_Old;
+                    table.setValueAt(soLuong, i, 6);
+                    check = true;
+                    break;
+                }
+            }
+
+            if (!check) {
+                // Tạo một mảng đối tượng để thêm vào bảng
+                int SL;
+
+                Object[] rowData = new Object[]{
+                    model.getRowCount() + 1,
+                    product.getID_product(),
+                    product.getName(),
+                    product.getUnit(),
+                    product.getPrice(),
+                    (Auth.isMG() ? product.getQuantity() : "?"),
+                    soLuong, // Số lượng mới nhập
+                    "Xóa"
+                };
+                // Thêm dòng mới vào bảng
+                model.addRow(rowData);
+            }
 
             // Clear các JTextField
             txtmaHang.setText("");
@@ -91,62 +107,56 @@ public class NhapHang extends javax.swing.JPanel {
             msg.Warning("Không tìm thấy sản phẩm!");
         }
     }
-    
-    private void xoaHangDuocChon(int selectedRow) {
-        if (!table.getSelectionModel().isSelectionEmpty()) {
-            DefaultTableModel model = (DefaultTableModel) table.getModel();
-            model.removeRow(selectedRow);
-        }
-    }
-    
+
+  
+
     public void Luu() {
-    try {
-        // Lấy thông tin từ giao diện
-        String maNH = txtmaNH.getText().trim();
-        String maNV = txtmaNV.getText().trim();
-        LocalDate orderDate = LocalDate.now(); // Sử dụng ngày hiện tại
+        try {
+            // Lấy thông tin từ giao diện
+            String maNH = txtmaNH.getText().trim();
+            String maNV = txtmaNV.getText().trim();
+            LocalDate orderDate = LocalDate.now(); // Sử dụng ngày hiện tại
 
-        // Kiểm tra độ dài của mã phiếu nhập hàng
-        if (maNH.length() <= 6) {
-            // Thông báo lỗi nếu mã phiếu nhập hàng không đạt yêu cầu
-            msg.Error("Mã phiếu nhập hàng phải có hơn 6 ký tự!");
-            return; // Kết thúc phương thức nếu có lỗi
+            // Kiểm tra độ dài của mã phiếu nhập hàng
+            if (maNH.length() < 6 || maNH.length() > 6 ) {
+                // Thông báo lỗi nếu mã phiếu nhập hàng không đạt yêu cầu
+                msg.Error("Mã phiếu nhập hàng phải có hơn 6 ký tự!");
+                return; // Kết thúc phương thức nếu có lỗi
+            }
+
+            // Tiếp tục thực hiện lưu nếu mã phiếu nhập hàng hợp lệ
+            PurchaseOrders purchaseOrder = new PurchaseOrders();
+            purchaseOrder.setID_PurchaseOrder(Integer.parseInt(maNH));
+
+            // Chuyển đổi LocalDate sang java.sql.Date
+            java.sql.Date sqlOrderDate = java.sql.Date.valueOf(orderDate);
+            purchaseOrder.setOrderDate(sqlOrderDate);
+
+            purchaseOrder.setID_Employee(Integer.parseInt(maNV));
+
+            // Gọi phương thức insert trong PurchaseOrdersDao
+            PurchaseOrdersDao poDao = new PurchaseOrdersDao();
+            poDao.insert(purchaseOrder);
+
+            // Lưu chi tiết đơn hàng vào cơ sở dữ liệu
+            for (int i = 0; i < model.getRowCount(); i++) {
+                String maHang = model.getValueAt(i, 1).toString();
+                double soLuongNhap = Double.parseDouble(model.getValueAt(i, 6).toString());
+
+                // Gọi phương thức updateQuantity trong ProductsDao để cập nhật số lượng
+                ProductsDao productDao = new ProductsDao();
+                productDao.updateQuantity(maHang, soLuongNhap);
+            }
+
+            // Thông báo thành công
+            msg.Info("Lưu thành công!");
+            model.setRowCount(0);
+            txtmaNH.setText("");
+        } catch (Exception e) {
+            // Xử lý nếu có lỗi
+            msg.Error("Lỗi khi lưu đơn hàng: " + e.getMessage());
         }
-
-        // Tiếp tục thực hiện lưu nếu mã phiếu nhập hàng hợp lệ
-        PurchaseOrders purchaseOrder = new PurchaseOrders();
-        purchaseOrder.setID_PurchaseOrder(Integer.parseInt(maNH));
-        
-        // Chuyển đổi LocalDate sang java.sql.Date
-        java.sql.Date sqlOrderDate = java.sql.Date.valueOf(orderDate);
-        purchaseOrder.setOrderDate(sqlOrderDate);
-        
-        purchaseOrder.setID_Employee(Integer.parseInt(maNV));
-
-        // Gọi phương thức insert trong PurchaseOrdersDao
-        PurchaseOrdersDao poDao = new PurchaseOrdersDao();
-        poDao.insert(purchaseOrder);
-
-        // Lưu chi tiết đơn hàng vào cơ sở dữ liệu
-        for (int i = 0; i < model.getRowCount(); i++) {
-            String maHang = model.getValueAt(i, 1).toString();
-            double soLuongNhap = Double.parseDouble(model.getValueAt(i, 6).toString());
-
-            // Gọi phương thức updateQuantity trong ProductsDao để cập nhật số lượng
-            ProductsDao productDao = new ProductsDao();
-            productDao.updateQuantity(maHang, soLuongNhap);
-        }
-
-        // Thông báo thành công
-        msg.Info("Lưu thành công!");
-        txtmaNH.setText("");
-    } catch (Exception e) {
-        // Xử lý nếu có lỗi
-        msg.Error("Lỗi khi lưu đơn hàng: " + e.getMessage());
     }
-}
-
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -172,7 +182,6 @@ public class NhapHang extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new UI.Compoment.CustomTable.Table();
         button1 = new button.Button();
-        btnXoa = new button.Button();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -327,11 +336,11 @@ public class NhapHang extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Mã hàng", "Tên hàng", "Đơn vị", "Giá", "Số lượng", "Nhập vào"
+                "STT", "Mã hàng", "Tên hàng", "Đơn vị", "Giá", "Số lượng", "Nhập vào", "Thao tác"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -360,16 +369,6 @@ public class NhapHang extends javax.swing.JPanel {
             }
         });
 
-        btnXoa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMG/delete1.png"))); // NOI18N
-        btnXoa.setText("Xóa");
-        btnXoa.setBorderColor(new java.awt.Color(0, 102, 102));
-        btnXoa.setRadius(30);
-        btnXoa.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btnXoaMousePressed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -381,8 +380,6 @@ public class NhapHang extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 953, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
                         .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8))
                     .addGroup(layout.createSequentialGroup()
@@ -403,9 +400,7 @@ public class NhapHang extends javax.swing.JPanel {
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -442,34 +437,27 @@ public class NhapHang extends javax.swing.JPanel {
 
     private void button1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_button1MousePressed
         // TODO add your handling code here:
-        Luu();
+         Luu();
     }//GEN-LAST:event_button1MousePressed
 
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
-        // TODO add your handling code here:
+      
     }//GEN-LAST:event_button1ActionPerformed
 
     private void tableMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMousePressed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_tableMousePressed
-
-    private void btnXoaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMousePressed
-        // TODO add your handling code here:
-        int result = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow >= 0) {
-            if (result == JOptionPane.YES_OPTION) {
-                xoaHangDuocChon(selectedRow);
+        int selectRow = table.getSelectedRow();
+        int selectCol = table.getSelectedColumn();
+        if(selectCol == 7){
+            if(msg.Yes_no("Xóa?")){
+                model.removeRow(selectRow);
             }
         }
-    }//GEN-LAST:event_btnXoaMousePressed
+    }//GEN-LAST:event_tableMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnOK;
     private javax.swing.JButton btnTim;
-    private button.Button btnXoa;
     private button.Button button1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

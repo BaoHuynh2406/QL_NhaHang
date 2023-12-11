@@ -2,6 +2,7 @@ package HangHoa;
 
 import Dao.ProductsDao;
 import Entity.Products;
+import Utils.Auth;
 import Utils.msg;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -51,29 +52,32 @@ public class KiemHang extends javax.swing.JPanel {
 
         // Tìm kiếm thông tin sản phẩm
         Products product = dao.SearchFirst(maHang, tenHang);
+        
          boolean check = false;
         if (product != null) {
-           
+
             for (int i = 0; i < table.getRowCount(); i++) {
                 String ID = (String) table.getValueAt(i, 1);
                 if (product.getID_product().equals(ID)) {
                     double sl_Old = (Double) table.getValueAt(i, 6);
                     soLuong = soLuong + sl_Old;
                     table.setValueAt(soLuong, i, 6);
-                     check = true;
-                     break;
-                } 
+                    check = true;
+                    break;
+                }
             }
-            
+
             if(!check){
                 // Tạo một mảng đối tượng để thêm vào bảng
+                int SL;
+                 
                     Object[] rowData = new Object[]{
                         model.getRowCount() + 1,
                         product.getID_product(),
                         product.getName(),
                         product.getUnit(),
                         product.getPrice(),
-                        product.getQuantity(),
+                        (Auth.isMG() ? product.getQuantity() : "?"),
                         soLuong, // Số lượng mới nhập
                         "Xóa"
                     };

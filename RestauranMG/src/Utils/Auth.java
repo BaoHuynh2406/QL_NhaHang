@@ -18,4 +18,20 @@ public class Auth {
     public static String getRole(){
         return user.getID_role();
     }
+    
+    public static boolean isMG(){
+        if(Auth.user.getID_role().equals("MG")){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    public static boolean isSV(){
+        if(Auth.user.getID_role().equals("SV")){
+            return true;
+        }
+        
+        return false;
+    }
 }

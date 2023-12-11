@@ -53,7 +53,6 @@ public class QLNV extends javax.swing.JPanel {
                     Thread.sleep(500);
 
                     // Thực hiện tìm kiếm theo tên
-                    
                     fillTable(txtSearch.getText());
 
                     call.done();
@@ -93,7 +92,7 @@ public class QLNV extends javax.swing.JPanel {
             msg.Error("Có lỗi trong quá trình truy xuất dữ liệu!");
         }
     }
-    
+
     // fill dữ liệu
     public void fillTable(String key) {
         model.setRowCount(0);
@@ -116,9 +115,6 @@ public class QLNV extends javax.swing.JPanel {
         }
     }
 
-
-   
-
     // chọn ảnh
     public String selectAnh() {
         JFileChooser fileChooser = new JFileChooser();
@@ -140,7 +136,6 @@ public class QLNV extends javax.swing.JPanel {
             return null;
         }
     }
-
 
     //fill comboBox
     public void fillComboBox() {
@@ -167,7 +162,7 @@ public class QLNV extends javax.swing.JPanel {
         txtSDT.setText(employees.getPhoneNumber());
         txtEmail.setText(employees.getEmail());
         txtDiaChi.setText(employees.getAddress());
-
+        txtPass.setText("");
         cbbChuVu.setSelectedItem(employees.getID_role());
 
         String path = employees.getPhoto();
@@ -175,7 +170,7 @@ public class QLNV extends javax.swing.JPanel {
     }
 
     public void edit() {
-       
+
         if (this.row >= 0) {
             int maNV = (Integer) table.getValueAt(this.row, 1);
             employees = dao.selectById(maNV);
@@ -188,7 +183,13 @@ public class QLNV extends javax.swing.JPanel {
     public Employees getForm() {
         Employees employees = new Employees();
         try {
-            int maNV = Integer.parseInt(txtMaNV.getText());
+            int maNV = 0;
+            try {
+                maNV = Integer.parseInt(txtMaNV.getText());
+            } catch (Exception e) {
+                maNV = 0;
+            }
+
             employees.setID_Employee(maNV);
             employees.setFullName(txtTenNV.getText());
             employees.setPassword(new String(txtPass.getPassword()));
@@ -217,7 +218,7 @@ public class QLNV extends javax.swing.JPanel {
 
     private void clear() {
         // Thực hiện các bước để làm mới form, ví dụ:
-        txtMaNV.setText(dao.getNewID()+"");
+        txtMaNV.setText("");
         txtTenNV.setText("");
         txtPass.setText("");
         txtNgaySinh.setText("");
@@ -226,7 +227,7 @@ public class QLNV extends javax.swing.JPanel {
         lblDuongDan.setText("Chưa chọn ảnh!");
         rdoNam.setSelected(true);
         lblAnh.setIcon(IMG.setAvatar(null));
-        String defaultRole = "MG"; // Giả sử "MG" là mã chức vụ mặc định
+        String defaultRole = "MG";
         cbbChuVu.setSelectedItem(defaultRole);
         row = -1;
         // Cập nhật trạng thái
@@ -234,7 +235,7 @@ public class QLNV extends javax.swing.JPanel {
     }
 
     public void insert() {
-         if(Validate()){
+        if (!Validate()) {
             return;
         }
         Employees employees = getForm();
@@ -246,28 +247,39 @@ public class QLNV extends javax.swing.JPanel {
             fillTable();
             jTabbedPane1.setSelectedIndex(0);
         } catch (Exception e) {
-            System.out.println("-> "+e.getMessage());
+            System.out.println("-> " + e.getMessage());
             msg.Error("Có lỗi trong quá trình thêm mới nhân viên!");
         }
     }
 
     // Bắt lỗi
     private boolean Validate() {
-        if (Validate.isNotEmpty(txtTenNV, txtTenNV.getText(), "Tên Nhân Viên")
+        if (!Validate.isNotEmpty(txtTenNV, txtTenNV.getText(), "Tên Nhân Viên")
                 && Validate.isDateDDMMYYYY(txtNgaySinh, txtNgaySinh.getText())
                 && Validate.isPhoneNumber(txtSDT, txtSDT.getText())
-                && Validate.isEmail(txtEmail, txtEmail.getText()))
-                 {
+                && Validate.isEmail(txtEmail, txtEmail.getText())) {
             return false;
-        } if(!new String(txtPass.getPassword()).isEmpty()) {
-            if (Validate.isLength(txtPass, new String(txtPass.getPassword()), 6, "Mật khẩu")) {  
+        }
+
+        //Trường hợp thêm mới
+        if (row < 0) {
+            if (!Validate.isLength(txtPass, new String(txtPass.getPassword()), 6, "Mật khẩu")) {
                 return false;
             }
+
+            return true;
+        } else if (!new String(txtPass.getPassword()).isEmpty()) {
+
+            if (!Validate.isLength(txtPass, new String(txtPass.getPassword()), 6, "Mật khẩu")) {
+                return false;
+            }
+
         }
         return true;
     }
+
     public void update() {
-        if(Validate()){
+        if (!Validate()) {
             return;
         }
         Employees employees = getForm();
@@ -289,8 +301,8 @@ public class QLNV extends javax.swing.JPanel {
 
     // xoa
     public void delete() {
-        
-       int manv;
+
+        int manv;
         try {
             manv = Integer.parseInt(txtMaNV.getText());
         } catch (NumberFormatException e) {
@@ -807,13 +819,7 @@ public class QLNV extends javax.swing.JPanel {
     }//GEN-LAST:event_tableMousePressed
 
     private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
-        if (row >= 0) {
-            // Nếu row >= 0, tức là đang cập nhật
-            update();
-        } else {
-            // Ngược lại, đang thêm mới
-            insert();
-        }
+
     }//GEN-LAST:event_btnLuuActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
@@ -868,12 +874,11 @@ public class QLNV extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXoaMousePressed
 
     private void btnLuuMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnLuuMousePressed
-        // TODO add your handling code here:
         if (row >= 0) {
-            // Editing mode
+            // Nếu row >= 0, tức là đang cập nhật
             update();
         } else {
-            // Adding mode
+            // Ngược lại, đang thêm mới
             insert();
         }
     }//GEN-LAST:event_btnLuuMousePressed
@@ -887,7 +892,7 @@ public class QLNV extends javax.swing.JPanel {
     }//GEN-LAST:event_txtMaNVActionPerformed
 
     private void txtTenNVMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTenNVMousePressed
-       txtTenNV.setBackground(Color.white);
+        txtTenNV.setBackground(Color.white);
     }//GEN-LAST:event_txtTenNVMousePressed
 
     private void txtPassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPassMousePressed
@@ -906,7 +911,7 @@ public class QLNV extends javax.swing.JPanel {
     }//GEN-LAST:event_txtSDTMousePressed
 
     private void txtEmailMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtEmailMousePressed
-       txtEmail.setBackground(Color.white);
+        txtEmail.setBackground(Color.white);
 
     }//GEN-LAST:event_txtEmailMousePressed
 

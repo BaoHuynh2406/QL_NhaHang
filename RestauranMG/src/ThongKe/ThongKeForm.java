@@ -1,8 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
+
 package ThongKe;
+
+import Utils.Auth;
 
 /**
  *
@@ -15,6 +14,9 @@ public class ThongKeForm extends javax.swing.JPanel {
      */
     public ThongKeForm() {
         initComponents();
+        if(!Auth.isMG()){
+            jTabbedPane1.remove(1);
+        }
     }
 
     /**

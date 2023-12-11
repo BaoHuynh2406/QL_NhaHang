@@ -37,6 +37,10 @@ public class ThanhToanForm extends javax.swing.JPanel {
         txtSoKhach.setText("Số khách: "+donHang.getNumberOfGuests());
         txtTenBan.setText(tenBan);
         taoHoaDon();
+        
+        if(Auth.isSV()){
+            btnTienMat.setEnabled(false);
+        }
     }
     
     
