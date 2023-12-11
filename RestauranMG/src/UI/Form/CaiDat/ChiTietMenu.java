@@ -103,20 +103,35 @@ public class ChiTietMenu extends javax.swing.JDialog {
     
     MenuItemsDao mnuDao = new MenuItemsDao();
     public void Save() {
-        mnu = getForm();
-        if (mnu.getID_Item() == 0) {
-            //Nếu null thì insert
-            mnuDao.insert(getForm());
-            getTable();
-            msg.Info("Thêm mới thành công!");
-            clear();
-        } else {
-            mnuDao.update(mnu);
-            getTable();
-            msg.Info("Cập nhật thành công!");
+        String tenMon = txtName.getText();
+        String giaText = txtGia.getText();
+        if (tenMon.isEmpty()) {
+            msg.Error("Vui lòng không bỏ trống tên món");
+        }
+        if (giaText.isEmpty()) {
+            msg.Error("Vui lòng nhập giá!");
+            return;
+        }
+
+        try {
+            mnu = getForm();
+            if (mnu.getID_Item() == 0) {
+                //Nếu null thì insert
+                mnuDao.insert(getForm());
+                getTable();
+                msg.Info("Thêm mới thành công!");
+                clear();
+            } else {
+                mnuDao.update(mnu);
+                getTable();
+                msg.Info("Cập nhật thành công!");
+            }
+        
+            Parent.selectTuCombobox();
+        } catch (NumberFormatException e) {
+            msg.Error("Giá hàng không hợp lệ! Vui lòng nhập số nguyên.");
         }
         
-        Parent.selectTuCombobox();
 
     }
 

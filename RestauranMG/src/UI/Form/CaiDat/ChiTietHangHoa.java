@@ -1,4 +1,3 @@
-
 package UI.Form.CaiDat;
 
 import Dao.ProductCategoriesDao;
@@ -9,29 +8,28 @@ import Utils.msg;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 
-
 public class ChiTietHangHoa extends javax.swing.JDialog {
 
     QLKhoHang Parant;
+
     public ChiTietHangHoa(java.awt.Frame parent, boolean modal, Products p) {
         super(parent, modal);
-        
+
         initComponents();
         fillComboBox();
-        
+
         setForm(p);
     }
 
-    
     public void fillComboBox() {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cbLoai.getModel();
         model.removeAllElements();
         ProductCategoriesDao pdao = new ProductCategoriesDao();
         pdao.selectAll().forEach(model::addElement);
     }
-    
-   public void setForm(Products p){
-       if(p.getID_product() == null){
+
+    public void setForm(Products p) {
+        if (p.getID_product() == null) {
             txtId.setEnabled(true);
             btnXoa.setEnabled(false);
             txtId.setText("");
@@ -41,56 +39,89 @@ public class ChiTietHangHoa extends javax.swing.JDialog {
             cbLoai.setSelectedIndex(0);
             return;
         }
-       txtId.setEnabled(false);
-       btnXoa.setEnabled(true);
-       
-       ProductCategoriesDao pdao = new ProductCategoriesDao();
-       txtId.setText(p.getID_product());
-       txtName.setText(p.getName());
-       txtGia.setText(p.getPrice()+"");
-       txtUnit.setText(p.getUnit());
-       ProductCategories e = pdao.selectById(p.ID_Catory);
-       cbLoai.setSelectedItem(e);
-   }
-   
-   
-   public Products getForm(){
-       Products p = new Products();
-       p.setID_product(txtId.getText());
-       p.setName(txtName.getText());
-       p.setPrice(Integer.parseInt(txtGia.getText()));
-       p.setUnit(txtUnit.getText());
-       
-       ProductCategories e = (ProductCategories) cbLoai.getSelectedItem();
-       
-       p.ID_Catory = e.getID_Categories();
-       
-       return p;
-   }
-    
-    
-    public void Clear(){
+        txtId.setEnabled(false);
+        btnXoa.setEnabled(true);
+
+        ProductCategoriesDao pdao = new ProductCategoriesDao();
+        txtId.setText(p.getID_product());
+        txtName.setText(p.getName());
+        txtGia.setText(p.getPrice() + "");
+        txtUnit.setText(p.getUnit());
+        ProductCategories e = pdao.selectById(p.ID_Catory);
+        cbLoai.setSelectedItem(e);
+    }
+
+    public Products getForm() {
+        Products p = new Products();
+        p.setID_product(txtId.getText());
+        p.setName(txtName.getText());
+        p.setPrice(Integer.parseInt(txtGia.getText()));
+        p.setUnit(txtUnit.getText());
+
+        ProductCategories e = (ProductCategories) cbLoai.getSelectedItem();
+
+        p.ID_Catory = e.getID_Categories();
+
+        return p;
+    }
+
+    public void Clear() {
         setForm(new Products());
     }
-    
-    
-    public void Save(){
-      Products p = getForm();
-      ProductsDao dao = new ProductsDao();
-      if(txtId.isEnabled()){
-          //Thêm mới
-          dao.insert(p);
-          msg.Info("Thêm mới thành công!");
-          setForm(new Products());
-      }else{
-          //Cập nhật
-          dao.update(p);
-          msg.Info("Cập nhật thành công!");
-          setForm(new Products());
-      }
+
+    public void Save() {
+        String maHang = txtId.getText();
+        String tenHang = txtName.getText();
+        String donViTinh = txtUnit.getText();
+        String giaText = txtGia.getText();
+
+        if (maHang.isEmpty()) {
+            msg.Error("Vui lòng nhập mã hàng!");
+            return;
+        }
+        if (maHang.length() != 6) {
+            msg.Error("Mã hàng phải có đúng 6 ký tự!");
+            return;
+        }
+        if (tenHang.isEmpty()) {
+            msg.Error("Vui lòng nhập tên hàng!");
+            return;
+        }
+        if (donViTinh.isEmpty()) {
+            msg.Error("Vui lòng nhập đơn vị tính!");
+            return;
+        }
+        if (giaText.isEmpty()) {
+            msg.Error("Vui lòng nhập giá!");
+            return;
+        }
+
+        try {
+            int gia = Integer.parseInt(giaText);
+            if (gia < 0) {
+                msg.Error("Giá không được là số âm !");
+                return;
+            }
+
+            Products p = getForm();
+            ProductsDao dao = new ProductsDao();
+
+            if (txtId.isEnabled()) {
+                // Thêm mới
+                dao.insert(p);
+                msg.Info("Thêm mới thành công!");
+                setForm(new Products());
+            } else {
+                // Cập nhật
+                dao.update(p);
+                msg.Info("Cập nhật thành công!");
+                setForm(new Products());
+            }
+        } catch (NumberFormatException e) {
+            msg.Error("Giá hàng không hợp lệ! Vui lòng nhập số nguyên.");
+        }
     }
-    
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
