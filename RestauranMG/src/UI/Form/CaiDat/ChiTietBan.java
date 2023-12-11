@@ -37,6 +37,11 @@ public class ChiTietBan extends javax.swing.JDialog {
 
     TablesdDao tbDao = new TablesdDao();
     public void Save() {
+        String tenBan = txtTen.getText();
+        if (tenBan.isEmpty()) {
+            msg.Warning("Vui lòng nhập tên bàn");
+            return;
+        }
         table.setTableName(txtTen.getText());
         Areas selected = (Areas) cboKhuVuc.getSelectedItem();
         table.setID_Area(selected.getID_Area());

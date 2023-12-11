@@ -31,6 +31,11 @@ public class ChitietKhuVuc extends javax.swing.JDialog {
     AreasDao dao = new AreasDao();
 
     public void Save() {
+        String tenKV = txtTen.getText();
+        if (tenKV.isEmpty()) {
+            msg.Warning("Vui lòng nhập tên khu vực");
+            return;
+        }
         area.setAreaName(txtTen.getText());
         if (txtMa.getText().isEmpty()) {
             dao.insert(area);
