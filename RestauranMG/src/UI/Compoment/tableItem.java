@@ -19,6 +19,7 @@ public class tableItem extends javax.swing.JPanel {
     
     public tableItem(Model_Table data) {
         initComponents();
+        this.setPreferredSize(new Dimension(320,170));
         setOpaque(true);
         this.data = data;
         if(data.getType() == Model_Table.TableType.NULL){
@@ -69,7 +70,7 @@ public class tableItem extends javax.swing.JPanel {
         setBackground(new java.awt.Color(155, 190, 200));
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
         setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        setMaximumSize(new java.awt.Dimension(200, 120));
+        setMaximumSize(new java.awt.Dimension(320, 170));
 
         lbName.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lbName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

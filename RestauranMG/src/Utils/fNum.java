@@ -1,4 +1,3 @@
-
 package Utils;
 
 import java.text.DecimalFormat;
@@ -10,6 +9,12 @@ public class fNum {
         String formattedNumber = decimalFormat.format(n);
         return formattedNumber;
 
+    }
+
+    public static String parseString(double number) {
+        DecimalFormat decimalFormat = new DecimalFormat("###,###.##");
+        String formattedNumber = decimalFormat.format(number);
+        return formattedNumber;
     }
 
     public static int parseInt(String formattedNumber) {

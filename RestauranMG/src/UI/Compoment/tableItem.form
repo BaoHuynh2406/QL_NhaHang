@@ -14,7 +14,7 @@
       <Color id="Hand Cursor"/>
     </Property>
     <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[200, 120]"/>
+      <Dimension value="[320, 170]"/>
     </Property>
   </Properties>
   <AuxValues>

@@ -1,5 +1,6 @@
 package ThongKe;
 
+import Dao.OrdersDao;
 import Dao.procDao;
 import Utils.XDate;
 import Utils.fNum;
@@ -68,6 +69,7 @@ public class DoanhThu extends javax.swing.JPanel {
         btnXuatFile = new button.Button();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new UI.Compoment.CustomTable.Table();
+        lbSoKhach = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -198,6 +200,11 @@ public class DoanhThu extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(table);
 
+        lbSoKhach.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        lbSoKhach.setForeground(new java.awt.Color(51, 0, 204));
+        lbSoKhach.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbSoKhach.setText("Số khách:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -205,12 +212,6 @@ public class DoanhThu extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(lblTong, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 188, Short.MAX_VALUE)
                         .addComponent(btnGiam)
@@ -227,7 +228,16 @@ public class DoanhThu extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnTang)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblTong, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbSoKhach, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1))
+                        .addContainerGap())))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnXuatFile, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -248,7 +258,9 @@ public class DoanhThu extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(cbb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49)
-                .addComponent(lblTong)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTong)
+                    .addComponent(lbSoKhach))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
@@ -398,6 +410,7 @@ public class DoanhThu extends javax.swing.JPanel {
 
     public void fill(List<Object[]> l) {
         int total = 0;
+        int soKhach = 0;
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0);
         for (Object[] row : l) {
@@ -408,10 +421,13 @@ public class DoanhThu extends javax.swing.JPanel {
                 row[3],
                 fNum.parseString((int) row[4]) + "đ"
             });
+            
             total += (int) row[4];
+            soKhach += new OrdersDao().selectById( (int) row[1]).getNumberOfGuests();
         }
 
         lblTong.setText("Doanh thu: " + fNum.parseString(total) + "đ");
+        lbSoKhach.setText("Số khách: "+fNum.parseString(soKhach));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGiam;
@@ -424,6 +440,7 @@ public class DoanhThu extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbb;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lbSoKhach;
     private javax.swing.JLabel lblTong;
     private button.Search search;
     private UI.Compoment.CustomTable.Table table;

@@ -1,0 +1,23 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="RestauranMG:jar">
+    <output-path>$PROJECT_DIR$/..</output-path>
+    <root id="archive" name="RestauranMG.jar">
+      <element id="module-output" name="RestauranMG" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Lib/mssql-jdbc-12.2.0.jre11.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../thuvienpoi/poi-4.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../thuvienpoi/xmlbeans-3.0.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../thuvienpoi/poi-ooxml-4.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../thuvienpoi/commons-codec-1.11.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../thuvienpoi/commons-compress-1.18.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../thuvienpoi/poi-ooxml-schemas-4.0.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../thuvienpoi/commons-collections4-4.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Lib/core-3.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Lib/TimingFramework-0.55.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Lib/javax.mail.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Lib/jcalendar-1.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Lib/activation.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Lib/javax.mail-api-1.6.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../Lib/javase-2.0.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

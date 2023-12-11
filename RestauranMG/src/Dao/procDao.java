@@ -43,7 +43,7 @@ public class procDao {
     
     public List<Object[]> GetTableSummary(int ID_Area) {
         String sql = "{CALL GetTableSummary(?)}";
-        String[] cols = {"ID_Table", "TableName", "TotalAmount", "NumberOfGuests"};
+        String[] cols = {"ID", "Tên bàn", "Tổng tiền", "Số khách"};
         return getListOfArray(sql, cols, ID_Area);
     }
     

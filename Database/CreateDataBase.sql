@@ -203,32 +203,61 @@ EXEC GetOccupiedTablesInfo;
 
 
 --  stored procedure để lấy thông tin bàn dựa trên mã khu vực
-
+DROP PROCEDURE GetTableSummary
 CREATE PROCEDURE GetTableSummary
-    @AreaID INT = NULL
+   @AreaID INT
 AS
 BEGIN
-    SELECT 
-        T.ID_Table,
-        T.TableName,
-        CASE
-            WHEN O.IsPaid = 0 THEN SUM(OD.TotalPrice)
-            ELSE NULL
-        END AS TotalAmount,
-        CASE
-            WHEN O.IsPaid = 0 THEN O.NumberOfGuests
-            ELSE NULL
-        END AS NumberOfGuests
-    FROM 
-        Tables T
-    LEFT JOIN 
-        Orders O ON T.ID_Table = O.ID_Table
-    LEFT JOIN 
-        OrderDetail OD ON O.ID_Order = OD.ID_Order
-    WHERE
-        (@AreaID IS NULL OR T.ID_Area = @AreaID) -- Lọc theo mã khu vực nếu được cung cấp
-    GROUP BY 
-        T.ID_Table, T.TableName, O.IsPaid, O.NumberOfGuests
+	EXEC UpdateAllTablesStatus;
+   IF @AreaID = -1
+    BEGIN
+        -- Trường hợp lấy tất cả các bàn
+        SELECT 
+            t.ID_Table AS ID,
+            t.TableName AS [Tên bàn],
+            CASE
+                WHEN o.IsPaid = 0 THEN SUM(od.TotalPrice)
+                ELSE NULL
+            END AS [Tổng tiền],
+            CASE
+                WHEN o.IsPaid = 0 THEN o.NumberOfGuests
+                ELSE NULL
+            END AS [Số khách]
+        FROM Tables t
+        LEFT JOIN (
+            SELECT o.ID_Table, o.IsPaid, o.NumberOfGuests
+            FROM Orders o
+            WHERE o.IsPaid = 0
+        ) o ON t.ID_Table = o.ID_Table
+        LEFT JOIN OrderDetail od ON o.ID_Table = od.ID_Order
+        GROUP BY t.ID_Table, t.TableName, o.IsPaid, o.NumberOfGuests
+        ORDER BY t.TableName;
+    END
+    ELSE
+    BEGIN
+        -- Trường hợp lấy các bàn trong khu vực được chỉ định
+        SELECT 
+            t.ID_Table AS ID,
+            t.TableName AS [Tên bàn],
+            CASE
+                WHEN o.IsPaid = 0 THEN SUM(od.TotalPrice)
+                ELSE NULL
+            END AS [Tổng tiền],
+            CASE
+                WHEN o.IsPaid = 0 THEN o.NumberOfGuests
+                ELSE NULL
+            END AS [Số khách]
+        FROM Tables t
+        LEFT JOIN (
+            SELECT o.ID_Table, o.IsPaid, o.NumberOfGuests
+            FROM Orders o
+            WHERE o.IsPaid = 0
+        ) o ON t.ID_Table = o.ID_Table
+        LEFT JOIN OrderDetail od ON o.ID_Table = od.ID_Order
+        WHERE t.ID_Area = @AreaID
+        GROUP BY t.ID_Table, t.TableName, o.IsPaid, o.NumberOfGuests
+        ORDER BY t.TableName;
+    END
 END;
 
 

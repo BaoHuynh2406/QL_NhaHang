@@ -1,11 +1,15 @@
 
 package UI.Form;
 
+import Dao.AreasDao;
 import Dao.InvoicesDao;
 import Dao.OrdersDao;
+import Dao.TablesdDao;
 import Dao.procDao;
+import Entity.Areas;
 import Entity.Invoices;
 import Entity.Orders;
+import Entity.Tables;
 import UI.Compoment.HoaDonItem;
 import UI.Main;
 import UI.Model.Model_Mon_Da_Goi;
@@ -14,6 +18,7 @@ import Utils.fNum;
 import Utils.msg;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.geom.Area;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +86,7 @@ public class ThanhToanForm extends javax.swing.JPanel {
         d.insert(e);
         ID_Invoice = d.getNewID();
     }
-
+    ThanhToanThanhCong p = new ThanhToanThanhCong(main);
     //Hàm cập nhật đơn hàng thành trạng thái đã thanh toán
     public void chuyenTrangThaiDonHangThanhDaThanhToan(int ID_Order){
         //Kiễm tra xem Hóa đơn thanh toán thành công chưa
@@ -92,10 +97,25 @@ public class ThanhToanForm extends javax.swing.JPanel {
         OrdersDao od = new OrdersDao();
         od.updateStatus(ID_Order, true);
         this.removeAll();
-        ThanhToanThanhCong p = new ThanhToanThanhCong(main);
+        
         this.setLayout(new BorderLayout());
+        
+        setHoaDon(ID_Order);
         this.add(p, BorderLayout.CENTER);
         this.revalidate();
+    }
+    
+    public void setHoaDon(int ID_Invoice){
+        Invoices invoice = new InvoicesDao().selectById(ID_Invoice);
+        Orders order = new OrdersDao().selectById(ID_Order);
+        Tables tables = new TablesdDao().selectById(order.getID_Table());
+        Areas area = new AreasDao().selectById(tables.getID_Area());
+        
+        
+        p.area = area;
+        p.invoice = invoice;
+        p.order = order;
+        p.tables = tables;
     }
     
     

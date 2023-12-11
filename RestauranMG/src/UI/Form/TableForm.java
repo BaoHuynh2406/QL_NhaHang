@@ -45,6 +45,7 @@ public class TableForm extends javax.swing.JPanel {
     public TableForm(Main main) {
         this.main = main;
         initComponents();
+         ScroolTable.getVerticalScrollBar().setUnitIncrement(30);
         fillKhuVuc();
         
     }
@@ -61,13 +62,16 @@ public class TableForm extends javax.swing.JPanel {
             return;
         }
 
-        int numRows = t.size() / 5; // Số hàng cần thiết
-        int remainder = t.size() % 5; // Số item còn lại sau khi chia hết cho 5
-        int canThiet = numRows + (remainder > 0 ? 1 : 0);
-        PanelTable.setLayout(new GridLayout((canThiet > 5 ? canThiet : 5), 5, 20, 10)); // GridLayout với số hàng tính được, có thể cộng thêm 1 hàng nếu còn item thừa
+        int numRows = t.size() / 4; // Số hàng cần thiết
+        int remainder = t.size() % 4; // Số item còn lại sau khi chia hết cho 5
+        int canThiet = numRows + (remainder > 0 ? 2 : 0);
+       
+        PanelTable.setPreferredSize(new Dimension(5*300, canThiet*155));
+        PanelTable.setLayout(new FlowLayout(FlowLayout.LEFT, 30, 20)); // GridLayout với số hàng tính được, có thể cộng thêm 1 hàng nếu còn item thừa
         for (Object[] row : t) {
             tableItem item;
             
+           
             int ID = (Integer) row[0];
             String TableName = (String) row[1];
             int total = 0, numGust = 0;
@@ -82,9 +86,11 @@ public class TableForm extends javax.swing.JPanel {
             }
             if(row[3] == null){
                  item = new tableItem(new Model_Table(ID, TableName));
+                  item.setPreferredSize(new Dimension(300,170));
             }else{
                 
                 item = new tableItem(new Model_Table(ID, TableName, total, numGust));
+                 item.setPreferredSize(new Dimension(300,170));
             }
             // Bắt sự kiện
             
@@ -132,6 +138,16 @@ public class TableForm extends javax.swing.JPanel {
         if (k == null) {
             return;
         }  
+        JButton b = new JButton("Tất cả");
+        b.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        b.setName("-1");
+        buttons.add(b);
+        pnKhuVuc.add(b);
+        b.addActionListener(e -> {
+            selectedArea = -1;
+            update();
+        });
+
         for (Areas area : k) {
             JButton button = new JButton(area.getAreaName());
             button.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -143,7 +159,7 @@ public class TableForm extends javax.swing.JPanel {
             });
             pnKhuVuc.add(button);
         }
-        selectedArea = k.get(0).getID_Area();
+        selectedArea = -1;
         update(); // Cập nhật giao diện ban đầu
     }
 
