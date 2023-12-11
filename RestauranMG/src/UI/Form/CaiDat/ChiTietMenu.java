@@ -530,8 +530,13 @@ public class ChiTietMenu extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+     public void Delete(){
+        new MenuItemsDao().delete(Integer.valueOf(txtId.getText()));
+        msg.Info("Xóa "+txtName.getText()+" thành công!");
+        this.dispose();
+    }
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-//        Delete();
+        Delete();
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnLuuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLuuActionPerformed
