@@ -42,7 +42,7 @@ public class ExportPDF {
             Font font20Bold = new Font(baseFont, 20, Font.BOLD);
             Font font16Italic = new Font(baseFont, 16, Font.ITALIC);
             Font font14Normal = new Font(baseFont, 14, Font.NORMAL);
-            Paragraph title = new Paragraph("3 Tràng Chai", font32Bold);
+            Paragraph title = new Paragraph("3 Chàng Trai", font32Bold);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
 
